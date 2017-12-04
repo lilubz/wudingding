@@ -19,10 +19,11 @@ export class NavDropdownDirective {
   selector: '[appNavDropdownToggle]'
 })
 export class NavDropdownToggleDirective {
-  constructor(private dropdown: NavDropdownDirective) {}
+  constructor(private dropdown: NavDropdownDirective) { }
 
   @HostListener('click', ['$event'])
   toggleOpen($event: any) {
+    console.log(event);
     $event.preventDefault();
     this.dropdown.toggle();
   }
