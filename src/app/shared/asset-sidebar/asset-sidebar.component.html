@@ -1,0 +1,38 @@
+<div class="sidebar">
+  <nav class="sidebar-nav">
+    <ul class="nav">
+      <li class="nav-item nav-dropdown" routerLinkActive="open" appNavDropdown>
+        <a class="nav-link nav-dropdown-toggle" appNavDropdownToggle>
+          <i class="fa fa-bank"></i> 资产管理</a>
+        <ul class="nav-dropdown-items">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/asset-management/asset-search']">
+              <i class="icon-star"></i> 资产查询</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/asset-management/asset-statistic']">
+              <i class="icon-star"></i> 资产统计</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/asset-management/asset-inventory']">
+              <i class="icon-star"></i> 资产盘点</a>
+          </li>
+        </ul>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLinkActive="active" [routerLink]="['/system']">
+          <i class="fa fa-tags"></i> 系统管理</a>
+        <!-- <ul class="nav-dropdown-items">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/icons/font-awesome']">
+              <i class="icon-star"></i> Font Awesome</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/icons/simple-line-icons']">
+              <i class="icon-star"></i> Simple Line Icons</a>
+          </li>
+          </ul> -->
+      </li>
+    </ul>
+  </nav>
+</div>

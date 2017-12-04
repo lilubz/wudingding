@@ -1,0 +1,77 @@
+.sign-moudle {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: url("../../../assets/img/login-bg.jpg") center center / cover no-repeat fixed;
+  input {
+    border-radius: 0 5px 5px 0;
+  }
+  input:focus {
+    border-color: #323a45 !important;
+  }
+  .input-group-addon {
+    border-radius: 5px 0 0 5px;
+  }
+  .input-group-message {
+    .input-message {
+      border-radius: 0;
+    }
+    .btn-message {
+      border-radius: 0 5px 5px 0;
+    }
+  }
+  .mask {
+    width: 100%;
+    height: 100%; // position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0, 0, 0, .5);
+    .container {
+      .card {
+        border-radius: 10px;
+        form {
+          .input-group {
+            position: relative;
+            input.form-control {
+              &.ng-invalid {
+                &+span {
+                  position: absolute;
+                  top: 7px;
+                  right: 20px;
+                  text-align: right;
+                  display: inline-block;
+                  z-index: 99;
+                  color: #323a45;
+                }
+              }
+            }
+            .password-confirm {
+              position: absolute;
+              top: 7px;
+              right: 20px;
+              text-align: right;
+              display: inline-block;
+              z-index: 99;
+              color: #323a45;
+            }
+            .input-message {
+              &.ng-invalid {
+                &+span {
+                  right: 120px !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .sign-moudle-about {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 25px;
+      color: #fff;
+      text-align: center;
+    }
+  }
+}
