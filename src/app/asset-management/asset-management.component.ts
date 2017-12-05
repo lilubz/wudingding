@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-asset-management',
+  selector: 'asset-asset-management',
   templateUrl: './asset-management.component.html',
   styleUrls: ['./asset-management.component.scss']
 })

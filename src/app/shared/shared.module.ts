@@ -7,7 +7,9 @@ import { RouterModule } from '@angular/router';
 
 import {
   BsDropdownModule,
-  TabsModule
+  TabsModule,
+  ModalModule,
+  PaginationModule
 } from 'ngx-bootstrap';
 
 // import { LayoutComponent } from './layout/layout.component';
@@ -26,6 +28,8 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
     RouterModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
+    ModalModule.forRoot(),
+    PaginationModule.forRoot(),
   ],
   declarations: [
     // LayoutComponent,
@@ -46,6 +50,7 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
     RouterModule,
     BsDropdownModule,
     TabsModule,
+    PaginationModule,
 
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,

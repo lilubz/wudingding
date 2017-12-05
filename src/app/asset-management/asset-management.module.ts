@@ -13,7 +13,7 @@ import { AssetManagementRoutingModule } from 'app/asset-management/asset-managem
     CommonModule,
     CoreModule,
     SharedModule,
-    AssetManagementRoutingModule
+    AssetManagementRoutingModule,
   ],
   declarations: [
     AssetSearchComponent,
