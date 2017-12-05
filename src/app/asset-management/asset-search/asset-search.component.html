@@ -9,21 +9,21 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label for="select">资产类别</label>
-            <select class="form-control" id="select" name="select">
-              <option value="0">Please select</option>
-              <option value="1">Option #1</option>
-              <option value="2">Option #2</option>
-              <option value="3">Option #3</option>
+            <select class="form-control" [(ngModel)]="selectedCategory" id="select" name="select">
+              <option value="">--请选择--</option>
+              <ng-container *ngFor="let category of categories">
+                <option [ngValue]="category.assetCategoryId">{{ category.categoryName }}</option>
+              </ng-container>
             </select>
             <span class="help-block">Please enter your email</span>
           </div>
           <div class="form-group col-md-6">
             <label for="select">责任部门</label>
-            <select class="form-control" id="select" name="select">
-              <option value="0">Please select</option>
-              <option value="1">Option #1</option>
-              <option value="2">Option #2</option>
-              <option value="3">Option #3</option>
+            <select class="form-control" [(ngModel)]="selectedOrganization" id="select" name="select">
+              <option value="">--请选择--</option>
+              <ng-container *ngFor="let organization of organizations">
+                <option [ngValue]="organization.organizationId">{{ organization.name }}</option>
+              </ng-container>
             </select>
             <span class="help-block">Please enter your email</span>
           </div>
@@ -32,11 +32,11 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label for="select">资产状态</label>
-            <select class="form-control" id="select" name="select">
-              <option value="0">Please select</option>
-              <option value="1">Option #1</option>
-              <option value="2">Option #2</option>
-              <option value="3">Option #3</option>
+            <select class="form-control" [(ngModel)]="selectedAssetStatus" id="select" name="select">
+              <option value="">--请选择--</option>
+              <ng-container *ngFor="let status of statusTypes">
+                <option [ngValue]="status.assetStatusTypeId">{{ status.assetStatusTypeName }}</option>
+              </ng-container>
             </select>
             <span class="help-block">Please enter your email</span>
           </div>
@@ -55,7 +55,7 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label for="select">录入时间</label>
-            <input type="text" bsDaterangepicker [(bsValue)]="bsValue" [bsConfig]="bsConfig" class="form-control">
+            <input type="text" bsDaterangepicker [(bsValue)]="dateRange" [bsConfig]="datePickerConfig" class="form-control">
             <span class="help-block">Please enter your email</span>
           </div>
         </div>

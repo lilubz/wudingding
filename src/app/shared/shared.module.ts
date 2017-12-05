@@ -10,6 +10,7 @@ import {
   BsDropdownModule,
   BsDatepickerModule,
   TabsModule,
+  ModalModule,
 } from 'ngx-bootstrap';
 
 // import { LayoutComponent } from './layout/layout.component';
@@ -30,6 +31,7 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
+    ModalModule.forRoot(),
   ],
   declarations: [
     // LayoutComponent,
@@ -52,6 +54,7 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     BsDropdownModule,
     BsDatepickerModule,
     TabsModule,
+    ModalModule,
 
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,

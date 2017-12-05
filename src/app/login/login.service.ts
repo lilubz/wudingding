@@ -36,7 +36,7 @@ export class LoginService {
         } else if (data.status === 4) {// 已经登录
           swal({
             title: '您已登录',
-            text: '如需登录其它账号请先退出再登录！',
+            text: `当前登录用户 ${this.userStateService.getUser().username} ,如需登录其它账号请先退出再登录！`,
             icon: 'warning',
             button: '确认',
           });
