@@ -13,4 +13,7 @@ export const API = {
   'listAssetCategory': URL + 'common/listAssetCategory.do',
   'listAssetStatusType': URL + 'common/listAssetStatusType.do',
 
+  'signIn': URL + 'sysUserPermissions/login.do',
+  'logout': URL + 'sysUserPermissions/logout.do',
+  'modifyPassword': URL + 'sysUserPermissions/resetPassword.do',
 };

@@ -23,8 +23,8 @@
     <li class="nav-item d-md-down-none">
       <a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
     </li> -->
-    <li class="nav-item dropdown" dropdown>
-      <a href class="nav-link dropdown-toggle" dropdownToggle (click)="false">
+    <li class="nav-item dropdown" dropdown (onToggle)="toggled($event)">
+      <a class="nav-link dropdown-toggle" dropdownToggle (click)="false">
         <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
         <span class="d-md-down-none">用户名</span>
       </a>
@@ -62,8 +62,8 @@
         <div class="divider"></div> -->
         <!-- <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Lock account</a> -->
         <a class="dropdown-item" href="#">
-          <i class="fa fa-lock"></i> 修改密码</a>
-        <a class="dropdown-item" href="#">
+          <i class="fa fa-pencil-square-o"></i> 修改密码</a>
+        <a class="dropdown-item" href="#" (click)="logout()">
           <i class="fa fa-lock"></i> 退出</a>
       </div>
     </li>

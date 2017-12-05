@@ -1,3 +1,111 @@
-<p>
-  asset-search works!
-</p>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-align-justify"></i> 搜索
+      </div>
+      <div class="card-body">
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="select">资产类别</label>
+            <select class="form-control" id="select" name="select">
+              <option value="0">Please select</option>
+              <option value="1">Option #1</option>
+              <option value="2">Option #2</option>
+              <option value="3">Option #3</option>
+            </select>
+            <span class="help-block">Please enter your email</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="select">责任部门</label>
+            <select class="form-control" id="select" name="select">
+              <option value="0">Please select</option>
+              <option value="1">Option #1</option>
+              <option value="2">Option #2</option>
+              <option value="3">Option #3</option>
+            </select>
+            <span class="help-block">Please enter your email</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="select">资产状态</label>
+            <select class="form-control" id="select" name="select">
+              <option value="0">Please select</option>
+              <option value="1">Option #1</option>
+              <option value="2">Option #2</option>
+              <option value="3">Option #3</option>
+            </select>
+            <span class="help-block">Please enter your email</span>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="select">资产负责人</label>
+            <select class="form-control" id="select" name="select">
+              <option value="0">Please select</option>
+              <option value="1">Option #1</option>
+              <option value="2">Option #2</option>
+              <option value="3">Option #3</option>
+            </select>
+            <span class="help-block">Please enter your email</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="select">录入时间</label>
+            <input type="text" bsDaterangepicker [(bsValue)]="bsValue" [bsConfig]="bsConfig" class="form-control">
+            <span class="help-block">Please enter your email</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" type="button">
+          <i class="fa fa-search"></i>&nbsp; 查询
+        </button>
+
+        <div class="btn-group pull-right">
+          <button class="btn btn-outline-primary" type="button">
+            <i class="fa fa-plus"></i>&nbsp; 添加资产信息
+          </button>
+          <button class="btn btn-outline-primary" type="button">
+            <i class="fa fa-download"></i>&nbsp; 导入
+          </button>
+          <button class="btn btn-outline-primary" type="button">
+            <i class="fa fa-upload"></i>&nbsp; 导出
+          </button>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header">
+        <i class="fa fa-align-justify"></i> 资产查询
+      </div>
+      <div class="card-body">
+
+        <table class="table table-bordered table-striped table-sm">
+          <thead>
+            <tr>
+              <th *ngFor="let head of heads">head</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of value">
+              <td>{{ item?.name }}</td>
+              <td>{{ item?.name }}</td>
+              <td>{{ item?.name }}</td>
+              <td>{{ item?.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

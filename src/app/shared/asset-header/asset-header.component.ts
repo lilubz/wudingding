@@ -1,5 +1,7 @@
+import { LoginService } from './../../login/login.service';
 import { Component, OnInit } from '@angular/core';
 
+declare const swal: any;
 @Component({
   selector: 'asset-header',
   templateUrl: './asset-header.component.html',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssetHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private loginService: LoginService) { }
 
   ngOnInit() {
   }
 
+  public toggled(open: boolean): void {
+    console.log('Dropdown is now: ', open);
+  }
+
+  logout() {
+    this.loginService.logout();
+  }
 }
