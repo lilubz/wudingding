@@ -1,3 +1,4 @@
+import { LoginService } from './../../login/login.service';
 import { Component, OnInit } from '@angular/core';
 
 declare const swal: any;
@@ -8,7 +9,7 @@ declare const swal: any;
 })
 export class AssetHeaderComponent implements OnInit {
 
-  constructor() { }
+  constructor(private loginService: LoginService) { }
 
   ngOnInit() {
   }
@@ -17,7 +18,7 @@ export class AssetHeaderComponent implements OnInit {
     console.log('Dropdown is now: ', open);
   }
 
-  sweet() {
-    swal({ text: 'Hello world!' });
+  logout() {
+    this.loginService.logout();
   }
 }
