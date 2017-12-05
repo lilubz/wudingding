@@ -5,9 +5,6 @@ export const API = {
   // 项目地址
   'url': URL,
 
-  // 用户接口
-  'login': URL + 'sysUserPermissions/login.do',
-
   // 资产盘点
   'listInventoryTask': URL + 'assetInfo/StockTaking/listInventoryTask.do',
   'getAssetInfo': URL + 'assetInfo/StockTaking/getAssetInfo.do',
@@ -15,4 +12,14 @@ export const API = {
   'listEndInventoryTask': URL + 'assetInfo/StockTaking/listEndInventoryTask.do',
   'updateAssetInfo': URL + 'assetInfo/StockTaking/updateAssetInfo.do',
   'boolIsInventoryAssetBegin': URL + 'assetInfo/StockTaking/boolIsInventoryAssetBegin.do',
+  // 公共接口
+  'listAssetStatusType': URL + 'common/listAssetStatusType.do',
+  'listAssetCategory': URL + 'common/listAssetCategory.do',
+  'listOrganizationCurrentUser': URL + 'common/listOrganizationCurrentUser.do',
+
+
+
+  'signIn': URL + 'sysUserPermissions/login.do',
+  'logout': URL + 'sysUserPermissions/logout.do',
+  'modifyPassword': URL + 'sysUserPermissions/resetPassword.do',
 };

@@ -1,3 +1,4 @@
+import { LoginService } from './../login/login.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -7,9 +8,10 @@ import { RouterModule } from '@angular/router';
 
 import {
   BsDropdownModule,
+  PaginationModule,
+  BsDatepickerModule,
   TabsModule,
   ModalModule,
-  PaginationModule
 } from 'ngx-bootstrap';
 
 // import { LayoutComponent } from './layout/layout.component';
@@ -20,6 +22,7 @@ import { NAV_DROPDOWN_DIRECTIVES } from './nav-dropdown.directive';
 import { BreadcrumbsComponent } from './breadcrumb.component';
 import { AsideToggleDirective } from './aside.directive';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
+import { AssetTableComponent } from './asset-table/asset-table.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -27,6 +30,7 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
     ReactiveFormsModule,
     RouterModule,
     BsDropdownModule.forRoot(),
+    BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot(),
     PaginationModule.forRoot(),
@@ -41,6 +45,7 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
     AssetHeaderComponent,
     AssetSidebarComponent,
     BreadcrumbComponent,
+    AssetTableComponent,
   ],
 
   exports: [
@@ -49,8 +54,10 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
     ReactiveFormsModule,
     RouterModule,
     BsDropdownModule,
+    BsDatepickerModule,
     TabsModule,
     PaginationModule,
+    ModalModule,
 
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
@@ -61,6 +68,9 @@ import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
     AssetHeaderComponent,
     AssetSidebarComponent,
     BreadcrumbComponent,
+  ],
+  providers: [
+    LoginService
   ]
 })
 export class SharedModule { }

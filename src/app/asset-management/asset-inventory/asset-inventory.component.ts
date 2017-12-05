@@ -14,26 +14,29 @@ declare const swal: any;
 export class AssetInventoryComponent implements OnInit {
   modalRef: BsModalRef;
   detail = {
-    assetId: 1,
-    assetSerialNumber: 'TEST101',
-    organizationName: '永炜集团',
-    assetCategoryName: '笔记本电脑',
-    employeeName: '测试张三',
-    assetStatusTypeName: '在用',
-    assetName: '测试电脑',
-    brandSpecification: '台',
-    storageLocation: '28楼',
-    purchaseTime: 1512057600000,
-    purchaseAmount: 1200,
+    assetId: '',
+    assetSerialNumber: '',
+    organizationName: '',
+    assetCategoryName: '',
+    employeeName: '',
+    assetStatusTypeName: '',
+    assetName: '',
+    brandSpecification: '',
+    storageLocation: '',
+    purchaseTime: '',
+    purchaseAmount: '',
   };
   tabel = {
     total: 20,
     pageNumber: 1,
-    pageSize: 10,
+    pageSize: 1,
     list: []
   }
+  btns = {
+    start: false,
+    end: false
+  }
   status = ''; // 绑定的下拉框数据，包含已经盘点（1）和未盘点（0）两个状态。
-  workingPosition = 2; // 控制开始盘点和结束盘点这两个按纽的显示与隐藏。为2两个都显示，为1只显示结束盘点，为0只显示开始盘点。
   constructor(private modalService: BsModalService, private assetInventoryService: AssetInventoryService) { }
 
   openModal(template: TemplateRef<any>) {
@@ -60,7 +63,7 @@ export class AssetInventoryComponent implements OnInit {
     } else {
       const params = {
         status: this.status,
-        pageNumber: this.tabel.pageNumber,
+        pageNumber: 1,
         pageSize: this.tabel.pageSize
       }
       this.getTableList(params);
@@ -69,9 +72,17 @@ export class AssetInventoryComponent implements OnInit {
   onPageChange(event) {
     this.getTableList({
       status: this.status,
-      pageNumber: this.tabel.pageNumber,
+      pageNumber: event.page,
       pageSize: this.tabel.pageSize
     });
+    console.log(
+      {
+        status: this.status,
+        pageNumber: this.tabel.pageNumber,
+        pageSize: this.tabel.pageSize
+      }
+    );
+    console.log(event);
   }
   sendInventory(template) {
     this.updateAssetInfo({
@@ -153,7 +164,6 @@ export class AssetInventoryComponent implements OnInit {
         if (data.status === 0) {
           this.tabel.list = data.data.list;
           this.tabel.total = data.data.total;
-          this.tabel.pageNumber = data.data.pages;
         } else {
           this.tabel.list = [];
           this.tabel.total = 0;
@@ -223,20 +233,26 @@ export class AssetInventoryComponent implements OnInit {
     this.assetInventoryService.getCurrentStatus()
       .then(data => {
         if (data.status === 0) {
-          this.workingPosition = 0;
+          this.btns = {
+            start: true,
+            end: false
+          }
         } else if (data.status === 1) {
-          this.workingPosition = 1;
+          this.btns = {
+            start: false,
+            end: true
+          }
         } else {
-          this.workingPosition = 2;
-          swal(data.msg, {
-            icon: 'warning',
-          });
+          this.btns = {
+            start: true,
+            end: true
+          }
         }
       }).catch(error => {
-        this.workingPosition = 2;
-        swal('出错了,错误代码：' + error.status, {
-          icon: 'error',
-        });
+        this.btns = {
+          start: true,
+          end: true
+        }
       });
   }
   test() {

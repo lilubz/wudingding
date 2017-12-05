@@ -14,6 +14,7 @@ export class UserStateService {
       sessionStorage.setItem('user', JSON.stringify(user));
       this.user = user;
     } else {
+      sessionStorage.removeItem('user');
       this.user = null;
     }
   }

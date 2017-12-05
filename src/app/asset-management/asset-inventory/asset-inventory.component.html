@@ -3,8 +3,8 @@
     <div class="card-header">
       <i class="fa fa-align-justify"></i><span (click)="test()">搜索</span>
       <div class="btns float-right">
-        <button class="btn btn-danger" (click)="endInventory()" *ngIf="workingPosition !== 0">结束盘点</button>
-        <button class="btn btn-primary" (click)="startInventory()" *ngIf="workingPosition !== 1">开始盘点</button>
+        <button class="btn btn-danger" (click)="endInventory()" *ngIf="btns.end">结束盘点</button>
+        <button class="btn btn-primary" (click)="startInventory()" *ngIf="btns.start">开启盘点</button>
       </div>
     </div>
     <div class="card-body">
@@ -52,9 +52,9 @@
           </tr>
         </tbody>
       </table>
-      <pagination [(ngModel)]="tabel.pageNumber" class="pagination" previousText="&lsaquo;"
-        nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [maxSize]="7" [rotate]="false"
-          (pageChanged)="onPageChange($event)"></pagination>
+      <pagination class="pull-right" [(ngModel)]="tabel.pageNumber" [totalItems]="tabel.total" class="pagination" previousText="&lsaquo;"
+        nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [rotate]="false"
+          (pageChanged)="onPageChange($event)" [itemsPerPage]="tabel.pageSize"></pagination>
     </div>
   </div>
   <div class="modal">
