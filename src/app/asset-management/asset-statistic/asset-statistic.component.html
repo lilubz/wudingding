@@ -1,3 +1,158 @@
-<p>
-  asset-statistic works!
-</p>
+<div class="asset-statistic">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>搜索
+        </div>
+        <div class="card-block">
+
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="assetCategoryId">资产类型</label>
+                  <select class="form-control" id="assetCategoryId" [(ngModel)]="searchParams.assetCategoryId">
+                      <option *ngFor="let item of Dropdown.inventoryList" [ngValue]="item.value">{{item.label}}</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="organizationId">组织</label>
+                  <select class="form-control" id="organizationId" [(ngModel)]="searchParams.organizationId">
+                      <option *ngFor="let item of Dropdown.inventoryList" [ngValue]="item.value">{{item.label}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-primary btnTop" type="button" name="button">
+                <span class="fa fa-search"></span>查询</button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label for="inventory">盘点状态 </label>
+                  <select class="form-control" id="inventory" [(ngModel)]="searchParams.inventoryStatus">
+                    <option *ngFor="let item of Dropdown.inventoryList" [ngValue]="item.value">{{item.label}}</option>
+                  </select>
+                  {{inventoryStatus}}
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="assetStatusTypeId">资产状态类型</label>
+                  <select class="form-control" id="assetStatusTypeId" [(ngModel)]="searchParams.assetStatusTypeId">
+                      <option *ngFor="let item of Dropdown.inventoryList" [ngValue]="item.value">{{item.label}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>搜索
+        </div>
+        <div class="card-block">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Date registered</th>
+                <th>Rolesss</th>
+                <th>Statussss</th>
+                <th>Usernamesss</th>
+                <th>Date registered</th>
+                <th>Roless</th>
+                <th>Sta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Samppa Nori</td>
+                <td>2012/01/01</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+                <td>Samppa Nori</td>
+                <td>2012/01/01</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Estavan Lykos</td>
+                <td>2012/02/01</td>
+                <td>Staff</td>
+                <td>
+                  <span class="badge badge-danger">Banned</span>
+                </td>
+                <td>Samppa Nori</td>
+                <td>2012/01/01</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Chetan Mohamed</td>
+                <td>2012/02/01</td>
+                <td>Admin</td>
+                <td>
+                  <span class="badge badge-default">Inactive</span>
+                </td>
+                <td>Samppa Nori</td>
+                <td>2012/01/01</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Derick Maximinusssssssssssssss</td>
+                <td>2012/03/01哈哈哈哈哈哈哈哈哈</td>
+                <td>啊哈哈哈哈哈哈哈哈哈哈哈</td>
+                <td>
+                  <span class="badge badge-warning">Pending</span>
+                </td>
+                <td>Samppa Nori</td>
+                <td>2012/01/01</td>
+                <td>Member</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#">Prev</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

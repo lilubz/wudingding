@@ -7,6 +7,7 @@ import { AssetStatisticComponent } from './asset-statistic/asset-statistic.compo
 import { AssetManagementComponent } from './asset-management.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { AssetManagementRoutingModule } from 'app/asset-management/asset-management-routing.module';
+import { AssetStatisticService } from 'app/asset-management/asset-statistic/asset-statistic.service';
 
 @NgModule({
   imports: [
@@ -20,6 +21,9 @@ import { AssetManagementRoutingModule } from 'app/asset-management/asset-managem
     AssetInventoryComponent,
     AssetStatisticComponent,
     AssetManagementComponent
+  ],
+  providers: [
+  AssetStatisticService
   ]
 })
 export class AssetManagementModule { }
