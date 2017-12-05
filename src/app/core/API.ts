@@ -9,7 +9,10 @@ export const API = {
   'listAssetStatusType': URL + 'common/listAssetStatusType.do',
   'listAssetCategory': URL + 'common/listAssetCategory.do',
   'listOrganizationCurrentUser': URL + 'common/listOrganizationCurrentUser.do',
+  'listEmployeeSimpleCurrentUser': URL + 'common/listEmployeeSimpleCurrentUser.do',
 
+  // 资产查询
+  'listAssetBasic': URL + 'assetBasic/listAssetBasic.do',
 
 
   'signIn': URL + 'sysUserPermissions/login.do',
