@@ -13,9 +13,6 @@ declare const swal: any;
 })
 export class AssetInventoryComponent implements OnInit {
   modalRef: BsModalRef;
-  total= 200;
-  pageNumber= 1;
-  pageSize= 5;
   detail = {
     assetId: '',
     assetSerialNumber: '',
@@ -30,7 +27,7 @@ export class AssetInventoryComponent implements OnInit {
     purchaseAmount: '',
   };
   table = {
-    total: 200,
+    total: 0,
     pageNumber: 1,
     pageSize: 5,
     list: []
@@ -60,10 +57,10 @@ export class AssetInventoryComponent implements OnInit {
       this.table.pageNumber = 1;
       return;
     } else {
-      this.pageNumber = 1;
+      this.table.pageNumber = 1;
       const params = {
         status: this.status,
-        pageNumber: this.pageNumber,
+        pageNumber: this.table.pageNumber,
         pageSize: this.table.pageSize
       }
       this.getTableList(params);
@@ -71,31 +68,28 @@ export class AssetInventoryComponent implements OnInit {
   }
 
   onPageChange(event) {
-    console.log(event);
-    this.pageNumber = event.page;
-    this.pageSize = event.itemsPerPage;
     this.getTableList({
       status: this.status,
       pageNumber: event.page,
       pageSize: event.itemsPerPage
     });
   }
+
   onPageSizeChange(event) {
-    console.log(this.table);
-    console.log(event);
-    this.pageNumber = 1;
-    // this.pageSize = event;
-    // this.getTableList({
-    //   status: this.status,
-    //   pageNumber: 1,
-    //   pageSize: event
-    // });
+    this.table.pageSize = event;
+    this.getTableList({
+      status: this.status,
+      pageNumber: 1,
+      pageSize: event
+    });
   }
+
   sendInventory() {
     this.updateAssetInfo({
       assetSerialNumber: this.detail.assetSerialNumber
     });
   }
+
   startInventory() {
     swal({
       title: '请确认',
@@ -168,11 +162,11 @@ export class AssetInventoryComponent implements OnInit {
       .then(data => {
         if (data.status === 0) {
           this.table.list = data.data.list;
-          this.total = data.data.total;
+          this.table.total = data.data.total;
         } else {
           this.table.list = [];
-          this.total = 0;
-          this.pageNumber = 1;
+          this.table.total = 0;
+          this.table.pageNumber = 1;
           this.status = '';
           swal(data.msg, {
             icon: 'warning',
@@ -180,8 +174,8 @@ export class AssetInventoryComponent implements OnInit {
         }
       }).catch(error => {
         this.table.list = [];
-        this.total = 0;
-        this.pageNumber = 1;
+        this.table.total = 0;
+        this.table.pageNumber = 1;
         this.status = '';
         swal('出错了,错误代码：' + error.status, {
           icon: 'error',

@@ -52,11 +52,11 @@
           </tr>
         </tbody>
       </table>
-      <!-- <asset-pagination [totalItems]="total" [(currentPage)]="pageNumber" [itemsPerPage]="pageSize" (changePage)="onPageChange($event)"
-        (changeSize)="onPageSizeChange($event)"></asset-pagination> -->
-      <pagination [boundaryLinks]="false" (pageChanged)=onPageChange($event) [totalItems]="total" [itemsPerPage]="pageSize"
+      <asset-pagination [totalItems]="table.total" [(currentPage)]="table.pageNumber" [itemsPerPage]="table.pageSize" (changePage)="onPageChange($event)"
+        (changeSize)="onPageSizeChange($event)"></asset-pagination>
+      <!-- <pagination [boundaryLinks]="false" (pageChanged)=onPageChange($event) [totalItems]="total" [itemsPerPage]="pageSize"
         [(ngModel)]="pageNumber" class="pagination-md pull-right" [maxSize]="5" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;"
-        [pageBtnClass]="'pagination-btn'"></pagination>
+        [pageBtnClass]="'pagination-btn'"></pagination> -->
     </div>
   </div>
   <div class="modal">
