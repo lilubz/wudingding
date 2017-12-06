@@ -1,7 +1,7 @@
 <div class="inventory">
   <div class="card">
     <div class="card-header">
-      <i class="fa fa-align-justify"></i><span (click)="test()">搜索</span>
+      <i class="fa fa-align-justify"></i><span>搜索</span>
       <div class="btns float-right">
         <button class="btn btn-danger" (click)="endInventory()" *ngIf="btns.end">结束盘点</button>
         <button class="btn btn-primary" (click)="startInventory()" *ngIf="btns.start">开启盘点</button>
@@ -29,7 +29,7 @@
     <div class="card-header">
       <i class="fa fa-align-justify"></i> 资产信息
     </div>
-    <div class="card-body text-center" *ngIf="tabel.list.length!==0">
+    <div class="card-body text-center" *ngIf="table.list.length!==0">
       <table class="table table-striped text-center">
         <thead>
           <tr>
@@ -42,7 +42,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of tabel.list">
+          <tr *ngFor="let item of table.list">
             <td>{{item.assetId}}</td>
             <td><a href="javascript:void(0);" (click)="onQuery(template,item.assetSerialNumber)">{{item.assetSerialNumber}}</a></td>
             <td>{{item.assetName}}</td>
@@ -52,9 +52,11 @@
           </tr>
         </tbody>
       </table>
-      <pagination class="pull-right" [(ngModel)]="tabel.pageNumber" [totalItems]="tabel.total" class="pagination" previousText="&lsaquo;"
-        nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" [maxSize]="5" [rotate]="false"
-          (pageChanged)="onPageChange($event)" [itemsPerPage]="tabel.pageSize"></pagination>
+      <!-- <asset-pagination [totalItems]="total" [(currentPage)]="pageNumber" [itemsPerPage]="pageSize" (changePage)="onPageChange($event)"
+        (changeSize)="onPageSizeChange($event)"></asset-pagination> -->
+      <pagination [boundaryLinks]="false" (pageChanged)=onPageChange($event) [totalItems]="total" [itemsPerPage]="pageSize"
+        [(ngModel)]="pageNumber" class="pagination-md pull-right" [maxSize]="5" [rotate]="false" previousText="&lsaquo;" nextText="&rsaquo;"
+        [pageBtnClass]="'pagination-btn'"></pagination>
     </div>
   </div>
   <div class="modal">
@@ -105,7 +107,7 @@
           </tr>
           <tr>
             <td>购买时间</td>
-            <td>{{detail.purchaseTime}}</td>
+            <td>{{detail.purchaseTime | date:"yyyy-MM-dd"}}</td>
           </tr>
           <tr>
             <td>购买金额</td>

@@ -8,7 +8,6 @@ import { RouterModule } from '@angular/router';
 
 import {
   BsDropdownModule,
-  PaginationModule,
   BsDatepickerModule,
   TabsModule,
   ModalModule,

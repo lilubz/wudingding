@@ -13,6 +13,9 @@ declare const swal: any;
 })
 export class AssetInventoryComponent implements OnInit {
   modalRef: BsModalRef;
+  total= 200;
+  pageNumber= 1;
+  pageSize= 5;
   detail = {
     assetId: '',
     assetSerialNumber: '',
@@ -26,10 +29,10 @@ export class AssetInventoryComponent implements OnInit {
     purchaseTime: '',
     purchaseAmount: '',
   };
-  tabel = {
-    total: 20,
+  table = {
+    total: 200,
     pageNumber: 1,
-    pageSize: 1,
+    pageSize: 5,
     list: []
   }
   btns = {
@@ -38,11 +41,6 @@ export class AssetInventoryComponent implements OnInit {
   }
   status = ''; // 绑定的下拉框数据，包含已经盘点（1）和未盘点（0）两个状态。
   constructor(private modalService: BsModalService, private assetInventoryService: AssetInventoryService) { }
-
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
-
-  }
 
   ngOnInit() {
     this.getCurrentStatus();
@@ -54,41 +52,49 @@ export class AssetInventoryComponent implements OnInit {
       keyWord: params
     })
   }
+
   onSelectedChange() {
     if (this.status === '') {
-      this.tabel.list = [];
-      this.tabel.total = 0;
-      this.tabel.pageNumber = 1;
+      this.table.list = [];
+      this.table.total = 0;
+      this.table.pageNumber = 1;
       return;
     } else {
+      this.pageNumber = 1;
       const params = {
         status: this.status,
-        pageNumber: 1,
-        pageSize: this.tabel.pageSize
+        pageNumber: this.pageNumber,
+        pageSize: this.table.pageSize
       }
       this.getTableList(params);
     }
   }
+
   onPageChange(event) {
+    console.log(event);
+    this.pageNumber = event.page;
+    this.pageSize = event.itemsPerPage;
     this.getTableList({
       status: this.status,
       pageNumber: event.page,
-      pageSize: this.tabel.pageSize
+      pageSize: event.itemsPerPage
     });
-    console.log(
-      {
-        status: this.status,
-        pageNumber: this.tabel.pageNumber,
-        pageSize: this.tabel.pageSize
-      }
-    );
-    console.log(event);
   }
-  sendInventory(template) {
+  onPageSizeChange(event) {
+    console.log(this.table);
+    console.log(event);
+    this.pageNumber = 1;
+    // this.pageSize = event;
+    // this.getTableList({
+    //   status: this.status,
+    //   pageNumber: 1,
+    //   pageSize: event
+    // });
+  }
+  sendInventory() {
     this.updateAssetInfo({
       assetSerialNumber: this.detail.assetSerialNumber
     });
-    this.modalRef.hide();
   }
   startInventory() {
     swal({
@@ -119,8 +125,8 @@ export class AssetInventoryComponent implements OnInit {
       });
   }
 
-  sendStart(params?) {
-    this.assetInventoryService.listInventoryTask(params)
+  sendStart() {
+    this.assetInventoryService.listInventoryTask()
       .then(data => {
         if (data.status === 0) {
           swal(data.msg, {
@@ -133,7 +139,6 @@ export class AssetInventoryComponent implements OnInit {
           });
         }
       }).catch(error => {
-        console.log(error);
         swal('出错了,错误代码：' + error.status , {
           icon: 'error',
         });
@@ -162,21 +167,21 @@ export class AssetInventoryComponent implements OnInit {
     this.assetInventoryService.listInventoryAsset(params)
       .then(data => {
         if (data.status === 0) {
-          this.tabel.list = data.data.list;
-          this.tabel.total = data.data.total;
+          this.table.list = data.data.list;
+          this.total = data.data.total;
         } else {
-          this.tabel.list = [];
-          this.tabel.total = 0;
-          this.tabel.pageNumber = 1;
+          this.table.list = [];
+          this.total = 0;
+          this.pageNumber = 1;
           this.status = '';
           swal(data.msg, {
             icon: 'warning',
           });
         }
       }).catch(error => {
-        this.tabel.list = [];
-        this.tabel.total = 0;
-        this.tabel.pageNumber = 1;
+        this.table.list = [];
+        this.total = 0;
+        this.pageNumber = 1;
         this.status = '';
         swal('出错了,错误代码：' + error.status, {
           icon: 'error',
@@ -191,9 +196,9 @@ export class AssetInventoryComponent implements OnInit {
           swal(data.msg, {
             icon: 'success',
           });
-          this.tabel.list = [];
-          this.tabel.total = 0;
-          this.tabel.pageNumber = 1;
+          this.table.list = [];
+          this.table.total = 0;
+          this.table.pageNumber = 1;
           this.status = '';
           this.getCurrentStatus();
         } else {
@@ -254,8 +259,5 @@ export class AssetInventoryComponent implements OnInit {
           end: true
         }
       });
-  }
-  test() {
-    console.log(this);
   }
 }

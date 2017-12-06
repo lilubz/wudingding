@@ -11,7 +11,7 @@ export class PaginationComponent implements OnInit {
   @Input() itemsPerPage; // 默认分页大小
   @Output() changePage: EventEmitter<number> = new EventEmitter<number>(); // 当前页号变化
   @Output() changeSize: EventEmitter<number> = new EventEmitter<number>(); // 分页大小改变
-  pageSizes = [5, 10, 20, 40];
+  pageSizes = [1, 5, 10, 20, 40];
   maxSize = 5; // 显示的分页链接数目
 
   constructor() { }
@@ -24,7 +24,9 @@ export class PaginationComponent implements OnInit {
     this.changePage.emit(event);
   }
   sizeChanged(event: any) {
+    this.currentPage = 1;
     console.log('分页大小改变，当前大小:' + JSON.stringify(event));
+    console.log('当前页号:::::' + this.currentPage)
     this.itemsPerPage = event;
     this.changeSize.emit(event);
   }
