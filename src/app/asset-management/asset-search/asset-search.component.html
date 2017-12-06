@@ -37,7 +37,7 @@
             <select class="form-control" [(ngModel)]="selectedAssetStatus" id="select" name="select">
               <!-- <option value="">--请选择--</option> -->
               <ng-container *ngFor="let status of statusTypes">
-                <option [value]="status.assetStatusTypeId">{{ status.assetStatusTypeName }}</option>
+                <option [value]="status.assetStatusTypeName">{{ status.assetStatusTypeName }}</option>
               </ng-container>
             </select>
             <!-- <span class="help-block">Please enter your email</span> -->
@@ -69,7 +69,7 @@
         </button>
 
         <div class="btn-group pull-right">
-          <button class="btn btn-outline-primary" type="button">
+          <button class="btn btn-outline-primary" type="button" (click)="showAddModal=true;">
             <i class="fa fa-plus"></i>&nbsp; 添加资产信息
           </button>
           <!-- <button class="btn btn-outline-primary" type="button">
@@ -96,15 +96,53 @@
         <table class="table table-bordered table-striped table-sm">
           <thead>
             <tr>
-              <th *ngFor="let head of heads">head</th>
+              <th>编码</th>
+              <th>名称</th>
+              <th>类型</th>
+              <th>规格</th>
+              <th>录入时间</th>
+              <th>责任人</th>
+              <th>主资产编号</th>
+              <th>购入金额</th>
+              <th>购入时间</th>
+              <th>折旧率</th>
+              <th>购买批号</th>
+              <th>使用状态</th>
+              <th>存放位置</th>
+              <th>折旧月数</th>
             </tr>
           </thead>
           <tbody>
+            <!-- assetSerialNumber?: string; // 资产二维码编号
+            assetName?: string; // 资产名称
+            assetCategoryId?: number; // 资产类型id
+            brandSpecification?: string; // 品牌规格
+            createTime?: number; // 录入时间
+            employeeName?: string; // 责任人
+            majorAssetSerialNumber?: string; // 主资产编号
+            purchaseAmount?: number; // 购入金额
+            purchaseTime?: number; // 购入时间
+            residualRatio?: number; // 折旧率
+            batchSerialNumber?: string; // 购买批号
+            useStatus?: string; // 使用状态
+            storageLocation?: string; // 存放位置
+            monthOfDepreciation?: number; // 折旧月数 -->
+
             <tr *ngFor="let item of value">
-              <td>{{ item?.name }}</td>
-              <td>{{ item?.name }}</td>
-              <td>{{ item?.name }}</td>
-              <td>{{ item?.name }}</td>
+              <td>{{ item?.assetSerialNumber }}</td>
+              <td>{{ item?.assetName }}</td>
+              <td>{{ item?.assetCategoryId }}</td>
+              <td>{{ item?.brandSpecification }}</td>
+              <td>{{ item?.createTime | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ item?.employeeName }}</td>
+              <td>{{ item?.majorAssetSerialNumber }}</td>
+              <td>{{ item?.purchaseAmount }}</td>
+              <td>{{ item?.purchaseTime | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ item?.residualRatio }}</td>
+              <td>{{ item?.batchSerialNumber }}</td>
+              <td>{{ item?.useStatus }}</td>
+              <td>{{ item?.storageLocation }}</td>
+              <td>{{ item?.monthOfDepreciation }}</td>
             </tr>
           </tbody>
         </table>
@@ -115,3 +153,5 @@
     </div>
   </div>
 </div>
+
+<!-- <asset-add-asset [show]="showAddModal"></asset-add-asset> -->

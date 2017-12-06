@@ -6,14 +6,18 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
   styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent implements OnInit {
-  @Input() currentPage; // 当前页号
+  @Input() set currentPage(value) {
+    setTimeout(() => {
+      this._currentPage = value;
+    }, 0);
+  };
   @Input() totalItems; // 总行数
   @Input() itemsPerPage; // 默认分页大小
   @Output() changePage: EventEmitter<number> = new EventEmitter<number>(); // 当前页号变化
   @Output() changeSize: EventEmitter<number> = new EventEmitter<number>(); // 分页大小改变
   pageSizes = [5, 10, 20, 40];
   maxSize = 5; // 显示的分页链接数目
-
+  _currentPage: number; // 当前页号
   constructor() { }
 
   ngOnInit() {
