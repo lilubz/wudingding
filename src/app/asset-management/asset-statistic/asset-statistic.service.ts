@@ -30,4 +30,8 @@ export class AssetStatisticService {
     return this.httpService
       .getRequest(API.listAssetStatusType, params)
   }
+  getCountAssetNetValue(params: any): any {
+    return this.httpService
+      .getRequest(API.countAssetNetValue, params)
+  }
 }

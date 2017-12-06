@@ -22,11 +22,7 @@ const PROXY_CONFIG = [
   // },
   {
     context: [
-      "/wenZhouGas",
-<<<<<<< HEAD
-      "/dataImport",
-=======
->>>>>>> master
+      "/wenZhouGas"
     ],
     target: "http://192.168.1.8:8089", // 妮娜
     secure: false,

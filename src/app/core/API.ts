@@ -12,8 +12,11 @@ export const API = {
   'listOrganizationCurrentUser': URL + 'common/listOrganizationCurrentUser.do',
   'listAssetCategory': URL + 'common/listAssetCategory.do',
   'listAssetStatusType': URL + 'common/listAssetStatusType.do',
-
   'signIn': URL + 'sysUserPermissions/login.do',
   'logout': URL + 'sysUserPermissions/logout.do',
   'modifyPassword': URL + 'sysUserPermissions/resetPassword.do',
+  /**
+   * 资产统计
+   */
+  'countAssetNetValue': URL + 'assetCount/countAssetNetValue.do',
 };
