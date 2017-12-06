@@ -12,6 +12,7 @@ import {
   BsDatepickerModule,
   TabsModule,
   ModalModule,
+  PaginationModule,
 } from 'ngx-bootstrap';
 
 // import { LayoutComponent } from './layout/layout.component';
@@ -23,6 +24,7 @@ import { BreadcrumbsComponent } from './breadcrumb.component';
 import { AsideToggleDirective } from './aside.directive';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
 import { AssetTableComponent } from './asset-table/asset-table.component';
+import { PaginationComponent } from './pagination/pagination.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     AssetSidebarComponent,
     BreadcrumbComponent,
     AssetTableComponent,
+    PaginationComponent,
   ],
 
   exports: [
@@ -58,6 +61,7 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     TabsModule,
     PaginationModule,
     ModalModule,
+    PaginationModule,
 
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
@@ -68,6 +72,7 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     AssetHeaderComponent,
     AssetSidebarComponent,
     BreadcrumbComponent,
+    PaginationComponent,
   ],
   providers: [
     LoginService

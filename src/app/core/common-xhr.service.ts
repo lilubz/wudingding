@@ -77,5 +77,25 @@ export class CommonXHRService {
     return this.httpService.withCredentialsPostRequest(API.modifyPassword, params);
   }
 
+  /**
+   * 获取当前登陆用户权限下，模糊查询符合名称的员工简单信息
+   *
+   * @author hzb
+   * @param params
+   * @returns
+   */
+  listEmployeeSimpleCurrentUser(params: { employeeName: string }): Promise<
+    {
+      status: number,
+      msg: string,
+      data: {
+        employeeNumber: string,
+        employeeName: string,
+      }[]
+    }
+    > {
+    return this.httpService.getRequest(API.listEmployeeSimpleCurrentUser, params);
+  }
+
 
 }
