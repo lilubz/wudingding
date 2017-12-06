@@ -1,27 +1,27 @@
 <header class="app-header navbar">
   <button class="navbar-toggler d-lg-none" type="button" appMobileSidebarToggler>&#9776;</button>
-  <a class="navbar-brand" href="#"></a>
+  <a class="navbar-brand"></a>
   <button class="navbar-toggler d-md-down-none" type="button" appSidebarToggler>&#9776;</button>
   <!-- <ul class="nav navbar-nav d-md-down-none">
     <li class="nav-item px-3">
-      <a class="nav-link" href="#">Dashboard</a>
+      <a class="nav-link" >Dashboard</a>
     </li>
     <li class="nav-item px-3">
-      <a class="nav-link" href="#">Users</a>
+      <a class="nav-link" >Users</a>
     </li>
     <li class="nav-item px-3">
-      <a class="nav-link" href="#">Settings</a>
+      <a class="nav-link" >Settings</a>
     </li>
   </ul> -->
   <ul class="nav navbar-nav ml-auto">
     <!-- <li class="nav-item d-md-down-none">
-      <a class="nav-link" href="#"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+      <a class="nav-link" ><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
     </li>
     <li class="nav-item d-md-down-none">
-      <a class="nav-link" href="#"><i class="icon-list"></i></a>
+      <a class="nav-link" ><i class="icon-list"></i></a>
     </li>
     <li class="nav-item d-md-down-none">
-      <a class="nav-link" href="#"><i class="icon-location-pin"></i></a>
+      <a class="nav-link" ><i class="icon-location-pin"></i></a>
     </li> -->
     <li class="nav-item dropdown" dropdown (onToggle)="toggled($event)">
       <a class="nav-link dropdown-toggle" dropdownToggle (click)="false">
@@ -34,19 +34,19 @@
           <strong>账户</strong>
         </div>
 
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item" >
           <i class="fa fa-bell-o"></i> 通知
           <span class="badge badge-info">42</span>
         </a>
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item" >
           <i class="fa fa-envelope-o"></i> 消息
           <span class="badge badge-success">42</span>
         </a>
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item" >
           <i class="fa fa-tasks"></i> 任务
           <span class="badge badge-danger">42</span>
         </a>
-        <a class="dropdown-item" href="#">
+        <a class="dropdown-item" >
           <i class="fa fa-comments"></i> Comment
           <span class="badge badge-warning">42</span>
         </a> -->
@@ -55,15 +55,15 @@
           <strong>设置</strong>
         </div> -->
 
-        <!-- <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
-        <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Setting</a>
-        <a class="dropdown-item" href="#"><i class="fa fa-usd"></i> Payments<span class="badge badge-default">42</span></a>
-        <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
+        <!-- <a class="dropdown-item" ><i class="fa fa-user"></i> Profile</a>
+        <a class="dropdown-item" ><i class="fa fa-wrench"></i> Setting</a>
+        <a class="dropdown-item" ><i class="fa fa-usd"></i> Payments<span class="badge badge-default">42</span></a>
+        <a class="dropdown-item" ><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
         <div class="divider"></div> -->
-        <!-- <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Lock account</a> -->
-        <a class="dropdown-item" href="#" (click)="modifyPwdModal.show()">
+        <!-- <a class="dropdown-item" ><i class="fa fa-shield"></i> Lock account</a> -->
+        <a class="dropdown-item" (click)="modifyPwdModal.show()">
           <i class="fa fa-pencil-square-o"></i> 修改密码</a>
-        <a class="dropdown-item" href="#" (click)="logout()">
+        <a class="dropdown-item" (click)="logout()">
           <i class="fa fa-lock"></i> 退出</a>
       </div>
     </li>

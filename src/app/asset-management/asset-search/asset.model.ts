@@ -1,0 +1,25 @@
+export class Asset {
+  assetCategoryId?: number; // 资产类型id
+  assetId?: number; // 资产id
+  assetName?: string; // 资产名称
+  assetSerialNumber?: string; // 资产二维码编号
+  batchSerialNumber?: string; // 购买批号
+  brandSpecification?: string; // 品牌规格
+  createTime?: number; // 录入时间
+  employeeName?: string; // 责任人
+  employeeNumber?: string; // 责任人工号
+  inputUserId?: string; // 录入人员id
+  majorAssetSerialNumber?: string; // 主资产编号
+  monthOfDepreciation?: number; // 折旧月数
+  organizationId?: number; // 组织id
+  organizationPath?: string; // 组织路径
+  purchaseAmount?: number; // 购入金额
+  purchaseTime?: number; // 购入时间
+  residualRatio?: number; // 折旧率
+  reviewStatus?: string; // 盘点状态
+  reviewTime?: number; // 盘点时间
+  reviewUserId?: string; // 盘点人id
+  storageLocation?: string; // 存放位置
+  updateTime?: number; // 更新时间
+  useStatus?: string; // 使用状态
+}

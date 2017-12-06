@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { AssetCategory } from 'app/model/AssetCategory.model';
 import * as moment from 'moment';
+import { Asset } from 'app/asset-management/asset-search/asset.model';
 
 declare const swal: any;
 @Component({
@@ -21,21 +22,7 @@ export class AssetSearchComponent implements OnInit {
 
   today = new Date();
 
-  heads: string[] = [
-    '标题1',
-    '标题1',
-    '标题1',
-    '标题1',
-  ];
-
-  value: any[] = [
-    {
-      q: 'saf',
-      w: 'saf',
-      e: 'saf',
-      r: 'saf',
-    },
-  ];
+  value: Asset[] = [];
 
   dateRange: Date[] = [moment().subtract(7, 'd').toDate(), new Date()];
 
@@ -52,6 +39,7 @@ export class AssetSearchComponent implements OnInit {
   selectedOrganization = '';
   selectedAssetStatus = '';
   selectedEmployee = '';
+  showAddModal = false;
 
   constructor(
     private commonXHRService: CommonXHRService,
@@ -73,7 +61,7 @@ export class AssetSearchComponent implements OnInit {
     this.commonXHRService.listAssetStatusType().then(data => {
       if (data.status === 0) {
         this.statusTypes = data.data;
-        this.selectedAssetStatus = this.statusTypes[0].assetStatusTypeId.toString();
+        this.selectedAssetStatus = this.statusTypes[0].assetStatusTypeName;
       } else {
         swal({
           text: data.msg,
@@ -98,7 +86,7 @@ export class AssetSearchComponent implements OnInit {
   search() {
     if (this.checkParams()) {
       this.assetSearchService.listAssetBasic({
-        organizationId: this.selectedOrganization,
+        organizationId: this.selectedOrganization || 1,
         assetCategoryId: this.selectedCategory,
         useStatus: this.selectedAssetStatus,
         startTimeString: moment(this.dateRange[0]).format('YYYY-MM-DD'),
@@ -140,6 +128,7 @@ export class AssetSearchComponent implements OnInit {
   }
   sizeChanged(event) {
     this.pageSize = event;
+    this.pageNumber = 1;
     this.search();
     console.log(event);
   }

@@ -11,6 +11,7 @@ import { AssetManagementRoutingModule } from 'app/asset-management/asset-managem
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { zhCn } from 'ngx-bootstrap/locale';
 import { AssetSearchService } from 'app/asset-management/asset-search/asset-search.service';
+import { AddAssetComponent } from './asset-search/add-asset/add-asset.component';
 defineLocale('zhCn', zhCn);
 
 @NgModule({
@@ -24,7 +25,8 @@ defineLocale('zhCn', zhCn);
     AssetSearchComponent,
     AssetInventoryComponent,
     AssetStatisticComponent,
-    AssetManagementComponent
+    AssetManagementComponent,
+    AddAssetComponent
   ],
   providers: [
     AssetSearchService
