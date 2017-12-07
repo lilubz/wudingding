@@ -28,8 +28,9 @@ export class AssetInventoryComponent implements OnInit {
   };
   table = {
     total: 0,
-    pageNumber: 1,
     pageSize: 5,
+    first: 0,
+    options: [5, 10, 20, 40],
     list: []
   }
   btns = {
@@ -51,16 +52,15 @@ export class AssetInventoryComponent implements OnInit {
   }
 
   onSelectedChange() {
+    this.table.list = [];
+    this.table.total = 0;
+    this.table.first = 0;
     if (this.status === '') {
-      this.table.list = [];
-      this.table.total = 0;
-      this.table.pageNumber = 1;
       return;
     } else {
-      this.table.pageNumber = 1;
       const params = {
         status: this.status,
-        pageNumber: this.table.pageNumber,
+        pageNumber: 1,
         pageSize: this.table.pageSize
       }
       this.getTableList(params);
@@ -68,19 +68,11 @@ export class AssetInventoryComponent implements OnInit {
   }
 
   onPageChange(event) {
+    this.table.pageSize = event.rows;
     this.getTableList({
       status: this.status,
-      pageNumber: event.page,
-      pageSize: event.itemsPerPage
-    });
-  }
-
-  onPageSizeChange(event) {
-    this.table.pageSize = event;
-    this.getTableList({
-      status: this.status,
-      pageNumber: 1,
-      pageSize: event
+      pageNumber: event.page + 1,
+      pageSize: event.rows
     });
   }
 
@@ -166,7 +158,6 @@ export class AssetInventoryComponent implements OnInit {
         } else {
           this.table.list = [];
           this.table.total = 0;
-          this.table.pageNumber = 1;
           this.status = '';
           swal(data.msg, {
             icon: 'warning',
@@ -175,7 +166,6 @@ export class AssetInventoryComponent implements OnInit {
       }).catch(error => {
         this.table.list = [];
         this.table.total = 0;
-        this.table.pageNumber = 1;
         this.status = '';
         swal('出错了,错误代码：' + error.status, {
           icon: 'error',
@@ -192,7 +182,6 @@ export class AssetInventoryComponent implements OnInit {
           });
           this.table.list = [];
           this.table.total = 0;
-          this.table.pageNumber = 1;
           this.status = '';
           this.getCurrentStatus();
         } else {

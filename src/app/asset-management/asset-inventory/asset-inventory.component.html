@@ -52,8 +52,8 @@
           </tr>
         </tbody>
       </table>
-      <asset-pagination [totalItems]="table.total" [(currentPage)]="table.pageNumber" [itemsPerPage]="table.pageSize" (changePage)="onPageChange($event)"
-        (changeSize)="onPageSizeChange($event)"></asset-pagination>
+      <asset-paginator [rows]="table.pageSize" [totalRecords]="table.total" [rowsPerPageOptions]="table.options"
+         (onPageChange)="onPageChange($event)" [(first)]="table.first"></asset-paginator>
     </div>
   </div>
   <div class="modal">
