@@ -1,0 +1,60 @@
+<div class="category">
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> 类别管理
+    </div>
+    <div class="card-block">
+      <h3>新增类别</h3>
+      <form class="form-inline">
+        <div class="form-group">
+          <input type="text" #categoryName class="form-control" placeholder="请输入新的类别名">
+        </div>
+        <div class="form-group">
+          <input type="text" #categoryDetail class="form-control" placeholder="描述">
+        </div>
+        <div class="form-group">
+          <label for=""></label>
+          <input type="number" #categoryDepreciation class="form-control" placeholder="折旧期数">
+        </div>
+        <button class="btn btn-primary" (click)="onAdd(categoryName.value,categoryDetail.value,categoryDepreciation.value)">
+          <span class="fa fa-plus"></span>添加</button>
+      </form>
+      <div class="categorys clearfix">
+        <div class="item" *ngFor="let item of categoryList" (click)="onSelectCategory(item,template)">
+          {{item.categoryName}}
+          <span class=" fa fa-pencil icon"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">详细信息</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="activeName">名称</label>
+          <input type="text" id="activeName" class="form-control" [(ngModel)]="activeCategory.categoryName" name="name">
+        </div>
+        <div class="form-group">
+          <label for="activeDetail">描述</label>
+          <input type="text" id="activeDetail" class="form-control" [(ngModel)]="activeCategory.detail" name="detail">
+        </div>
+        <div class="form-group">
+          <label for="activeDepreciation">折旧期数</label>
+          <input type="number" id="activeDepreciation" class="form-control" [(ngModel)]="activeCategory.monthOfDepreciation" name="monthOfDepreciation">
+        </div>
+        <div class="text-right">
+          <button type="button" class="btn btn-default" (click)="modalRef.hide()">取消</button>
+          <button type="button" class="btn btn-danger" (click)="onDelete()">删除</button>
+          <button type="button" class="btn btn-primary" (click)="onUpdate()">更新</button>
+        </div>
+      </form>
+    </div>
+  </template>
+</div>

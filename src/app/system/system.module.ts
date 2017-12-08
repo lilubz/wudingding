@@ -5,6 +5,7 @@ import { SystemComponent } from './system.component';
 import { SharedModule } from './../shared/shared.module';
 import { SystemRoutingModule } from './system-routing.module';
 import { CoreModule } from './../core/core.module';
+import { CategoryComponent } from './category/category.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -13,7 +14,8 @@ import { CoreModule } from './../core/core.module';
     SystemRoutingModule,
   ],
   declarations: [
-    SystemComponent
+    SystemComponent,
+    CategoryComponent
   ]
 })
 export class SystemModule { }

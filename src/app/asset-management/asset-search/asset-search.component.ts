@@ -34,6 +34,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   total = 0;
   pageNumber = 1;
   pageSize = 10;
+  pageFirst = 0;
 
   today = moment().add(1, 'd').toDate();
   assetList: Asset[] = [];
@@ -132,6 +133,14 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.showSearchOrgSelect = false;
     this.showAddOrgSelect = false;
     this.showEditOrgSelect = false;
+  }
+
+  beforeSearch() {
+    // this.pageNumber = 1;
+    // this.total = 0;
+    // this.pageFirst = 0;
+    // this.assetList = [];
+    this.search();
   }
 
   search() {
@@ -287,13 +296,8 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   pageChanged(event) {
-    this.pageNumber = event.page;
-    this.search();
-    console.log(event);
-  }
-  sizeChanged(event) {
-    this.pageSize = event;
-    this.pageNumber = 1;
+    this.pageNumber = event.page + 1;
+    this.pageSize = event.rows;
     this.search();
     console.log(event);
   }

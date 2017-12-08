@@ -1,0 +1,23 @@
+.inventory{
+  .params{
+    height: 35px;
+  }
+  .btns .btn{
+    position: relative;
+    top:4px;
+    float: right;
+    margin-left:20px;
+    border-radius: 6px;
+  }
+  .card table{
+    th{
+      text-align: center;
+    }
+  }
+  .form-control.status{
+    width:175px;
+  }
+  .card.formBox{
+    min-height:300px;
+  }
+}

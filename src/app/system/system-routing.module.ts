@@ -3,18 +3,28 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
+import { CategoryComponent } from './category/category.component'
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'system',
+    redirectTo: 'category',
     pathMatch: 'full'
   },
   {
-    path: 'system',
+    path: '',
     component: SystemComponent,
     data: {
       title: '系统管理'
-    }
+    },
+    children: [
+      {
+        path: 'category',
+        component: CategoryComponent,
+        data: {
+          title: '类别管理'
+        }
+      }
+    ]
   },
   {
     path: '**',

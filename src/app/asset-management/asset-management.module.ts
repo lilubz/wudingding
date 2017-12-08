@@ -18,7 +18,7 @@ defineLocale('zhCn', zhCn);
     CommonModule,
     CoreModule,
     SharedModule,
-    AssetManagementRoutingModule
+    AssetManagementRoutingModule,
   ],
   declarations: [
     AssetSearchComponent,

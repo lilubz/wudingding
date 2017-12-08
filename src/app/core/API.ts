@@ -5,6 +5,13 @@ export const API = {
   // 项目地址
   'url': URL,
 
+  // 资产盘点
+  'listInventoryTask': URL + 'assetInfo/StockTaking/listInventoryTask.do',
+  'getAssetInfo': URL + 'assetInfo/StockTaking/getAssetInfo.do',
+  'listInventoryAsset': URL + 'assetInfo/StockTaking/listInventoryAsset.do',
+  'listEndInventoryTask': URL + 'assetInfo/StockTaking/listEndInventoryTask.do',
+  'stockTaking': URL + 'assetInfo/StockTaking/updateAssetInfo.do',
+  'boolIsInventoryAssetBegin': URL + 'assetInfo/StockTaking/boolIsInventoryAssetBegin.do',
   // 公共接口
   'listAssetStatusType': URL + 'common/listAssetStatusType.do',
   'listAssetCategory': URL + 'common/listAssetCategory.do',
@@ -20,6 +27,11 @@ export const API = {
   'getAssetDetailInfo': URL + 'assetBasic/getAssetDetailInfo.do', // 获取资产详细信息
   'listAssetInfoByMajorAsset': URL + 'assetBasic/listAssetInfoByMajorAsset.do', // 根据主资产id获取套资产信息
   'checkAsset': URL + 'assetBasic/checkAsset.do', // 资产审核
+
+  // 资产类别管理
+  'addCategory': URL + 'assetBasic/sort/add.do',
+  'deleteCategory': URL + 'assetBasic/sort/delete.do',
+  'updateCategory': URL + 'assetBasic/sort/update.do',
 
   'signIn': URL + 'sysUserPermissions/login.do',
   'logout': URL + 'sysUserPermissions/logout.do',

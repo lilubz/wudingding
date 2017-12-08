@@ -1,3 +1,121 @@
-<p>
-  asset-inventory works!
-</p>
+<div class="inventory">
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i><span>搜索</span>
+      <div class="btns float-right">
+        <button class="btn btn-danger" (click)="endInventory()" *ngIf="btns.end">结束盘点</button>
+        <button class="btn btn-primary" (click)="startInventory()" *ngIf="btns.start">开启盘点</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="form-group">
+        <label for=""></label>
+        <select [(ngModel)]="status" (change)="onSelectedChange()" class="form-control status">
+          <option value="">--请选择--</option>
+          <option value="1">已盘点</option>
+          <option value="0">未盘点</option>
+        </select>
+      </div>
+      <form class="form-inline">
+        <div class="form-group">
+          <label for=""></label>
+          <input type="text" class="params form-control" #params placeholder="请输入资产二维码">
+          <button class="btn btn-primary" (click)="onQuery(template,params.value)"><span class="fa fa-search"></span> 查询</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card formBox">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> 资产信息
+    </div>
+    <div class="card-body text-center" *ngIf="table.list.length!==0">
+      <table class="table table-striped text-center">
+        <thead>
+          <tr>
+            <th>资产id</th>
+            <th>资产二维码</th>
+            <th>资产名称</th>
+            <th>盘点人名称</th>
+            <th>盘点任务开始时间</th>
+            <th>盘点时间</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of table.list">
+            <td>{{item.assetId}}</td>
+            <td><a href="javascript:void(0);" (click)="onQuery(template,item.assetSerialNumber)">{{item.assetSerialNumber}}</a></td>
+            <td>{{item.assetName}}</td>
+            <td>{{item.inventoryUserName}}</td>
+            <td>{{item.createTime | date:"yyyy-MM-dd"}}</td>
+            <td>{{item.inventoryTime | date:"yyyy-MM-dd"}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <asset-paginator [rows]="table.pageSize" [totalRecords]="table.total" [rowsPerPageOptions]="table.options"
+         (onPageChange)="onPageChange($event)" [(first)]="table.first"></asset-paginator>
+    </div>
+  </div>
+  <div class="modal">
+    <ng-template #template>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">资产详情</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide(template)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+          <tr>
+            <td>资产状态id</td>
+            <td>{{detail.assetId}}</td>
+          </tr>
+          <tr>
+            <td>资产二维码编号id</td>
+            <td>{{detail.assetSerialNumber}}</td>
+          </tr>
+          <tr>
+            <td>组织名称</td>
+            <td>{{detail.organizationName}}</td>
+          </tr>
+          <tr>
+            <td>资产分类名称</td>
+            <td>{{detail.assetCategoryName}}</td>
+          </tr>
+          <tr>
+            <td>使用员工姓名</td>
+            <td>{{detail.employeeName}}</td>
+          </tr>
+          <tr>
+            <td>目前资产状态名称</td>
+            <td>{{detail.assetStatusTypeName}}</td>
+          </tr>
+          <tr>
+            <td>资产名称</td>
+            <td>{{detail.assetName}}</td>
+          </tr>
+          <tr>
+            <td>品牌规格</td>
+            <td>{{detail.brandSpecification}}</td>
+          </tr>
+          <tr>
+            <td>存放地点</td>
+            <td>{{detail.storageLocation}}</td>
+          </tr>
+          <tr>
+            <td>购买时间</td>
+            <td>{{detail.purchaseTime | date:"yyyy-MM-dd"}}</td>
+          </tr>
+          <tr>
+            <td>购买金额</td>
+            <td>{{detail.purchaseAmount}}</td>
+          </tr>
+        </table>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="sendInventory()">盘点</button>
+          <button type="button" class="btn btn-primary" (click)="modalRef.hide()">取消</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>
