@@ -7,6 +7,19 @@ span.required {
   font-weight: bold;
 }
 
+p-autoComplete {
+  width: 100%;
+}
+
+p-tree {
+  width: 100%;
+}
+
+div.detail table tr td:nth-child(odd) {
+  background: #076180;
+  color: white;
+}
+
 .search-group {
   .row {
     margin-bottom: 15px;

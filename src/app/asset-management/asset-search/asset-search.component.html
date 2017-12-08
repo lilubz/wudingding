@@ -9,7 +9,7 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label for="select">资产类别</label>
-            <select class="form-control" [(ngModel)]="selectedCategory" id="select" name="select">
+            <select class="form-control" [(ngModel)]="selectedCategory" name="select">
               <option value="">--请选择--</option>
               <ng-container *ngFor="let category of categories">
                 <option [value]="category.assetCategoryId">{{ category.categoryName }}</option>
@@ -19,12 +19,15 @@
           </div>
           <div class="form-group col-md-6">
             <label for="select">责任部门</label>
-            <select class="form-control" [(ngModel)]="selectedOrganization" id="select" name="select">
-              <option value="">--请选择--</option>
-              <ng-container *ngFor="let organization of organizations">
-                <option [value]="organization.organizationId">{{ organization.name }}</option>
-              </ng-container>
-            </select>
+            <input type="text" class="form-control" [(ngModel)]="selectedSearchOrg.label" (click)="$event.stopPropagation();showSearchOrgSelect=!showSearchOrgSelect"
+              maxlength="0">
+            <div style="position: relative" *ngIf="showSearchOrgSelect" (click)="$event.stopPropagation()">
+              <div style="position: absolute;z-index: 1;">
+                <p-tree [value]="organizations" selectionMode="single" [(selection)]="selectedSearchOrg" (onNodeSelect)="nodeSelect($event, 'search')"
+                  styleClass="col-md-12" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+              </div>
+            </div>
+
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
@@ -34,7 +37,7 @@
             <label for="select">资产状态
               <span class="required">*</span>
             </label>
-            <select class="form-control" [(ngModel)]="selectedAssetStatus" id="select" name="select">
+            <select class="form-control" [(ngModel)]="selectedAssetStatus" name="select">
               <!-- <option value="">--请选择--</option> -->
               <ng-container *ngFor="let status of statusTypes">
                 <option [value]="status.assetStatusTypeName">{{ status.assetStatusTypeName }}</option>
@@ -44,12 +47,16 @@
           </div>
           <div class="form-group col-md-6">
             <label for="select">资产负责人</label>
-            <select class="form-control" id="select" name="select">
-              <option value="0">Please select</option>
-              <option value="1">Option #1</option>
-              <option value="2">Option #2</option>
-              <option value="3">Option #3</option>
-            </select>
+            <div class="row">
+              <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="selectedEmployee" (completeMethod)="searchEmployee($event)"
+                [forceSelection]="true" styleClass="col-md-12 autoComplete" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'edit')"
+                [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产负责人">
+                <ng-template let-employee pTemplate="item">
+                  <div>{{ employee.employeeName }}</div>
+                </ng-template>
+              </p-autoComplete>
+            </div>
+            <!-- <input type="text" [(ngModel)]="selectedEmployee" class="form-control" placeholder="请输入负责人"> -->
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
@@ -69,7 +76,7 @@
         </button>
 
         <div class="btn-group pull-right">
-          <button class="btn btn-outline-primary" type="button" (click)="showAddModal=true;">
+          <button class="btn btn-outline-primary" type="button" (click)="showAddModal(addAssetModal)">
             <i class="fa fa-plus"></i>&nbsp; 添加资产信息
           </button>
           <!-- <button class="btn btn-outline-primary" type="button">
@@ -99,59 +106,631 @@
               <th>编码</th>
               <th>名称</th>
               <th>类型</th>
+              <th>主资产编码</th>
               <th>规格</th>
-              <th>录入时间</th>
+              <th>部门</th>
               <th>责任人</th>
-              <th>主资产编号</th>
-              <th>购入金额</th>
-              <th>购入时间</th>
-              <th>折旧率</th>
-              <th>购买批号</th>
               <th>使用状态</th>
               <th>存放位置</th>
-              <th>折旧月数</th>
+              <th>审核状态</th>
+              <th>操作</th>
+              <!-- <th>录入时间</th>
+              <th>购入金额</th>
+              <th>购入时间</th>
+              <th>残值率</th>
+              <th>购买批号</th>
+              <th>折旧月数</th> -->
             </tr>
           </thead>
           <tbody>
-            <!-- assetSerialNumber?: string; // 资产二维码编号
-            assetName?: string; // 资产名称
-            assetCategoryId?: number; // 资产类型id
-            brandSpecification?: string; // 品牌规格
-            createTime?: number; // 录入时间
-            employeeName?: string; // 责任人
-            majorAssetSerialNumber?: string; // 主资产编号
-            purchaseAmount?: number; // 购入金额
-            purchaseTime?: number; // 购入时间
-            residualRatio?: number; // 折旧率
-            batchSerialNumber?: string; // 购买批号
-            useStatus?: string; // 使用状态
-            storageLocation?: string; // 存放位置
-            monthOfDepreciation?: number; // 折旧月数 -->
-
-            <tr *ngFor="let item of value">
-              <td>{{ item?.assetSerialNumber }}</td>
+            <tr *ngFor="let item of assetList">
+              <td>
+                <a href="javascript:0;" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
+              </td>
               <td>{{ item?.assetName }}</td>
-              <td>{{ item?.assetCategoryId }}</td>
+              <td>{{ item?.assetCategoryName }}</td>
+              <td>
+                <a href="javascript:0;" (click)="showAssetRelationModal(item,assetRelationModal)" title="查看资产套关系">{{ item?.majorAssetSerialNumber }}</a>
+              </td>
               <td>{{ item?.brandSpecification }}</td>
-              <td>{{ item?.createTime | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ item?.organizationName }}</td>
               <td>{{ item?.employeeName }}</td>
-              <td>{{ item?.majorAssetSerialNumber }}</td>
-              <td>{{ item?.purchaseAmount }}</td>
+              <td>{{ item?.useStatus }}</td>
+              <td>{{ item?.storageLocation }}</td>
+              <td>{{ item?.reviewStatus? '已审核':'待审核' }}</td>
+              <!-- <td>{{ item?.purchaseAmount }}</td>
               <td>{{ item?.purchaseTime | date: 'yyyy-MM-dd' }}</td>
               <td>{{ item?.residualRatio }}</td>
               <td>{{ item?.batchSerialNumber }}</td>
-              <td>{{ item?.useStatus }}</td>
-              <td>{{ item?.storageLocation }}</td>
-              <td>{{ item?.monthOfDepreciation }}</td>
+              <td>{{ item?.createTime | date: 'yyyy-MM-dd' }}</td>
+              <td>{{ item?.monthOfDepreciation }}</td> -->
+              <td>
+                <button type="button" *ngIf="!item?.reviewStatus" class="btn btn-warning" (click)="checkAsset(item)">审核</button>
+                <button type="button" class="btn btn-primary" (click)="showEditModal(item,editAssetModal)">编辑</button>
+                <button type="button" class="btn btn-danger" (click)="showDeleteModal(item,deleteAssetModal)">删除</button>
+              </td>
             </tr>
           </tbody>
         </table>
 
-        <asset-pagination [totalItems]="total" [currentPage]="pageNumber" [itemsPerPage]="pageSize" (changePage)="pageChanged($event)"
-          (changeSize)="sizeChanged($event)"></asset-pagination>
+        <!-- <asset-pagination [totalItems]="total" [currentPage]="pageNumber" [itemsPerPage]="pageSize" (changePage)="pageChanged($event)"
+          (changeSize)="sizeChanged($event)"></asset-pagination> -->
       </div>
     </div>
   </div>
 </div>
 
-<!-- <asset-add-asset [show]="showAddModal"></asset-add-asset> -->
+
+<ng-template #addAssetModal>
+  <div class="modal-header">
+    <h4 class="modal-title">新增资产</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">名称
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="addForm.assetName" name="hf-email" class="form-control" placeholder="请输入名称" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">规格</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="addForm.brandSpecification" name="hf-email" class="form-control" placeholder="请输入规格" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">主资产编码</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="addForm.majorAssetSerialNumber" name="hf-email" class="form-control" placeholder="请输入主资产编码"
+          maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">组织部门
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" [(ngModel)]="selectedAddOrg.label" (click)="$event.stopPropagation();showAddOrgSelect=!showAddOrgSelect"
+          maxlength="0">
+        <div style="position: relative" *ngIf="showAddOrgSelect" (click)="$event.stopPropagation()">
+          <div style="position: absolute;z-index: 9999;">
+            <p-tree [value]="organizations" selectionMode="single" [(selection)]="selectedAddOrg" (onNodeSelect)="nodeSelect($event, 'add')"
+              styleClass="col-md-12" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+          </div>
+        </div>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">资产类型id
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <select class="form-control" [(ngModel)]="addFormCategory" (ngModelChange)="addFormCategoryChange($event)" name="select">
+          <option value="">--请选择--</option>
+          <ng-container *ngFor="let category of categories">
+            <option [ngValue]="category">{{ category.categoryName }}</option>
+          </ng-container>
+        </select>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">责任人
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <div class="row">
+          <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="addFormEmployee" (completeMethod)="searchEmployee($event)"
+            styleClass="col-md-12" [forceSelection]="true" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'add')"
+            [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产负责人">
+            <ng-template let-employee pTemplate="item">
+              <div>{{ employee.employeeName }}</div>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+        <!-- <input type="text" [(ngModel)]="addForm.employeeNumber" name="hf-email" class="form-control" placeholder="请输入责任人" maxlength="20"> -->
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">使用状态
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <select class="form-control" [(ngModel)]="addForm.useStatus" name="select">
+          <!-- <option value="">--请选择--</option> -->
+          <ng-container *ngFor="let status of statusTypes">
+            <option [value]="status.assetStatusTypeName">{{ status.assetStatusTypeName }}</option>
+          </ng-container>
+        </select>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">购买批次</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="addForm.batchSerialNumber" name="hf-email" class="form-control" placeholder="请输入购买批次" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">存放位置</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="addForm.storageLocation" name="hf-email" class="form-control" placeholder="请输入存放位置" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">购买时间</label>
+      <div class="col-md-9">
+        <input type="text" bsDatepicker [(ngModel)]="addForm.purchaseTime" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"
+          maxlength="20" placeholder="请输入购买时间">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">购买金额</label>
+      <div class="col-md-9">
+        <input type="number" [(ngModel)]="addForm.purchaseAmount" name="hf-email" class="form-control" placeholder="请输入购买金额" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">折旧月数</label>
+      <div class="col-md-9">
+        <input type="number" [(ngModel)]="addForm.monthOfDepreciation" name="hf-email" class="form-control" placeholder="请输入折旧月数"
+          maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">残值率</label>
+      <div class="col-md-9">
+        <div class="input-group">
+          <input type="text" [(ngModel)]="addForm.residualRatio" name="hf-email" class="form-control" placeholder="请输入残值率" maxlength="20">
+          <span class="input-group-addon">%</span>
+        </div>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">取消</button>
+    <button type="button" class="btn btn-primary" (click)="addAsset()">保存</button>
+  </div>
+</ng-template>
+
+<ng-template #editAssetModal>
+  <div class="modal-header">
+    <h4 class="modal-title">编辑资产</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">资产编码
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="editForm.assetSerialNumber" name="hf-email" class="form-control" placeholder="请输入资产编码" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">名称
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="editForm.assetName" name="hf-email" class="form-control" placeholder="请输入名称" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">规格</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="editForm.brandSpecification" name="hf-email" class="form-control" placeholder="请输入规格" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">主资产编码</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="editForm.majorAssetSerialNumber" name="hf-email" class="form-control" placeholder="请输入主资产编码"
+          maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">组织部门
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <input type="text" class="form-control" [(ngModel)]="selectedEditOrg.label" (click)="$event.stopPropagation();showEditOrgSelect=!showEditOrgSelect"
+          maxlength="0">
+        <div style="position: relative" *ngIf="showEditOrgSelect" (click)="$event.stopPropagation()">
+          <div style="position: absolute;z-index: 9999;">
+            <p-tree [value]="organizations" selectionMode="single" [(selection)]="selectedEditOrg" (onNodeSelect)="nodeSelect($event, 'edit')"
+              styleClass="col-md-12" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+          </div>
+        </div>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">资产类型
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <select class="form-control" [(ngModel)]="editFormCategory" (ngModelChange)="editFormCategoryChange($event)" name="select">
+          <option value="">--请选择--</option>
+          <ng-container *ngFor="let category of categories">
+            <option [ngValue]="category">{{ category.categoryName }}</option>
+          </ng-container>
+        </select>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">责任人
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <div class="row">
+          <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="editFormEmployee" (completeMethod)="searchEmployee($event)"
+            styleClass="col-md-12" [forceSelection]="true" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'edit')"
+            [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产负责人">
+            <ng-template let-employee pTemplate="item">
+              <div>{{ employee.employeeName }}</div>
+            </ng-template>
+          </p-autoComplete>
+        </div>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">使用状态
+        <span class="required">*</span>
+      </label>
+      <div class="col-md-9">
+        <select class="form-control" [(ngModel)]="editForm.useStatus" name="select">
+          <!-- <option value="">--请选择--</option> -->
+          <ng-container *ngFor="let status of statusTypes">
+            <option [value]="status.assetStatusTypeName">{{ status.assetStatusTypeName }}</option>
+          </ng-container>
+        </select>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">购买批号</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="editForm.batchSerialNumber" name="hf-email" class="form-control" placeholder="请输入购买批号" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">存放位置</label>
+      <div class="col-md-9">
+        <input type="text" [(ngModel)]="editForm.storageLocation" name="hf-email" class="form-control" placeholder="请输入存放位置" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">购买时间</label>
+      <div class="col-md-9">
+        <input type="text" bsDatepicker [(ngModel)]="editForm.purchaseTime" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"
+          maxlength="20" placeholder="请输入购买时间">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">购买金额</label>
+      <div class="col-md-9">
+        <input type="number" [(ngModel)]="editForm.purchaseAmount" name="hf-email" class="form-control" placeholder="请输入购买金额" maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">折旧月数</label>
+      <div class="col-md-9">
+        <input type="number" [(ngModel)]="editForm.monthOfDepreciation" name="hf-email" class="form-control" placeholder="请输入新密码"
+          maxlength="20">
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-md-3 form-control-label">残值率</label>
+      <div class="col-md-9">
+        <div class="input-group">
+          <input type="number" [(ngModel)]="editForm.residualRatio" name="hf-email" class="form-control" placeholder="请输入新密码" maxlength="20">
+          <span class="input-group-addon">%</span>
+        </div>
+        <!-- <span class="help-block">Please enter your email</span> -->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">取消</button>
+    <button type="button" class="btn btn-primary" (click)="editAsset()">保存</button>
+  </div>
+</ng-template>
+
+<ng-template #deleteAssetModal>
+  <div class="modal-header">
+    <h4 class="modal-title">删除资产</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    确认删除资产
+    <strong style="color:brown">{{ selectedDeleteAsset?.assetName }} </strong>?
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">取消</button>
+    <button type="button" class="btn btn-primary" (click)="deleteAsset()">确认</button>
+  </div>
+</ng-template>
+
+<ng-template #assetDetailModal>
+  <div class="modal-header">
+    <h4 class="modal-title">资产详情</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row detail">
+      <div class="col-md-12">
+        <table class="table table-bordered table-sm">
+          <!-- <thead>
+          <tr>
+            <th>资产级别</th>
+            <th>编码</th>
+            <th>名称</th>
+            <th>部门</th>
+            <th>责任人</th>
+            <th>使用状态</th>
+            <th>存放位置</th>
+          </tr>
+        </thead> -->
+          <tbody>
+            <tr>
+              <td> 资产编码</td>
+              <td>{{ assetDetail.assetSerialNumber }}</td>
+              <td>主资产编码 </td>
+              <td>{{ assetDetail.majorAssetSerialNumber }}</td>
+            </tr>
+            <tr>
+              <td> 录入人员</td>
+              <td>{{ assetDetail.inputUser }}</td>
+              <td>审核人 </td>
+              <td>{{ assetDetail.reviewUser }}</td>
+            </tr>
+            <tr>
+              <td> 审核状态</td>
+              <td>{{ assetDetail.reviewStatus }}</td>
+              <td>审核时间 </td>
+              <td>{{ assetDetail.reviewTime|date: 'yyyy-MM-dd' }}</td>
+            </tr>
+            <tr>
+              <td> 组织部门</td>
+              <td>{{ assetDetail.organizationName }}</td>
+              <td>资产类别 </td>
+              <td>{{ assetDetail.assetCategory }}</td>
+            </tr>
+            <tr>
+              <td> 责任人</td>
+              <td>{{ assetDetail.employeeName }}</td>
+              <td>使用状态 </td>
+              <td>{{ assetDetail.useStatus }}</td>
+            </tr>
+            <tr>
+              <td> 购买批号</td>
+              <td>{{ assetDetail.batchSerialNumber }}</td>
+              <td>资产名称 </td>
+              <td>{{ assetDetail.assetName }}</td>
+            </tr>
+            <tr>
+              <td> 规格</td>
+              <td>{{ assetDetail.brandSpecification }}</td>
+              <td>存放位置 </td>
+              <td>{{ assetDetail.storageLocation }}</td>
+            </tr>
+            <tr>
+              <td> 购买时间</td>
+              <td>{{ assetDetail.purchaseTime|date: 'yyyy-MM-dd' }}</td>
+              <td>资产名称 </td>
+              <td>{{ assetDetail.assetName }}</td>
+            </tr>
+            <tr>
+              <td> 购买金额</td>
+              <td>{{ assetDetail.purchaseAmount }}</td>
+              <td>折旧月数 </td>
+              <td>{{ assetDetail.monthOfDepreciation }}</td>
+            </tr>
+            <tr>
+              <td> 残值率</td>
+              <td>{{ assetDetail.residualRatio }}</td>
+              <td>残值 </td>
+              <td>{{ assetDetail.residualValue }}</td>
+            </tr>
+            <tr>
+              <td> 折旧月数</td>
+              <td>{{ assetDetail.monthNumDepreciation }}</td>
+              <td>月折旧金额 </td>
+              <td>{{ assetDetail.depreciationAmountMonthly }}</td>
+            </tr>
+            <tr>
+              <td> 净值</td>
+              <td>{{ assetDetail.netValue }}</td>
+              <td>添加时间 </td>
+              <td>{{ assetDetail.createTime|date:'yyyy-MM-dd' }}</td>
+            </tr>
+            <tr>
+              <td> 更新时间</td>
+              <td>{{ assetDetail.updateTime|date:'yyyy-MM-dd' }}</td>
+              <td>折旧月数 </td>
+              <td>{{ assetDetail.monthOfDepreciation }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- <div class="col-md-6">
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">资产编码</label>
+          <div class="col-md-9"> {{ assetDetail.assetSerialNumber }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">主资产编码</label>
+          <div class="col-md-9"> {{ assetDetail.majorAssetSerialNumber }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">录入人员</label>
+          <div class="col-md-9"> {{ assetDetail.inputUser }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">审核人</label>
+          <div class="col-md-9"> {{ assetDetail.reviewUser }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">审核状态</label>
+          <div class="col-md-9"> {{ assetDetail.reviewStatus }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">审核时间</label>
+          <div class="col-md-9"> {{ assetDetail.reviewTime| date: 'yyyy-MM-dd' }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">组织部门</label>
+          <div class="col-md-9"> {{ assetDetail.organizationName }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">资产类别</label>
+          <div class="col-md-9"> {{ assetDetail.assetCategory }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">责任人</label>
+          <div class="col-md-9"> {{ assetDetail.employeeName }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">使用状态</label>
+          <div class="col-md-9"> {{ assetDetail.useStatus }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">购买批号</label>
+          <div class="col-md-9"> {{ assetDetail.batchSerialNumber }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">资产名称</label>
+          <div class="col-md-9"> {{ assetDetail.assetName }} </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">规格</label>
+          <div class="col-md-9"> {{ assetDetail.brandSpecification }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">存放位置</label>
+          <div class="col-md-9"> {{ assetDetail.storageLocation }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">购买时间</label>
+          <div class="col-md-9"> {{ assetDetail.purchaseTime|date: 'yyyy-MM-dd' }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">购买金额</label>
+          <div class="col-md-9"> {{ assetDetail.purchaseAmount }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">折旧月数</label>
+          <div class="col-md-9"> {{ assetDetail.monthOfDepreciation }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">残值率</label>
+          <div class="col-md-9"> {{ assetDetail.residualRatio }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">残值</label>
+          <div class="col-md-9"> {{ assetDetail.residualValue }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">折旧月数</label>
+          <div class="col-md-9"> {{ assetDetail.monthNumDepreciation }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">月折旧金额</label>
+          <div class="col-md-9"> {{ assetDetail.depreciationAmountMonthly }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">净值</label>
+          <div class="col-md-9"> {{ assetDetail.netValue }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">添加时间</label>
+          <div class="col-md-9"> {{ assetDetail.createTime|date:'yyyy-MM-dd' }} </div>
+        </div>
+        <div class="form-group row detail">
+          <label class="col-md-3 form-control-label">更新时间</label>
+          <div class="col-md-9"> {{ assetDetail.updateTime|date:'yyyy-MM-dd' }} </div>
+        </div>
+      </div>-->
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">确认</button>
+  </div>
+</ng-template>
+
+<ng-template #assetRelationModal>
+  <div class="modal-header">
+    <h4 class="modal-title">资产套关系</h4>
+    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-bordered table-striped table-sm">
+      <thead>
+        <tr>
+          <th>资产级别</th>
+          <th>编码</th>
+          <th>名称</th>
+          <th>部门</th>
+          <th>责任人</th>
+          <th>使用状态</th>
+          <th>存放位置</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of assetRelationList">
+          <td>{{ item.assetSerialNumber === item.majorAssetSerialNumber?'主资产':'子资产' }}</td>
+          <td>
+            <a href="javascript:0;" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
+          </td>
+          <td>{{ item?.assetName }}</td>
+          <td>{{ item?.organizationName }}</td>
+          <td>{{ item?.employeeName }}</td>
+          <td>{{ item?.useStatus }}</td>
+          <td>{{ item?.storageLocation }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">确认</button>
+  </div>
+</ng-template>

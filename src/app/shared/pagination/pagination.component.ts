@@ -28,6 +28,9 @@ export class PaginationComponent implements OnInit {
     this.changePage.emit(event);
   }
   sizeChanged(event: any) {
+    setTimeout(() => {
+      this._currentPage = 1;
+    }, 0);
     console.log('分页大小改变，当前大小:' + JSON.stringify(event));
     this.itemsPerPage = event;
     this.changeSize.emit(event);

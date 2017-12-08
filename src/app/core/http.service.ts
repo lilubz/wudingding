@@ -11,6 +11,14 @@ export class HttpService {
   private formDataHeaders = new Headers({ 'Content-Type': 'multipart/form-data; charser=UTF-8' });
 
   constructor(private http: Http, private router: Router, private userStateService: UserStateService) { }
+
+  delete(url, data) {
+    return this.http.delete(url + '?' + this.transformRequest(data))
+      .toPromise()
+      .then(res => this.httpStatusFilter(res))
+      .catch(error => this.handleError(error));
+  }
+
   // 重封装get请求
   getRequest(url, data) {
     return this.http.get(url + '?' + this.transformRequest(data))

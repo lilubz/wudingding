@@ -35,7 +35,7 @@ const PROXY_CONFIG = [
   //     "/wenZhouGas",
   //     "/dataImport",
   //   ],
-  //   target: "http://192.168.1.107:28080",// 涛哥
+  //   target: "http://192.168.1.107:28081",// 涛哥
   //   secure: false,
   //   "pathRewrite": {
   //     "^/wenZhouGas": ""

@@ -97,5 +97,16 @@ export class CommonXHRService {
     return this.httpService.getRequest(API.listEmployeeSimpleCurrentUser, params);
   }
 
+  /**
+   * 获取某个organizationId下面所有节点的简单信息，如果入参为空，organizationId为当前登陆用户的
+   * 2017-12-07 17:14:00
+   * @author hzb
+   * @param params
+   * @returns
+   */
+  listOrganizationChildren(params: { organizationId: string }): Promise<any> {
+    return this.httpService.getRequest(API.listOrganizationChildren, params);
+  }
+
 
 }
