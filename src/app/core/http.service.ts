@@ -15,7 +15,7 @@ export class HttpService {
   getRequest(url, data) {
     return this.http.get(url + '?' + this.transformRequest(data))
       .toPromise()
-      .then(res => this.checkLogin(res.json()))
+      .then(res => this.httpStatusFilter(res))
       .catch(error => this.handleError(error));
   }
 
@@ -25,7 +25,7 @@ export class HttpService {
     return this.http
       .post(url, JSON.stringify(data), options)
       .toPromise()
-      .then(res => this.checkLogin(res.json()))
+      .then(res => this.httpStatusFilter(res))
       .catch(error => this.handleError(error));
   }
 
@@ -34,7 +34,7 @@ export class HttpService {
     return this.http
       .post(url, this.transformRequest(data), { headers: this.formHeaders })
       .toPromise()
-      .then(res => this.checkLogin(res.json()))
+      .then(res => this.httpStatusFilter(res))
       .catch(error => this.handleError(error));
   }
 
@@ -43,7 +43,7 @@ export class HttpService {
     return this.http
       .post(url, data)
       .toPromise()
-      .then(res => this.checkLogin(res.json()))
+      .then(res => this.httpStatusFilter(res))
       .catch(error => this.handleError(error));
   }
 
@@ -53,7 +53,7 @@ export class HttpService {
       .post(url, this.transformRequest(data),
       Object.assign({}, { headers: this.formHeaders, withCredentials: true }, options))
       .toPromise()
-      .then(res => this.checkLogin(res.json()))
+      .then(res => this.httpStatusFilter(res))
       .catch(error => this.handleError(error));
   }
 
@@ -78,14 +78,6 @@ export class HttpService {
     return str.join('&');
   }
 
-  checkLogin(data) {
-    // if (data.status === 10) {
-    //   this.userStateService.getUser() = null;
-    //   this.router.navigate(['/']);
-    // }
-    return data;
-  }
-
   private handleError(error: any): Promise<any> {
     console.log(error);
     console.log(error.status);
@@ -98,17 +90,19 @@ export class HttpService {
       case 100:
         break;
       case 200:
-        break;
-      case 300:
-        break;
-      case 400:
+        // 没有登录
         if (res.json().status === 10) {
           this.userStateService.setUser(null);
           this.router.navigate(['/login']);
         }
         break;
+      case 300:
+        break;
+      case 400:
+        break;
       case 500:
         break;
     }
+    return res.json();
   }
 }

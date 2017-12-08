@@ -19,19 +19,19 @@
           </li>
         </ul>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" [routerLink]="['/system']">
+      <li class="nav-item nav-dropdown" routerLinkActive="open" appNavDropdown>
+        <a class="nav-link nav-dropdown-toggle" appNavDropdownToggle>
           <i class="fa fa-tags"></i> 系统管理</a>
-        <!-- <ul class="nav-dropdown-items">
+        <ul class="nav-dropdown-items">
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" [routerLink]="['/icons/font-awesome']">
-              <i class="icon-star"></i> Font Awesome</a>
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/system/asset-department']">
+              <i class="icon-star"></i>部门管理</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" [routerLink]="['/icons/simple-line-icons']">
-              <i class="icon-star"></i> Simple Line Icons</a>
+            <a class="nav-link"routerLinkActive="active" [routerLink]="['/system/asset-category']">
+              <i class="icon-star"></i>类别管理</a>
           </li>
-          </ul> -->
+        </ul>
       </li>
     </ul>
   </nav>

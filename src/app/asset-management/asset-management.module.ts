@@ -11,6 +11,7 @@ import { AssetStatisticService } from 'app/asset-management/asset-statistic/asse
 
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { zhCn } from 'ngx-bootstrap/locale';
+import { AssetSearchService } from 'app/asset-management/asset-search/asset-search.service';
 defineLocale('zhCn', zhCn);
 
 @NgModule({
@@ -27,7 +28,8 @@ defineLocale('zhCn', zhCn);
     AssetManagementComponent
   ],
   providers: [
-  AssetStatisticService
+    AssetStatisticService,
+    AssetSearchService
   ]
 })
 export class AssetManagementModule { }

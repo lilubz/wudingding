@@ -9,36 +9,38 @@
         <div class="row">
           <div class="form-group col-md-6">
             <label for="select">资产类别</label>
-            <select class="form-control" id="select" name="select">
-              <option value="0">Please select</option>
-              <option value="1">Option #1</option>
-              <option value="2">Option #2</option>
-              <option value="3">Option #3</option>
+            <select class="form-control" [(ngModel)]="selectedCategory" id="select" name="select">
+              <option value="">--请选择--</option>
+              <ng-container *ngFor="let category of categories">
+                <option [value]="category.assetCategoryId">{{ category.categoryName }}</option>
+              </ng-container>
             </select>
-            <span class="help-block">Please enter your email</span>
+            <!-- <span class="help-block">Please enter your email</span> -->
           </div>
           <div class="form-group col-md-6">
             <label for="select">责任部门</label>
-            <select class="form-control" id="select" name="select">
-              <option value="0">Please select</option>
-              <option value="1">Option #1</option>
-              <option value="2">Option #2</option>
-              <option value="3">Option #3</option>
+            <select class="form-control" [(ngModel)]="selectedOrganization" id="select" name="select">
+              <option value="">--请选择--</option>
+              <ng-container *ngFor="let organization of organizations">
+                <option [value]="organization.organizationId">{{ organization.name }}</option>
+              </ng-container>
             </select>
-            <span class="help-block">Please enter your email</span>
+            <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-md-6">
-            <label for="select">资产状态</label>
-            <select class="form-control" id="select" name="select">
-              <option value="0">Please select</option>
-              <option value="1">Option #1</option>
-              <option value="2">Option #2</option>
-              <option value="3">Option #3</option>
+            <label for="select">资产状态
+              <span class="required">*</span>
+            </label>
+            <select class="form-control" [(ngModel)]="selectedAssetStatus" id="select" name="select">
+              <!-- <option value="">--请选择--</option> -->
+              <ng-container *ngFor="let status of statusTypes">
+                <option [value]="status.assetStatusTypeId">{{ status.assetStatusTypeName }}</option>
+              </ng-container>
             </select>
-            <span class="help-block">Please enter your email</span>
+            <!-- <span class="help-block">Please enter your email</span> -->
           </div>
           <div class="form-group col-md-6">
             <label for="select">资产负责人</label>
@@ -48,19 +50,21 @@
               <option value="2">Option #2</option>
               <option value="3">Option #3</option>
             </select>
-            <span class="help-block">Please enter your email</span>
+            <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-md-6">
-            <label for="select">录入时间</label>
-            <input type="text" bsDaterangepicker [(bsValue)]="bsValue" [bsConfig]="bsConfig" class="form-control">
-            <span class="help-block">Please enter your email</span>
+            <label for="select">录入时间
+              <span class="required">*</span>
+            </label>
+            <input type="text" bsDaterangepicker [(ngModel)]="dateRange" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control">
+            <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
 
-        <button class="btn btn-primary" type="button">
+        <button class="btn btn-primary" type="button" (click)="search()">
           <i class="fa fa-search"></i>&nbsp; 查询
         </button>
 
@@ -68,14 +72,13 @@
           <button class="btn btn-outline-primary" type="button">
             <i class="fa fa-plus"></i>&nbsp; 添加资产信息
           </button>
-          <button class="btn btn-outline-primary" type="button">
+          <!-- <button class="btn btn-outline-primary" type="button">
             <i class="fa fa-download"></i>&nbsp; 导入
           </button>
           <button class="btn btn-outline-primary" type="button">
             <i class="fa fa-upload"></i>&nbsp; 导出
-          </button>
+          </button> -->
         </div>
-
 
       </div>
     </div>
@@ -105,6 +108,9 @@
             </tr>
           </tbody>
         </table>
+
+        <asset-pagination [totalItems]="total" [currentPage]="pageNumber" [itemsPerPage]="pageSize" (changePage)="pageChanged($event)"
+          (changeSize)="sizeChanged($event)"></asset-pagination>
       </div>
     </div>
   </div>

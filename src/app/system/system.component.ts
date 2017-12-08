@@ -11,8 +11,8 @@ export class SystemComponent implements OnInit {
 
   ngOnInit() {
   }
-  addDepartment(event) {
-    alert(1);
-  }
+  // addDepartment(event) {
+  //   alert(1);
+  // }
 
 }

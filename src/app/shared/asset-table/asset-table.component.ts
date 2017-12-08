@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Input } from '../../../../node_modules/_@angular_core@4.3.4@@angular/core/src/metadata/directives';
 
 @Component({
   selector: 'asset-table',

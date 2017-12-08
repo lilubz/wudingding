@@ -3,57 +3,16 @@
     <div class="col-md-12">
       <div class="card">
         <div class="card-header">
-          <i class="fa fa-align-justify"></i>搜索
+          <i class="fa fa-align-justify"></i>组织部门
         </div>
         <div class="card-block">
-          <div class="row">
-            <div class="col-md-9">
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="assetCategoryId">资产类型</label>
-                  <select class="form-control" id="assetCategoryId" [(ngModel)]="searchParams.assetCategoryId">
-                    <option *ngFor="let item of Dropdown.assetType" [ngValue]="item.value">{{item.label}}</option>
-                  </select>
-                  {{searchParams.assetCategoryId}}
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="organizationId">组织</label>
-                  <select class="form-control" id="organizationId" [(ngModel)]="searchParams.organizationId">
-                    <option *ngFor="let item of Dropdown.organizationList" [ngValue]="item.value">{{item.label}}</option>
-                  </select>
-                  {{searchParams.organizationId}}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <button class="btn btn-primary btnTop" type="button" name="button" (click)="searchStatistic()">
-                <span class="fa fa-search"></span>查询</button>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-9">
-              <div class="row">
-                <div class="form-group col-md-6">
-                  <label for="inventory">盘点状态 </label>
-                  <select class="form-control" id="inventory" [(ngModel)]="searchParams.inventoryStatus">
-                    <option *ngFor="let item of Dropdown.inventoryList" [ngValue]="item.value">{{item.label}}</option>
-                  </select>
-                  {{searchParams.inventoryStatus}}
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="assetStatusTypeId">资产状态类型</label>
-                  <select class="form-control" id="assetStatusTypeId" [(ngModel)]="searchParams.assetStatusTypeId">
-                    <option *ngFor="let item of Dropdown.assetStatus" [ngValue]="item.value">{{item.label}}</option>
-                  </select>
-                  {{searchParams.assetStatusTypeId}}
-                </div>
-              </div>
-            </div>
-          </div>
+          <p-tree [value]="filesTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
+            (onNodeExpand)="loadNode($event)"></p-tree>
         </div>
       </div>
     </div>
   </div>
+
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -67,12 +26,23 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of assetStatisticList">
-                <td>{{item.assetId}}</td>
-                <td>{{item.assetName}}</td>
-                <td>{{item.assetSerialNumber}}</td>
-                <td>{{item.depreciationAmountAccumulate}}</td>
-                <td>{{item.depreciationAmountMonthly}}</td>
-                <td>{{item.netValue}}</td>
+                <!-- <td>&#12288;</td> -->
+                <td>{{item.organizationId || '无'}}</td>
+                <td>{{item.organizationName || '无'}}</td>
+                <td>{{item.originalValue || '无'}}</td>
+                <td>{{item.depreciationAmountAccumulate || '无'}}</td>
+                <td>{{item.depreciationAmountMonthly || '无'}}</td>
+                <td>{{item.netValue || '无'}}</td>
+                <td>{{item.residualValue || '无'}}</td>
+              </tr>
+              <tr>
+                <td>总和</td>
+                <td>无</td>
+                <td>{{originalValueSum}}</td>
+                <td>{{depreciationAmountAccumulateSum}}</td>
+                <td>{{depreciationAmountMonthlySum}}</td>
+                <td>{{residualValueSum}}</td>
+                <td>{{netValueSum}}</td>
               </tr>
             </tbody>
           </table>

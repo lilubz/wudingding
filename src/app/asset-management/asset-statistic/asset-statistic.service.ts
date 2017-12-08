@@ -6,30 +6,27 @@ import { HttpService } from './../../core/http.service';
 export class AssetStatisticService {
 
   constructor(private httpService: HttpService) { }
-  /**
-   * 获取统计数据
-   * getAssetStatisticList()
-   */
-  getAssetStatisticList(params: any): Promise<any> {
-    return this.httpService
-      .getRequest(API, params)
-  }
+
   /**
    * 获取下拉列表
    * 获取下拉列表
    */
-  getListAssetCategory(params: any): any {
-    return this.httpService
-      .getRequest(API.listAssetCategory, params)
-  }
-  getListOrganizationCurrentUser(params: any): any {
-    return this.httpService
-      .getRequest(API.listOrganizationCurrentUser, params)
-  }
-  getListAssetStatusType(params: any): any {
-    return this.httpService
-      .getRequest(API.listAssetStatusType, params)
-  }
+  // getListAssetCategory(params: any): any {
+  //   return this.httpService
+  //     .getRequest(API.listAssetCategory, params)
+  // }
+  // getListOrganizationCurrentUser(params: any): any {
+  //   return this.httpService
+  //     .getRequest(API.listOrganizationCurrentUser, params)
+  // }
+  // getListAssetStatusType(params: any): any {
+  //   return this.httpService
+  //     .getRequest(API.listAssetStatusType, params)
+  // }
+  getTreeNodde(params: any): any {
+      return this.httpService
+        .getRequest(API.listOrganizationCurrentUser, params)
+    }
   getCountAssetNetValue(params: any): any {
     return this.httpService
       .getRequest(API.countAssetNetValue, params)

@@ -1,17 +1,23 @@
+
 import { LoginService } from './../login/login.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { BrowserModule } from '@angular/platform-browser';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import {
   BsDropdownModule,
   BsDatepickerModule,
   TabsModule,
-  PaginationModule
+  ModalModule,
+
+  PaginationModule,
 } from 'ngx-bootstrap';
+import {
+  TreeModule, TreeDragDropService, TreeNode, GrowlModule,
+  ButtonModule, ContextMenuModule, TabViewModule, CodeHighlighterModule
+} from 'primeng/primeng';
+
 
 // import { LayoutComponent } from './layout/layout.component';
 import { AssetHeaderComponent } from './asset-header/asset-header.component';
@@ -22,6 +28,8 @@ import { BreadcrumbsComponent } from './breadcrumb.component';
 import { AsideToggleDirective } from './aside.directive';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
 import { AssetTableComponent } from './asset-table/asset-table.component';
+import { PaginationComponent } from './pagination/pagination.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -31,7 +39,10 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
+    ModalModule.forRoot(),
     PaginationModule.forRoot(),
+    TreeModule,
+    GrowlModule, ButtonModule, ContextMenuModule, TabViewModule, CodeHighlighterModule
   ],
   declarations: [
     // LayoutComponent,
@@ -39,11 +50,11 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
     AsideToggleDirective,
-
     AssetHeaderComponent,
     AssetSidebarComponent,
     BreadcrumbComponent,
     AssetTableComponent,
+    PaginationComponent,
   ],
 
   exports: [
@@ -54,7 +65,10 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     BsDropdownModule,
     BsDatepickerModule,
     TabsModule,
+    ModalModule,
     PaginationModule,
+    TreeModule,
+    GrowlModule, ButtonModule, ContextMenuModule, TabViewModule, CodeHighlighterModule,
 
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
@@ -65,9 +79,11 @@ import { AssetTableComponent } from './asset-table/asset-table.component';
     AssetHeaderComponent,
     AssetSidebarComponent,
     BreadcrumbComponent,
+    PaginationComponent,
   ],
   providers: [
-    LoginService
+    LoginService,
+    TreeDragDropService
   ]
 })
 export class SharedModule { }

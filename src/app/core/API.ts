@@ -9,9 +9,17 @@ export const API = {
    */
   'login': URL + 'sysUserPermissions/login.do',
 
-  'listOrganizationCurrentUser': URL + 'common/listOrganizationCurrentUser.do',
-  'listAssetCategory': URL + 'common/listAssetCategory.do',
+  // 公共接口
   'listAssetStatusType': URL + 'common/listAssetStatusType.do',
+  'listAssetCategory': URL + 'common/listAssetCategory.do',
+  'listOrganizationCurrentUser': URL + 'common/listOrganizationCurrentUser.do',
+  'listEmployeeSimpleCurrentUser': URL + 'common/listEmployeeSimpleCurrentUser.do',
+  'listOrganizationChildren': URL + 'common/listOrganizationChildren.do',
+
+  // 资产查询
+  'listAssetBasic': URL + 'assetBasic/listAssetBasic.do',
+
+
   'signIn': URL + 'sysUserPermissions/login.do',
   'logout': URL + 'sysUserPermissions/logout.do',
   'modifyPassword': URL + 'sysUserPermissions/resetPassword.do',
@@ -19,4 +27,5 @@ export const API = {
    * 资产统计
    */
   'countAssetNetValue': URL + 'assetCount/countAssetNetValue.do',
+
 };
