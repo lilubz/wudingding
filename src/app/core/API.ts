@@ -21,6 +21,10 @@ export const API = {
   // 资产查询
   'listAssetBasic': URL + 'assetBasic/listAssetBasic.do',
 
+  // 资产类别管理
+  'addCategory': URL + 'assetBasic/sort/add.do',
+  'deleteCategory': URL + 'assetBasic/sort/delete.do',
+  'updateCategory': URL + 'assetBasic/sort/update.do',
 
   'signIn': URL + 'sysUserPermissions/login.do',
   'logout': URL + 'sysUserPermissions/logout.do',
