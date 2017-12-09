@@ -27,5 +27,11 @@ export const API = {
    * 资产统计
    */
   'countAssetNetValue': URL + 'assetCount/countAssetNetValue.do',
+  /**
+   * 部门管理
+   */
+  'addDepartment': URL + 'common/departmentController/addDepartment.do',
+  'deleteDepartment': URL + 'common/departmentController/deleteDepartment.do',
+  'updateDepartment': URL + 'common/departmentController/updateDepartment.do',
 
 };
