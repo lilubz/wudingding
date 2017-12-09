@@ -25,7 +25,6 @@ export class UserStateService {
         user = undefined;
       }
     }
-    console.log(user);
     return user
   }
 }

@@ -25,7 +25,7 @@ export class AssetHeaderComponent implements OnInit {
   }
 
   public toggled(open: boolean): void {
-    console.log('Dropdown is now: ', open);
+    // console.log('Dropdown is now: ', open);
   }
 
   logout() {

@@ -43,7 +43,6 @@ import {
 // import { LayoutComponent } from './layout/layout.component';
 import { AssetHeaderComponent } from './asset-header/asset-header.component';
 import { AssetSidebarComponent } from './asset-sidebar/asset-sidebar.component';
-import { BreadcrumbComponent } from './breadcrumb/breadcrumb.component';
 import { NAV_DROPDOWN_DIRECTIVES } from './nav-dropdown.directive';
 import { BreadcrumbsComponent } from './breadcrumb.component';
 import { AsideToggleDirective } from './aside.directive';
@@ -90,7 +89,6 @@ import { PaginatorComponent } from './paginator/paginator.component';
     AsideToggleDirective,
     AssetHeaderComponent,
     AssetSidebarComponent,
-    BreadcrumbComponent,
     AssetTableComponent,
     PaginatorComponent,
   ],
@@ -134,7 +132,6 @@ import { PaginatorComponent } from './paginator/paginator.component';
     // LayoutComponent,
     AssetHeaderComponent,
     AssetSidebarComponent,
-    BreadcrumbComponent,
     PaginatorComponent,
   ],
   providers: [

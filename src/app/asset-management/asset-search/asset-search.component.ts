@@ -239,7 +239,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   searchEmployee(event) {
-    console.log(event);
+    // console.log(event);
     this.commonXHRService.listEmployeeSimpleCurrentUser({
       employeeName: event.query
     }).then(data => {
@@ -311,7 +311,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   showEditModal(asset: any, modal) {
-    console.log(asset);
+    // console.log(asset);
     this.editForm = Object.assign({}, asset);
     this.editFormCategory = '';
     if (asset.organizationId) {
@@ -328,12 +328,12 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     // this.editForm.employeeNumber = this.editFormEmployee.employeeNumber;
     this.editForm.purchaseTime = asset.purchaseTime ? moment(asset.purchaseTime).toDate() : '';
-    console.log(this.editForm);
+    // console.log(this.editForm);
     this.editAssetModalRef = this.modalService.show(modal);
   }
 
   showDeleteModal(asset: Asset, modal) {
-    console.log(asset);
+    // console.log(asset);
     this.selectedDeleteAsset = asset;
     this.deleteAssetModalRef = this.modalService.show(modal);
   }
@@ -405,21 +405,21 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   // }
 
   addFormCategoryChange(event: AssetCategory) {
-    console.log(event);
+    // console.log(event);
     this.addForm.assetCategoryId = event.assetCategoryId || '';
     this.addForm.monthOfDepreciation = event.monthOfDepreciation || this.addForm.monthOfDepreciation || '';
     this.addForm.residualRatio = event.residualRatio || this.addForm.residualRatio || '';
   }
 
   editFormCategoryChange(event: AssetCategory) {
-    console.log(event);
+    // console.log(event);
     this.editForm.assetCategoryId = event.assetCategoryId || '';
     this.editForm.monthOfDepreciation = event.monthOfDepreciation || this.editForm.monthOfDepreciation || '';
     this.editForm.residualRatio = event.residualRatio || this.editForm.residualRatio || '';
   }
 
   selectSuggestedEmployee(event, type) {
-    console.log(event);
+    // console.log(event);
     if (type === 'add') {
       this.addFormEmployee = event;
     } else if (type === 'edit') {
@@ -430,7 +430,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   nodeSelect(event, type) {
-    console.log(event);
+    // console.log(event);
     if (type === 'add') {
       this.addForm.organizationId = event.node.data;
       this.showAddOrgSelect = false;
@@ -444,7 +444,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   nodeUnselect(event) {
-    console.log(event);
+    // console.log(event);
   }
 
   expandRecursive(node: TreeNode, isExpand: boolean) {
@@ -478,7 +478,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getOrgNodeById(organizationId, data) {
-    console.log(organizationId, data);
+    // console.log(organizationId, data);
     if (organizationId) {
       if (organizationId === data.data) {
         return data;

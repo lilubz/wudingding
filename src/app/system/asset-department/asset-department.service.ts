@@ -8,15 +8,24 @@ export class AssetDepartmentService {
   constructor(private httpService: HttpService) { }
 
   /**
-   * 获取节点
-   * @param getTreeNodde
+   * 添加部门
    */
-  // getTreeNodde(params: any): any {
-  //   return this.httpService
-  //     .getRequest(API.listOrganizationCurrentUser, params)
-  // }
-  getCountAssetNetValue(params: any): any {
+  AddDepartment(params: any): any {
     return this.httpService
-      .getRequest(API.countAssetNetValue, params)
+      .formPostRequest(API.addDepartment, params)
+  }
+  /**
+     * 删除部门
+     */
+  DeleteDepartment(params: any): any {
+    return this.httpService
+      .delete(API.deleteDepartment, params)
+  }
+  /**
+   * 编辑部门
+   */
+  UpdateDepartment(params: any): any {
+    return this.httpService
+      .formPostRequest(API.updateDepartment, params)
   }
 }

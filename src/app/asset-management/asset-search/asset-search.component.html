@@ -521,7 +521,7 @@
             </tr>
             <tr>
               <td> 审核状态</td>
-              <td>{{ assetDetail.reviewStatus }}</td>
+              <td>{{ assetDetail.reviewStatus === true?'已审核':'待审核' }}</td>
               <td>审核时间 </td>
               <td>{{ assetDetail.reviewTime|date: 'yyyy-MM-dd' }}</td>
             </tr>

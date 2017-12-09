@@ -6,16 +6,15 @@
           <i class="fa fa-align-justify"></i>部门管理
         </div>
         <div class="card-block">
-          <p-tree [value]="departmentTree" layout="horizontal" selectionMode="single" [(selection)]="selectedDepartment" (onNodeSelect)="nodeSelect($event);"
+          <p-tree [value]="departmentTree" layout="horizontal" selectionMode="single" [(selection)]="selectedDepartment" (onNodeSelect)="nodeSelect($event);openModalWithClass(department)"
             (onNodeExpand)="loadNode($event)"></p-tree>
-            <!-- openModalWithClass(department) -->
+          <!-- {{selectedDepartment ? selectedDepartment.data:'none'}} -->
         </div>
       </div>
     </div>
   </div>
 </div>
-<button type="button" class="btn btn-primary">Create template modal</button>
-<!-- 
+
 <ng-template #department>
   <div class="modal-header">
     <h4 class="modal-title pull-left">部门管理</h4>
@@ -30,24 +29,24 @@
           <label for="name">部门名称</label>
           <input type="text" class="form-control" id="name" [(ngModel)]="departmentName" placeholder="Enter your name">
           <label for="name">部门描述</label>
-          <textarea id="textarea-input" name="textarea-input" rows="6" class="form-control" placeholder="Content.."></textarea>
+          <textarea id="textarea-input" name="textarea-input" [(ngModel)]="departmentDescription" rows="6" class="form-control" placeholder="Content.."></textarea>
           <label for="name">部门地址</label>
-          <input type="text" class="form-control" id="name" placeholder="Enter your name">
+          <input type="text" class="form-control" [(ngModel)]="departmentAddress" id="name" placeholder="Enter your name">
         </div>
 
       </div>
     </div>
     <button type="button" class="btn btn-outline-danger pull-right" (click)="modalRef.hide()">
       <i class="fa fa-times"></i>&nbsp;退出</button>
-    <button type="button" class="btn btn-outline-danger pull-right" (click)="openModal2(templateNested)">
-      <i class="fa fa-trash"></i>&nbsp; 删除部门</button>
-    <button type="button" class="btn btn-outline-warning pull-right" (click)="openModal2(templateNested)">
+    <!-- <button type="button" class="btn btn-outline-danger pull-right" (click)="deleteDepartment()">
+      <i class="fa fa-trash"></i>&nbsp; 删除部门</button> -->
+    <button type="button" class="btn btn-outline-warning pull-right" (click)="updateDepartment()">
       <i class="fa fa-pencil"></i>&nbsp; 编辑部门</button>
-    <button type="button" class="btn btn-outline-success  pull-right" (click)="openModal2(templateNested)">
+    <button type="button" class="btn btn-outline-success  pull-right" (click)="addDepartment()">
       <i class="fa fa-plus"></i>&nbsp;添加部门</button>
   </div>
 </ng-template>
-<ng-template #templateNested>
+<!-- <ng-template #templateNested>
   <div class="modal-header">
     <h4 class="modal-title pull-left">First modal</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">

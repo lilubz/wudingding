@@ -87,8 +87,8 @@ export class HttpService {
   }
 
   private handleError(error: any): Promise<any> {
-    console.log(error);
-    console.log(error.status);
+    // console.log(error);
+    // console.log(error.status);
     this.httpStatusFilter(error);
     return Promise.reject(error.message || error);
   }

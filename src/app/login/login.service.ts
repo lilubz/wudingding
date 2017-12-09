@@ -53,7 +53,7 @@ export class LoginService {
           return false;
         }
       }).catch(error => {
-        console.log(error);
+        // console.log(error);
         // throw error;
         return false;
       });

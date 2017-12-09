@@ -44,17 +44,6 @@ const PROXY_CONFIG = [
   // {
   //   context: [
   //     "/wenZhouGas",
-  //     "/dataImport",
-  //   ],
-  //   target: "http://192.168.1.107:28081",// 涛哥
-  //   secure: false,
-  //   "pathRewrite": {
-  //     "^/wenZhouGas": ""
-  //   }
-  // },
-  // {
-  //   context: [
-  //     "/wenZhouGas",
   //   ],
   //   target: "http://192.168.1.56:8080",// 涛哥笔记本
   //   secure: false,
