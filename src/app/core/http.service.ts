@@ -100,7 +100,7 @@ export class HttpService {
       case 200:
         // 没有登录
         if (res.json().status === 10) {
-          this.userStateService.setUser(null);
+          this.userStateService.setUser(undefined);
           this.router.navigate(['/login']);
         }
         break;

@@ -165,7 +165,7 @@
 <ng-template #addAssetModal>
   <div class="modal-header">
     <h4 class="modal-title">新增资产</h4>
-    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <button type="button" class="close" (click)="addAssetModalRef.hide()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -306,7 +306,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">取消</button>
+    <button type="button" class="btn btn-secondary" (click)="addAssetModalRef.hide()">取消</button>
     <button type="button" class="btn btn-primary" (click)="addAsset()">保存</button>
   </div>
 </ng-template>
@@ -314,7 +314,7 @@
 <ng-template #editAssetModal>
   <div class="modal-header">
     <h4 class="modal-title">编辑资产</h4>
-    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <button type="button" class="close" (click)="editAssetModalRef.hide()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -462,7 +462,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">取消</button>
+    <button type="button" class="btn btn-secondary" (click)="editAssetModalRef.hide()">取消</button>
     <button type="button" class="btn btn-primary" (click)="editAsset()">保存</button>
   </div>
 </ng-template>
@@ -470,7 +470,7 @@
 <ng-template #deleteAssetModal>
   <div class="modal-header">
     <h4 class="modal-title">删除资产</h4>
-    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <button type="button" class="close" (click)="deleteAssetModalRef.hide()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -479,7 +479,7 @@
     <strong style="color:brown">{{ selectedDeleteAsset?.assetName }} </strong>?
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">取消</button>
+    <button type="button" class="btn btn-secondary" (click)="deleteAssetModalRef.hide()">取消</button>
     <button type="button" class="btn btn-primary" (click)="deleteAsset()">确认</button>
   </div>
 </ng-template>
@@ -487,7 +487,7 @@
 <ng-template #assetDetailModal>
   <div class="modal-header">
     <h4 class="modal-title">资产详情</h4>
-    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <button type="button" class="close" (click)="assetDetailModalRef.hide()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -692,14 +692,14 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">确认</button>
+    <button type="button" class="btn btn-primary" (click)="assetDetailModalRef.hide()">确认</button>
   </div>
 </ng-template>
 
 <ng-template #assetRelationModal>
   <div class="modal-header">
     <h4 class="modal-title">资产套关系</h4>
-    <button type="button" class="close" (click)="modalRef.hide()" aria-label="Close">
+    <button type="button" class="close" (click)="assetRelationModalRef.hide()" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -732,6 +732,6 @@
     </table>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="modalRef.hide()">确认</button>
+    <button type="button" class="btn btn-primary" (click)="assetRelationModalRef.hide()">确认</button>
   </div>
 </ng-template>

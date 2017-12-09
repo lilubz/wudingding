@@ -7,26 +7,25 @@ import 'rxjs/add/operator/toPromise';
 import { User } from './../model/User.model';
 @Injectable()
 export class UserStateService {
-  private user: User;
 
   setUser(user: User) {
     if (user) {
       sessionStorage.setItem('user', JSON.stringify(user));
-      this.user = user;
     } else {
       sessionStorage.removeItem('user');
-      this.user = null;
     }
   }
   getUser(): User {
-    if (!this.user) {
-      const user = sessionStorage.getItem('user');
+    let user = undefined;
+    if (!!sessionStorage.getItem('user')) {
+      user = sessionStorage.getItem('user');
       if (user !== 'undefined' && user !== 'null' && user !== '') {
-        this.user = JSON.parse(user);
+        user = JSON.parse(user);
       } else {
-        this.user = null;
+        user = undefined;
       }
     }
-    return this.user || null;
+    console.log(user);
+    return user
   }
 }

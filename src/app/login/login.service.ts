@@ -30,11 +30,11 @@ export class LoginService {
       .withCredentialsPostRequest(API.signIn, params)
       .then(data => {
         if (data.status === 0) {// 登录成功
-          this.userStateService.setUser(data.data || '');
+          this.userStateService.setUser(data.data || undefined);
           this.router.navigate(['/asset-management']);
           return true;
         } else if (data.status === 4) {// 已经登录
-          this.userStateService.setUser(data.data || '');
+          this.userStateService.setUser(data.data || undefined);
           swal({
             title: '您已登录',
             text: `当前登录用户 ${this.userStateService.getUser().username} ,如需登录其它账号请先退出再登录！`,
@@ -68,7 +68,7 @@ export class LoginService {
     return this.httpService
       .getRequest(API.logout, null)
       .then(data => {
-        this.userStateService.setUser(null);
+        this.userStateService.setUser(undefined);
         this.router.navigate(['/login']);
         if (data.status !== 0) {
           swal({
@@ -88,7 +88,7 @@ export class LoginService {
           icon: 'error',
           button: '确认',
         });
-        this.userStateService.setUser(null);
+        this.userStateService.setUser(undefined);
         this.router.navigate(['/login']);
       });
   }

@@ -23,7 +23,11 @@ declare const swal: any;
   styleUrls: ['./asset-search.component.scss']
 })
 export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
-  public modalRef: BsModalRef;
+  addAssetModalRef: BsModalRef;
+  editAssetModalRef: BsModalRef;
+  deleteAssetModalRef: BsModalRef;
+  assetDetailModalRef: BsModalRef;
+  assetRelationModalRef: BsModalRef;
   modalConfig = {
     animated: true,
     keyboard: false,
@@ -184,7 +188,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       }).then(data => {
         if (data.status === 0) {
           swal({ title: '保存成功', text: data.msg, icon: 'success', button: '确认' });
-          this.modalRef.hide();
+          this.addAssetModalRef.hide();
         } else {
           swal({ title: '保存失败', text: data.msg, icon: 'warning', button: '确认' });
         }
@@ -213,7 +217,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
         if (data.status === 0) {
           swal({ title: '保存成功', text: data.msg, icon: 'success', button: '确认' });
           this.search();
-          this.modalRef.hide();
+          this.editAssetModalRef.hide();
         } else {
           swal({ title: '保存失败', text: data.msg, icon: 'warning', button: '确认' });
         }
@@ -227,7 +231,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data.status === 0) {
         this.search();
         swal({ title: '删除成功', icon: 'success', button: '确认', });
-        this.modalRef.hide();
+        this.deleteAssetModalRef.hide();
       } else {
         swal({ title: '删除失败', text: data.msg, icon: 'warning', button: '确认', });
       }
@@ -303,7 +307,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   showAddModal(modal) {
     this.addFormInit();
-    this.modalRef = this.modalService.show(modal);
+    this.addAssetModalRef = this.modalService.show(modal);
   }
 
   showEditModal(asset: any, modal) {
@@ -325,13 +329,13 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.editForm.employeeNumber = this.editFormEmployee.employeeNumber;
     this.editForm.purchaseTime = asset.purchaseTime ? moment(asset.purchaseTime).toDate() : '';
     console.log(this.editForm);
-    this.modalRef = this.modalService.show(modal);
+    this.editAssetModalRef = this.modalService.show(modal);
   }
 
   showDeleteModal(asset: Asset, modal) {
     console.log(asset);
     this.selectedDeleteAsset = asset;
-    this.modalRef = this.modalService.show(modal);
+    this.deleteAssetModalRef = this.modalService.show(modal);
   }
 
   showDetailModal(asset, modal) {
@@ -340,7 +344,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }).then(data => {
       if (data.status === 0) {
         this.assetDetail = data.data;
-        this.modalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg' }));
+        this.assetDetailModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg' }));
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
@@ -353,7 +357,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }).then(data => {
       if (data.status === 0) {
         this.assetRelationList = data.data;
-        this.modalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg' }));
+        this.assetRelationModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg' }));
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
