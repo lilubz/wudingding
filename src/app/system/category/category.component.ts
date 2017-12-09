@@ -51,11 +51,11 @@ export class CategoryComponent implements OnInit {
     }
   }
 
-  onDelete() {
-    this.sendDelete({
-      assetCategoryId: this.activeCategory.assetCategoryId
-    });
-  }
+  // onDelete() {
+  //   this.sendDelete({
+  //     assetCategoryId: this.activeCategory.assetCategoryId
+  //   });
+  // }
 
   onUpdate() {
     if (this.activeCategory.categoryName === ''
