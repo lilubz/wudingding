@@ -69,6 +69,7 @@ export class AssetInventoryComponent implements OnInit {
 
   onPageChange(event) {
     this.table.pageSize = event.rows;
+    this.table.first = event.first;
     this.getTableList({
       status: this.status,
       pageNumber: event.page + 1,
