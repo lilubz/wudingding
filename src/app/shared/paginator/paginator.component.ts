@@ -1,4 +1,4 @@
-import { NgModule, Component, ElementRef, Input, Output, SimpleChange, EventEmitter } from '@angular/core';
+import { NgModule, Component, ElementRef, Input, Output, SimpleChange, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -11,6 +11,8 @@ export class PaginatorComponent {
   @Input() pageLinkSize = 5;
 
   @Output() onPageChange: EventEmitter<any> = new EventEmitter();
+
+  @Output() firstChange: EventEmitter<any> = new EventEmitter();
 
   @Input() style: any;
 
@@ -103,7 +105,7 @@ export class PaginatorComponent {
         pageCount: pc
       };
       this.updatePageLinks();
-
+      this.firstChange.emit(this.first);
       this.onPageChange.emit(state);
     }
   }

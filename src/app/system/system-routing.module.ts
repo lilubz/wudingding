@@ -2,12 +2,13 @@ import { SystemComponent } from './system.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { AssetDepartmentComponent } from 'app/system/asset-department/asset-department.component';
 
 import { CategoryComponent } from './category/category.component'
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'category',
+    redirectTo: 'asset-department',
     pathMatch: 'full'
   },
   {
@@ -18,17 +19,24 @@ const routes: Routes = [
     },
     children: [
       {
+        path: 'asset-department',
+        component: AssetDepartmentComponent,
+        data: {
+          title: '部门管理'
+        }
+      },
+      {
         path: 'category',
         component: CategoryComponent,
         data: {
           title: '类别管理'
         }
-      }
+      },
     ]
   },
   {
     path: '**',
-    redirectTo: 'system'
+    redirectTo: 'asset-department'
   }
 ];
 

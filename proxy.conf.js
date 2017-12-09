@@ -22,7 +22,7 @@ const PROXY_CONFIG = [
   // },
   {
     context: [
-      "/wenZhouGas",
+      "/wenZhouGas"
     ],
     target: "http://192.168.1.8:8089", // 妮娜
     secure: false,
@@ -30,6 +30,17 @@ const PROXY_CONFIG = [
       "^/wenZhouGas": ""
     }
   },
+  // {
+  //   context: [
+  //     "/wenZhouGas",
+  //     "/dataImport",
+  //   ],
+  //   target: "http://192.168.1.107:28081",// 涛哥
+  //   secure: false,
+  //   "pathRewrite": {
+  //     "^/wenZhouGas": ""
+  //   }
+  // },
   // {
   //   context: [
   //     "/wenZhouGas",

@@ -136,10 +136,9 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   beforeSearch() {
-    // this.pageNumber = 1;
-    // this.total = 0;
-    // this.pageFirst = 0;
-    // this.assetList = [];
+    this.pageNumber = 1;
+    this.total = 0;
+    this.pageFirst = 0;
     this.search();
   }
 
@@ -298,8 +297,8 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   pageChanged(event) {
     this.pageNumber = event.page + 1;
     this.pageSize = event.rows;
+    this.pageFirst = event.first;
     this.search();
-    console.log(event);
   }
 
   showAddModal(modal) {

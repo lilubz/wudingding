@@ -1,9 +1,8 @@
+
 import { LoginService } from './../login/login.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-// import { BrowserModule } from '@angular/platform-browser';
-// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 
 import {
@@ -13,7 +12,14 @@ import {
   ModalModule,
 } from 'ngx-bootstrap';
 
+
+
 import {
+  TreeDragDropService,
+  TreeNode,
+  ContextMenuModule,
+  TabViewModule,
+
   AutoCompleteModule,
   ButtonModule,
   CalendarModule,
@@ -73,6 +79,8 @@ import { PaginatorComponent } from './paginator/paginator.component';
     TieredMenuModule,
     TreeModule,
     _SharedModule,
+    TreeModule,
+    GrowlModule, ButtonModule, ContextMenuModule, TabViewModule
   ],
   declarations: [
     // LayoutComponent,
@@ -80,7 +88,6 @@ import { PaginatorComponent } from './paginator/paginator.component';
     BreadcrumbsComponent,
     SIDEBAR_TOGGLE_DIRECTIVES,
     AsideToggleDirective,
-
     AssetHeaderComponent,
     AssetSidebarComponent,
     BreadcrumbComponent,
@@ -116,6 +123,8 @@ import { PaginatorComponent } from './paginator/paginator.component';
     TieredMenuModule,
     TreeModule,
     _SharedModule,
+    TreeModule,
+    GrowlModule, ButtonModule, ContextMenuModule, TabViewModule,
 
     NAV_DROPDOWN_DIRECTIVES,
     BreadcrumbsComponent,
@@ -129,7 +138,8 @@ import { PaginatorComponent } from './paginator/paginator.component';
     PaginatorComponent,
   ],
   providers: [
-    LoginService
+    LoginService,
+    TreeDragDropService
   ]
 })
 export class SharedModule { }

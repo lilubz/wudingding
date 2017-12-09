@@ -7,6 +7,7 @@ import { AssetStatisticComponent } from './asset-statistic/asset-statistic.compo
 import { AssetManagementComponent } from './asset-management.component';
 import { SharedModule } from '../shared/shared.module';
 import { AssetManagementRoutingModule } from 'app/asset-management/asset-management-routing.module';
+import { AssetStatisticService } from 'app/asset-management/asset-statistic/asset-statistic.service';
 
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { zhCn } from 'ngx-bootstrap/locale';
@@ -27,6 +28,7 @@ defineLocale('zhCn', zhCn);
     AssetManagementComponent
   ],
   providers: [
+    AssetStatisticService,
     AssetSearchService
   ]
 })

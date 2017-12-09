@@ -1,3 +1,53 @@
-<p>
-  asset-statistic works!
-</p>
+<div class="asset-statistic">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>组织部门
+        </div>
+        <div class="card-block">
+          <p-tree [value]="filesTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"
+            (onNodeExpand)="loadNode($event)"></p-tree>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>资产信息
+        </div>
+        <div class="card-block">
+          <table class="table">
+            <thead>
+              <th *ngFor="let th of theads">{{th}}</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of assetStatisticList">
+                <!-- <td>&#12288;</td> -->
+                <td>{{item.organizationId || '无'}}</td>
+                <td>{{item.organizationName || '无'}}</td>
+                <td>{{item.originalValue || '无'}}</td>
+                <td>{{item.depreciationAmountAccumulate || '无'}}</td>
+                <td>{{item.depreciationAmountMonthly || '无'}}</td>
+                <td>{{item.netValue || '无'}}</td>
+                <td>{{item.residualValue || '无'}}</td>
+              </tr>
+              <tr>
+                <td>总和</td>
+                <td>无</td>
+                <td>{{originalValueSum}}</td>
+                <td>{{depreciationAmountAccumulateSum}}</td>
+                <td>{{depreciationAmountMonthlySum}}</td>
+                <td>{{residualValueSum}}</td>
+                <td>{{netValueSum}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -108,5 +108,8 @@ export class CommonXHRService {
     return this.httpService.getRequest(API.listOrganizationChildren, params);
   }
 
+  getTreeNodde(params: any): any {
+    return this.httpService.getRequest(API.listOrganizationChildren, params)
+  }
 
 }
