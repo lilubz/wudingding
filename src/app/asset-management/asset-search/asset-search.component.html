@@ -23,8 +23,8 @@
               maxlength="0">
             <div style="position: relative" *ngIf="showSearchOrgSelect" (click)="$event.stopPropagation()">
               <div style="position: absolute;z-index: 1;">
-                <p-tree [value]="organizations" selectionMode="single" [(selection)]="selectedSearchOrg" (onNodeSelect)="nodeSelect($event, 'search')"
-                  styleClass="col-md-12" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+                <p-tree [value]="searchOrganizations" selectionMode="single" [(selection)]="selectedSearchOrg" (onNodeSelect)="nodeSelect($event, 'search')"
+                  styleClass="col-md-12"></p-tree>
               </div>
             </div>
 
@@ -145,9 +145,9 @@
               <td>{{ item?.createTime | date: 'yyyy-MM-dd' }}</td>
               <td>{{ item?.monthOfDepreciation }}</td> -->
               <td>
-                <button type="button" *ngIf="!item?.reviewStatus" class="btn btn-warning" (click)="checkAsset(item)">审核</button>
+                <button type="button" *ngIf="!item?.reviewStatus" class="btn btn-warning" (click)="showReviewModal(item)">审核</button>
                 <button type="button" class="btn btn-primary" (click)="showEditModal(item,editAssetModal)">编辑</button>
-                <button type="button" class="btn btn-danger" (click)="showDeleteModal(item,deleteAssetModal)">删除</button>
+                <button type="button" class="btn btn-danger" (click)="showDeleteModal(item)">删除</button>
               </td>
             </tr>
           </tbody>
@@ -204,8 +204,8 @@
           maxlength="0">
         <div style="position: relative" *ngIf="showAddOrgSelect" (click)="$event.stopPropagation()">
           <div style="position: absolute;z-index: 9999;">
-            <p-tree [value]="organizations" selectionMode="single" [(selection)]="selectedAddOrg" (onNodeSelect)="nodeSelect($event, 'add')"
-              styleClass="col-md-12" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+            <p-tree [value]="addOrganizations" selectionMode="single" [(selection)]="selectedAddOrg" (onNodeSelect)="nodeSelect($event, 'add')"
+              styleClass="col-md-12"></p-tree>
           </div>
         </div>
         <!-- <span class="help-block">Please enter your email</span> -->
@@ -361,8 +361,8 @@
           maxlength="0">
         <div style="position: relative" *ngIf="showEditOrgSelect" (click)="$event.stopPropagation()">
           <div style="position: absolute;z-index: 9999;">
-            <p-tree [value]="organizations" selectionMode="single" [(selection)]="selectedEditOrg" (onNodeSelect)="nodeSelect($event, 'edit')"
-              styleClass="col-md-12" (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+            <p-tree [value]="editOrganizations" selectionMode="single" [(selection)]="selectedEditOrg" (onNodeSelect)="nodeSelect($event, 'edit')"
+              styleClass="col-md-12"></p-tree>
           </div>
         </div>
         <!-- <span class="help-block">Please enter your email</span> -->
@@ -467,7 +467,7 @@
   </div>
 </ng-template>
 
-<ng-template #deleteAssetModal>
+<!-- <ng-template #deleteAssetModal>
   <div class="modal-header">
     <h4 class="modal-title">删除资产</h4>
     <button type="button" class="close" (click)="deleteAssetModalRef.hide()" aria-label="Close">
@@ -482,7 +482,7 @@
     <button type="button" class="btn btn-secondary" (click)="deleteAssetModalRef.hide()">取消</button>
     <button type="button" class="btn btn-primary" (click)="deleteAsset()">确认</button>
   </div>
-</ng-template>
+</ng-template> -->
 
 <ng-template #assetDetailModal>
   <div class="modal-header">
@@ -495,21 +495,10 @@
     <div class="form-group row detail">
       <div class="col-md-12">
         <table class="table table-bordered table-sm">
-          <!-- <thead>
-          <tr>
-            <th>资产级别</th>
-            <th>编码</th>
-            <th>名称</th>
-            <th>部门</th>
-            <th>责任人</th>
-            <th>使用状态</th>
-            <th>存放位置</th>
-          </tr>
-        </thead> -->
           <tbody>
             <tr>
               <td> 资产编码</td>
-              <td>{{ assetDetail.assetSerialNumber }}</td>
+              <td> {{ assetDetail.assetSerialNumber }} </td>
               <td>主资产编码 </td>
               <td>{{ assetDetail.majorAssetSerialNumber }}</td>
             </tr>
@@ -552,26 +541,26 @@
             <tr>
               <td> 购买时间</td>
               <td>{{ assetDetail.purchaseTime|date: 'yyyy-MM-dd' }}</td>
-              <td>资产名称 </td>
-              <td>{{ assetDetail.assetName }}</td>
+              <td>购买金额 </td>
+              <td>{{ assetDetail.purchaseAmount }}</td>
             </tr>
             <tr>
-              <td> 购买金额</td>
-              <td>{{ assetDetail.purchaseAmount }}</td>
               <td>折旧月数 </td>
               <td>{{ assetDetail.monthOfDepreciation }}</td>
-            </tr>
-            <tr>
               <td> 残值率</td>
               <td>{{ assetDetail.residualRatio }}</td>
-              <td>残值 </td>
-              <td>{{ assetDetail.residualValue }}</td>
             </tr>
             <tr>
-              <td> 折旧月数</td>
+              <td>残值 </td>
+              <td>{{ assetDetail.residualValue }}</td>
+              <td> 已折旧月数</td>
               <td>{{ assetDetail.monthNumDepreciation }}</td>
-              <td>月折旧金额 </td>
+            </tr>
+            <tr>
+              <td>每月折旧金额 </td>
               <td>{{ assetDetail.depreciationAmountMonthly }}</td>
+              <td>累计折旧金额 </td>
+              <td>{{ assetDetail.depreciationAmountAccumulate }}</td>
             </tr>
             <tr>
               <td> 净值</td>
@@ -582,112 +571,9 @@
             <tr>
               <td> 更新时间</td>
               <td>{{ assetDetail.updateTime|date:'yyyy-MM-dd' }}</td>
-              <td>折旧月数 </td>
-              <td>{{ assetDetail.monthOfDepreciation }}</td>
             </tr>
           </tbody>
         </table>
-
-        <!-- <div class="col-md-6">
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">资产编码</label>
-          <div class="col-md-9"> {{ assetDetail.assetSerialNumber }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">主资产编码</label>
-          <div class="col-md-9"> {{ assetDetail.majorAssetSerialNumber }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">录入人员</label>
-          <div class="col-md-9"> {{ assetDetail.inputUser }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">审核人</label>
-          <div class="col-md-9"> {{ assetDetail.reviewUser }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">审核状态</label>
-          <div class="col-md-9"> {{ assetDetail.reviewStatus }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">审核时间</label>
-          <div class="col-md-9"> {{ assetDetail.reviewTime| date: 'yyyy-MM-dd' }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">组织部门</label>
-          <div class="col-md-9"> {{ assetDetail.organizationName }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">资产类别</label>
-          <div class="col-md-9"> {{ assetDetail.assetCategory }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">责任人</label>
-          <div class="col-md-9"> {{ assetDetail.employeeName }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">使用状态</label>
-          <div class="col-md-9"> {{ assetDetail.useStatus }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">购买批号</label>
-          <div class="col-md-9"> {{ assetDetail.batchSerialNumber }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">资产名称</label>
-          <div class="col-md-9"> {{ assetDetail.assetName }} </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">规格</label>
-          <div class="col-md-9"> {{ assetDetail.brandSpecification }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">存放位置</label>
-          <div class="col-md-9"> {{ assetDetail.storageLocation }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">购买时间</label>
-          <div class="col-md-9"> {{ assetDetail.purchaseTime|date: 'yyyy-MM-dd' }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">购买金额</label>
-          <div class="col-md-9"> {{ assetDetail.purchaseAmount }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">折旧月数</label>
-          <div class="col-md-9"> {{ assetDetail.monthOfDepreciation }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">残值率</label>
-          <div class="col-md-9"> {{ assetDetail.residualRatio }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">残值</label>
-          <div class="col-md-9"> {{ assetDetail.residualValue }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">折旧月数</label>
-          <div class="col-md-9"> {{ assetDetail.monthNumDepreciation }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">月折旧金额</label>
-          <div class="col-md-9"> {{ assetDetail.depreciationAmountMonthly }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">净值</label>
-          <div class="col-md-9"> {{ assetDetail.netValue }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">添加时间</label>
-          <div class="col-md-9"> {{ assetDetail.createTime|date:'yyyy-MM-dd' }} </div>
-        </div>
-        <div class="form-group row detail">
-          <label class="col-md-3 form-control-label">更新时间</label>
-          <div class="col-md-9"> {{ assetDetail.updateTime|date:'yyyy-MM-dd' }} </div>
-        </div>
-      </div>-->
       </div>
     </div>
   </div>

@@ -25,7 +25,6 @@ declare const swal: any;
 export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   addAssetModalRef: BsModalRef;
   editAssetModalRef: BsModalRef;
-  deleteAssetModalRef: BsModalRef;
   assetDetailModalRef: BsModalRef;
   assetRelationModalRef: BsModalRef;
   modalConfig = {
@@ -40,7 +39,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   pageSize = 10;
   pageFirst = 0;
 
-  today = moment().add(1, 'd').toDate();
+  today = moment().toDate();
   assetList: Asset[] = [];
   dateRange: Date[] = [moment().subtract(7, 'd').toDate(), new Date()];
   datePickerConfig: Partial<BsDatepickerConfig> = {
@@ -51,7 +50,9 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   categories: AssetCategory[];
   statusTypes: AssetStatusType[];
-  organizations: any[] = [];
+  searchOrganizations: TreeNode[] = [];
+  addOrganizations: TreeNode[] = [];
+  editOrganizations: TreeNode[] = [];
   selectedCategory = '';
   selectedOrganization = '';
   selectedAssetStatus = '';
@@ -117,7 +118,9 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       organizationId: ''
     }).then(data => {
       if (data.status === 0) {
-        this.organizations = [this.transformOrgToTreeNode(data.data)];
+        this.searchOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
+        this.addOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
+        this.editOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
@@ -231,7 +234,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       if (data.status === 0) {
         this.search();
         swal({ title: '删除成功', icon: 'success', button: '确认', });
-        this.deleteAssetModalRef.hide();
       } else {
         swal({ title: '删除失败', text: data.msg, icon: 'warning', button: '确认', });
       }
@@ -310,12 +312,26 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.addAssetModalRef = this.modalService.show(modal);
   }
 
+  showReviewModal(asset: Asset) {
+    swal({
+      title: '确认审核该资产?',
+      text: `${asset.assetName}`,
+      icon: 'warning',
+      buttons: true
+    }).then((review) => {
+      if (review) {
+        this.reviewAsset(asset.assetSerialNumber);
+      }
+    });
+  }
+
   showEditModal(asset: any, modal) {
-    // console.log(asset);
     this.editForm = Object.assign({}, asset);
     this.editFormCategory = '';
     if (asset.organizationId) {
-      this.selectedEditOrg = this.getOrgNodeById(asset.organizationId, this.organizations[0]) || this.selectedEditOrg;
+      this.selectedEditOrg = this.getOrgNodeById(asset.organizationId, this.editOrganizations[0]) || this.selectedEditOrg;
+      this.expandParentRecursive(this.selectedEditOrg, true);
+      console.log(this.editOrganizations);
     }
     for (const category of this.categories) {
       if (category.assetCategoryId === this.editForm.assetCategoryId) {
@@ -329,13 +345,22 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     // this.editForm.employeeNumber = this.editFormEmployee.employeeNumber;
     this.editForm.purchaseTime = asset.purchaseTime ? moment(asset.purchaseTime).toDate() : '';
     // console.log(this.editForm);
-    this.editAssetModalRef = this.modalService.show(modal);
+    this.editAssetModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-primary' }));
   }
 
-  showDeleteModal(asset: Asset, modal) {
-    // console.log(asset);
+  showDeleteModal(asset: Asset) {
     this.selectedDeleteAsset = asset;
-    this.deleteAssetModalRef = this.modalService.show(modal);
+    swal({
+      title: '确认删除该资产?',
+      text: `${asset.assetName}`,
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        this.deleteAsset();
+      }
+    });
   }
 
   showDetailModal(asset, modal) {
@@ -344,7 +369,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }).then(data => {
       if (data.status === 0) {
         this.assetDetail = data.data;
-        this.assetDetailModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg' }));
+        this.assetDetailModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg modal-info' }));
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
@@ -357,20 +382,20 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }).then(data => {
       if (data.status === 0) {
         this.assetRelationList = data.data;
-        this.assetRelationModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg' }));
+        this.assetRelationModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg modal-info' }));
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
     });
   }
 
-  checkAsset(asset) {
-    if (asset.assetSerialNumber) {
+  reviewAsset(assetSerialNumber) {
+    if (assetSerialNumber) {
       this.assetSearchService.checkAsset({
-        assetSerialNumber: asset.assetSerialNumber
+        assetSerialNumber: assetSerialNumber
       }).then(data => {
         if (data.status === 0) {
-          swal({ text: '审核成功', icon: 'success', button: '确认' });
+          swal({ text: '审核成功', icon: 'success', button: '确认', timer: 2000 });
           this.search();
         } else {
           swal({ title: '审核失败', text: data.msg, icon: 'warning', button: '确认' });
@@ -388,6 +413,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       label: '',
       parent: undefined
     };
+    this.expandRecursive(this.addOrganizations[0], false);
     this.addFormEmployee = new Employee();
     this.addForm = new AddAsset();
     this.addForm.useStatus = this.statusTypes[0].assetStatusTypeName;
@@ -443,10 +469,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  nodeUnselect(event) {
-    // console.log(event);
-  }
-
   expandRecursive(node: TreeNode, isExpand: boolean) {
     node.expanded = isExpand;
     if (node.children) {
@@ -456,19 +478,29 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  transformOrgToTreeNode(data) {
+  expandParentRecursive(node: TreeNode, isExpand: boolean) {
+    if (node.parent) {
+      node.parent.expanded = isExpand;
+      if (node.parent.parent) {
+        this.expandParentRecursive(node.parent, isExpand);
+      }
+    }
+  }
+
+  transformOrgToTreeNode(data, parent) {
     if (data) {
       const temp = {
         collapsedIcon: 'fa-folder',
         data: data.t.organizationId,
         expandedIcon: 'fa-folder-open',
         label: data.t.name,
-        children: null
+        children: null,
+        parent: parent
       }
       if (data.children) {
         const arr = []
         for (const item of data.children) {
-          arr.push(this.transformOrgToTreeNode(item));
+          arr.push(this.transformOrgToTreeNode(item, temp));
         }
         temp.children = arr;
       }
@@ -478,18 +510,21 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getOrgNodeById(organizationId, data) {
-    // console.log(organizationId, data);
     if (organizationId) {
       if (organizationId === data.data) {
         return data;
       } else {
         if (data.children) {
+          let fromChildren;
           for (const item of data.children) {
-            this.getOrgNodeById(organizationId, item);
+            fromChildren = this.getOrgNodeById(organizationId, item);
+            if (fromChildren) {
+              break;
+            }
           }
+          return fromChildren;
         }
       }
     }
-    return null;
   }
 }
