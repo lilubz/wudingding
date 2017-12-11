@@ -37,18 +37,21 @@ export class AssetInventoryComponent implements OnInit {
     start: false,
     end: false
   }
-  status = ''; // 绑定的下拉框数据，包含已经盘点（1）和未盘点（0）两个状态。
+  status: any = ''; // 绑定的下拉框数据，包含已经盘点（1）和未盘点（0）两个状态。
   constructor(private modalService: BsModalService, private assetInventoryService: AssetInventoryService) { }
 
   ngOnInit() {
     this.getCurrentStatus();
   }
 
-  onQuery(template, params) {
+  onQuery(template, params, input, submit) {
+    // 参数 input 和 submit 是两个Dom元素。是为了解决打开模态框后表单元素仍然拥有焦点，导致按enter键会打开多个模态框。
+    input.blur();
+    submit.blur();
     this.getDetailInfo(template, {
       searchType: 'assetSerialNumber',
       keyWord: params
-    })
+    });
   }
 
   onSelectedChange() {
@@ -231,6 +234,8 @@ export class AssetInventoryComponent implements OnInit {
             start: false,
             end: true
           }
+          this.status = 0;
+          this.onSelectedChange();
         } else {
           this.btns = {
             start: true,

@@ -10,7 +10,7 @@
     <div class="card-body">
       <div class="form-group">
         <label for=""></label>
-        <select [(ngModel)]="status" (change)="onSelectedChange()" class="form-control status">
+        <select [(ngModel)]="status" (change)="onSelectedChange()" class="form-control status" id="status">
           <option value="">--请选择--</option>
           <option value="1">已盘点</option>
           <option value="0">未盘点</option>
@@ -19,17 +19,19 @@
       <form class="form-inline">
         <div class="form-group">
           <label for=""></label>
-          <input type="text" class="params form-control" #params placeholder="请输入资产二维码">
-          <button class="btn btn-primary" (click)="onQuery(template,params.value)"><span class="fa fa-search"></span> 查询</button>
+          <input #params type="text" class="params form-control" placeholder="请输入资产二维码">
+          <button #submit class="btn btn-primary" (click)="onQuery(template,params.value,params,submit)" type="submit">
+            <span class="fa fa-search"></span>
+             查询</button>
         </div>
       </form>
     </div>
   </div>
-  <div class="card formBox">
+  <div class="card">
     <div class="card-header">
       <i class="fa fa-align-justify"></i> 资产信息
     </div>
-    <div class="card-body text-center" *ngIf="table.list.length!==0">
+    <div class="card-body text-center">
       <table class="table table-bordered table-striped table-sm">
         <thead>
           <tr>
@@ -44,11 +46,14 @@
         <tbody>
           <tr *ngFor="let item of table.list">
             <td>{{item.assetId}}</td>
-            <td><a href="javascript:void(0);" (click)="onQuery(template,item.assetSerialNumber)">{{item.assetSerialNumber}}</a></td>
+            <td><a href="javascript:void(0);" (click)="onQuery(template,item.assetSerialNumber,params,submit)">{{item.assetSerialNumber}}</a></td>
             <td>{{item.assetName}}</td>
             <td>{{item.inventoryUserName}}</td>
             <td>{{item.createTime | date:"yyyy-MM-dd"}}</td>
             <td>{{item.inventoryTime | date:"yyyy-MM-dd"}}</td>
+          </tr>
+          <tr *ngIf="table.list.length===0">
+            <td colspan="6">未查询到数据</td>
           </tr>
         </tbody>
       </table>
