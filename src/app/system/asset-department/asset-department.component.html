@@ -1,9 +1,19 @@
 <div class="asset-department">
   <div class="row">
     <div class="col-md-12">
+
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>部门管理
+        </div>
+        <div class="card-block">
+
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i>部门概览
         </div>
         <div class="card-block">
           <p-tree [value]="departmentTree" layout="horizontal" selectionMode="single" [(selection)]="selectedDepartment" (onNodeSelect)="nodeSelect($event);openModalWithClass(department)"
@@ -11,6 +21,7 @@
           <!-- {{selectedDepartment ? selectedDepartment.data:'none'}} -->
         </div>
       </div>
+
     </div>
   </div>
 </div>

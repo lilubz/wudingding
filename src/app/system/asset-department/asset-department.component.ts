@@ -15,7 +15,7 @@ declare const swal: any;
   styleUrls: ['./asset-department.component.scss']
 })
 export class AssetDepartmentComponent implements OnInit, OnDestroy {
-
+  maxOrgTreeDepth = 0;
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
   config = {
@@ -79,6 +79,7 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
       if (data.status === 0) {
         // // console.log(data.data);
         this.departmentTree = [this.transformOrgToTreeNode(data.data)];
+        this.maxOrgTreeDepth = this.getTreeDepth(this.departmentTree);
         // // console.log(this.departmentTree);
       } else {
 
@@ -91,6 +92,31 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
         button: '确认',
       });
     })
+  }
+
+  /**
+   * 获取树结构的最大深度
+   * 2017-12-14 10:42:03
+   * @author hzb
+   * @param tree
+   * @returns
+   */
+  getTreeDepth(tree: any[]): number {
+    if (tree.length) {
+      let maxDepthOfChild = 0;
+      for (const item of tree) {
+        let childDepth = 1;
+        if (item.children) {
+          childDepth += this.getTreeDepth(item.children);
+        }
+        if (childDepth > maxDepthOfChild) {
+          maxDepthOfChild = childDepth;
+        }
+      }
+      return maxDepthOfChild;
+    } else {
+      return 0;
+    }
   }
 
   addDepartment() {
