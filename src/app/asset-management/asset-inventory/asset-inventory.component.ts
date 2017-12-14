@@ -1,4 +1,5 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
+import { zh } from './../../core/date-localization';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
@@ -49,7 +50,19 @@ export class AssetInventoryComponent implements OnInit {
     this.getCurrentStatus();
   }
 
-  onQuery(template, params, input, submit) {
+  onSearch() {
+    this.table.list = [];
+    this.table.total = 0;
+    this.table.first = 0;
+    const params = {
+      status: this.status,
+      pageNumber: 1,
+      pageSize: this.table.pageSize
+    }
+    this.getTableList(params);
+  }
+
+  onLookDetail(template, params, input, submit) {
     // 参数 input 和 submit 是两个Dom元素。是为了解决打开模态框后表单元素仍然拥有焦点，导致按enter键会打开多个模态框。
     input.blur();
     submit.blur();
@@ -59,20 +72,8 @@ export class AssetInventoryComponent implements OnInit {
     });
   }
 
-  onSelectedChange() {
-    this.table.list = [];
-    this.table.total = 0;
-    this.table.first = 0;
-    if (this.status === '') {
-      return;
-    } else {
-      const params = {
-        status: this.status,
-        pageNumber: 1,
-        pageSize: this.table.pageSize
-      }
-      this.getTableList(params);
-    }
+  onOpenBeginModal(template) {
+    this.modalRef = this.modalService.show(template);
   }
 
   onPageChange(event) {
@@ -169,7 +170,6 @@ export class AssetInventoryComponent implements OnInit {
         } else {
           this.table.list = [];
           this.table.total = 0;
-          this.status = '';
           swal(data.msg, {
             icon: 'warning',
           });
@@ -177,7 +177,6 @@ export class AssetInventoryComponent implements OnInit {
       }).catch(error => {
         this.table.list = [];
         this.table.total = 0;
-        this.status = '';
         swal('出错了,错误代码：' + error.status, {
           icon: 'error',
         });
@@ -193,7 +192,6 @@ export class AssetInventoryComponent implements OnInit {
           });
           this.table.list = [];
           this.table.total = 0;
-          this.status = '';
           this.getCurrentStatus();
         } else {
           swal(data.msg, {
@@ -212,7 +210,7 @@ export class AssetInventoryComponent implements OnInit {
       .then(data => {
         if (data.status === 0) {
           this.modalRef.hide();
-          this.onSelectedChange();
+          this.onSearch();
           swal(data.msg, {
             icon: 'success',
           });
@@ -242,7 +240,7 @@ export class AssetInventoryComponent implements OnInit {
             end: true
           }
           this.status = 0;
-          this.onSelectedChange();
+          this.onSearch();
         } else {
           this.btns = {
             start: true,
