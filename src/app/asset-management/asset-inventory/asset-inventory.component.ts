@@ -37,6 +37,11 @@ export class AssetInventoryComponent implements OnInit {
     start: false,
     end: false
   }
+  beginForm = {
+    beginTime: '',
+    endTime: '',
+    department: ''
+  }
   status: any = ''; // 绑定的下拉框数据，包含已经盘点（1）和未盘点（0）两个状态。
   constructor(private modalService: BsModalService, private assetInventoryService: AssetInventoryService) { }
 
@@ -86,20 +91,22 @@ export class AssetInventoryComponent implements OnInit {
     });
   }
 
-  startInventory() {
-    swal({
-      title: '请确认',
-      text: '盘点工作即将开启',
-      icon: 'warning',
-      buttons: true,
-      dangerMode: true,
-    })
-      .then((confirm) => {
-        if (confirm) {
-          this.sendStart();
-        }
-      });
+  startInventory(template) {
+    this.modalRef = this.modalService.show(template);
+    // swal({
+    //   title: '请确认',
+    //   text: '盘点工作即将开启',
+    //   icon: 'warning',
+    //   buttons: true,
+    //   dangerMode: true,
+    // })
+    //   .then((confirm) => {
+    //     if (confirm) {
+    //       this.sendStart();
+    //     }
+    //   });
   }
+
   endInventory() {
     swal({
       title: '请确认',
