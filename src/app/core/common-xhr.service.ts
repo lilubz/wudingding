@@ -44,7 +44,7 @@ export class CommonXHRService {
   }
 
   /**
-   * 获取当前登陆用户所在组织的所有直接子组织的简单信息
+   * 获取当前登录用户所在组织的所有直接子组织的简单信息
    * 2017-12-05 14:18:23
    * @author hzb
    */
@@ -78,7 +78,7 @@ export class CommonXHRService {
   }
 
   /**
-   * 获取当前登陆用户权限下，模糊查询符合名称的员工简单信息
+   * 获取当前登录用户权限下，模糊查询符合名称的员工简单信息
    *
    * @author hzb
    * @param params
@@ -98,7 +98,7 @@ export class CommonXHRService {
   }
 
   /**
-   * 获取某个organizationId下面所有节点的简单信息，如果入参为空，organizationId为当前登陆用户的
+   * 获取某个organizationId下面所有节点的简单信息，如果入参为空，organizationId为当前登录用户的
    * 2017-12-07 17:14:00
    * @author hzb
    * @param params

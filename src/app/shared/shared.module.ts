@@ -7,7 +7,6 @@ import { RouterModule } from '@angular/router';
 
 import {
   BsDropdownModule,
-  BsDatepickerModule,
   TabsModule,
   ModalModule,
 } from 'ngx-bootstrap';
@@ -35,6 +34,7 @@ import {
   MenuModule,
   PanelModule,
   SpinnerModule,
+  StepsModule,
   TieredMenuModule,
   TreeModule,
   SharedModule as _SharedModule,
@@ -56,7 +56,6 @@ import { PaginatorComponent } from './paginator/paginator.component';
     ReactiveFormsModule,
     RouterModule,
     BsDropdownModule.forRoot(),
-    BsDatepickerModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot(),
 
@@ -75,6 +74,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
     MenuModule,
     PanelModule,
     SpinnerModule,
+    StepsModule,
     TieredMenuModule,
     TreeModule,
     _SharedModule,
@@ -99,7 +99,6 @@ import { PaginatorComponent } from './paginator/paginator.component';
     ReactiveFormsModule,
     RouterModule,
     BsDropdownModule,
-    BsDatepickerModule,
     TabsModule,
     ModalModule,
 
@@ -118,6 +117,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
     MenuModule,
     PanelModule,
     SpinnerModule,
+    StepsModule,
     TieredMenuModule,
     TreeModule,
     _SharedModule,

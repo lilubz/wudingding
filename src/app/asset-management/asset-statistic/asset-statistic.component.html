@@ -4,6 +4,8 @@
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>组织部门
+          <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search']" type="button">资产查询</button>
+          <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-statistic']" type="button">资产统计</button>
         </div>
         <div class="card-block">
           <p-tree [value]="filesTree" layout="horizontal" selectionMode="single" [(selection)]="selectedNode" (onNodeSelect)="nodeSelect($event)"

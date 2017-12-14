@@ -2,7 +2,9 @@
   <div class="col-lg-12">
     <div class="card">
       <div class="card-header">
-        <i class="fa fa-align-justify"></i> 搜索
+        <i class="fa fa-align-justify"></i> 资产查询
+        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search']" type="button">资产查询</button>
+        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-statistic']" type="button">资产统计</button>
       </div>
       <div class="card-body">
 
@@ -46,27 +48,45 @@
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
           <div class="form-group col-md-6">
-            <label for="select">资产负责人</label>
+            <label for="select">资产使用人</label>
             <div class="row">
               <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="selectedEmployee" (completeMethod)="searchEmployee($event)"
-                [forceSelection]="true" styleClass="col-md-12 autoComplete" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'edit')"
-                [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产负责人">
+                [forceSelection]="false" styleClass="col-md-12 autoComplete" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'search')"
+                (onBlur)="onBlurFromEmployeeSearch($event)" [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'"
+                placeholder="请输入资产使用人">
                 <ng-template let-employee pTemplate="item">
                   <div>{{ employee.employeeName }}</div>
                 </ng-template>
               </p-autoComplete>
             </div>
-            <!-- <input type="text" [(ngModel)]="selectedEmployee" class="form-control" placeholder="请输入负责人"> -->
+            <!-- <input type="text" [(ngModel)]="selectedEmployee" class="form-control" placeholder="请输入使用人"> -->
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col-md-6">
-            <label for="select">录入时间
+            <label for="select">开始时间
               <span class="required">*</span>
             </label>
-            <input type="text" bsDaterangepicker [(ngModel)]="dateRange" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control">
+            <div>
+              <p-calendar #beginDate [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
+                [(ngModel)]="searchBeginDate" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" [maxDate]="endDate.value?endDate.value:today"
+                readonlyInput="true" placeholder="请输入开始时间"></p-calendar>
+            </div>
+            <!-- <input type="text" bsDaterangepicker [(ngModel)]="dateRange" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"> -->
+            <!-- <span class="help-block">Please enter your email</span> -->
+          </div>
+          <div class="form-group col-md-6">
+            <label for="select">结束时间
+              <span class="required">*</span>
+            </label>
+            <div>
+              <p-calendar #endDate [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
+                [(ngModel)]="searchEndDate" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" [minDate]="beginDate.value"
+                [maxDate]="today" readonlyInput="true" placeholder="请输入结束时间"></p-calendar>
+            </div>
+            <!-- <input type="text" bsDaterangepicker [(ngModel)]="dateRange" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"> -->
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
@@ -76,8 +96,14 @@
         </button>
 
         <div class="btn-group pull-right">
-          <button class="btn btn-outline-primary" type="button" (click)="showAddModal(addAssetModal)">
+          <button class="btn btn-outline-info" type="button" (click)="showAddModal(addAssetModal)">
             <i class="fa fa-plus"></i>&nbsp; 添加资产信息
+          </button>
+          <button class="btn btn-outline-primary" type="button" (click)="showUploadAssetModal(uploadAssetModal)">
+            <i class="fa fa-upload"></i>&nbsp; 导入
+          </button>
+          <button class="btn btn-outline-primary" type="button" (click)="downloadAsset()">
+            <i class="fa fa-download"></i>&nbsp; 导出
           </button>
           <!-- <button class="btn btn-outline-primary" type="button">
             <i class="fa fa-download"></i>&nbsp; 导入
@@ -109,7 +135,7 @@
               <th>主资产编码</th>
               <th>规格</th>
               <th>部门</th>
-              <th>责任人</th>
+              <th>使用人</th>
               <th>使用状态</th>
               <th>存放位置</th>
               <th>审核状态</th>
@@ -226,27 +252,25 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">责任人
+      <label class="col-md-3 form-control-label">使用人
         <span class="required">*</span>
       </label>
       <div class="col-md-9">
         <div class="row">
           <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="addFormEmployee" (completeMethod)="searchEmployee($event)"
-            styleClass="col-md-12" [forceSelection]="true" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'add')"
-            [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产负责人">
+            (onBlur)="onBlurFromEmployeeAdd($event)" styleClass="col-md-12" [forceSelection]="false" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'add')"
+            [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产使用人">
             <ng-template let-employee pTemplate="item">
               <div>{{ employee.employeeName }}</div>
             </ng-template>
           </p-autoComplete>
         </div>
-        <!-- <input type="text" [(ngModel)]="addForm.employeeNumber" name="hf-email" class="form-control" placeholder="请输入责任人" maxlength="20"> -->
+        <!-- <input type="text" [(ngModel)]="addForm.employeeNumber" name="hf-email" class="form-control" placeholder="请输入使用人" maxlength="20"> -->
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">使用状态
-        <span class="required">*</span>
-      </label>
+      <label class="col-md-3 form-control-label">使用状态</label>
       <div class="col-md-9">
         <select class="form-control" [(ngModel)]="addForm.useStatus" name="select">
           <!-- <option value="">--请选择--</option> -->
@@ -272,15 +296,20 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买时间</label>
+      <label class="col-md-3 form-control-label">购买时间
+        <span class="required">*</span>
+      </label>
       <div class="col-md-9">
-        <input type="text" bsDatepicker [(ngModel)]="addForm.purchaseTime" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"
-          maxlength="20" placeholder="请输入购买时间">
+        <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
+          [(ngModel)]="addForm.purchaseTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" inputStyleClass="add-purchase-date"
+          [maxDate]="today" readonlyInput="true" placeholder="请输入购买时间"></p-calendar>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买金额</label>
+      <label class="col-md-3 form-control-label">购买金额
+        <span class="required">*</span>
+      </label>
       <div class="col-md-9">
         <input type="number" [(ngModel)]="addForm.purchaseAmount" name="hf-email" class="form-control" placeholder="请输入购买金额" maxlength="20">
         <!-- <span class="help-block">Please enter your email</span> -->
@@ -383,14 +412,15 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">责任人
+      <label class="col-md-3 form-control-label">使用人
         <span class="required">*</span>
       </label>
       <div class="col-md-9">
         <div class="row">
           <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="editFormEmployee" (completeMethod)="searchEmployee($event)"
-            styleClass="col-md-12" [forceSelection]="true" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'edit')"
-            [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产负责人">
+            (onBlur)="onBlurFromEmployeeEdit($event)" styleClass="col-md-12" [forceSelection]="false" field="employeeName"
+            (onSelect)="selectSuggestedEmployee($event,'edit')" [delay]="500" [size]="20" [minLength]="1" [maxlength]="20"
+            [inputStyleClass]="'form-control'" placeholder="请输入资产使用人">
             <ng-template let-employee pTemplate="item">
               <div>{{ employee.employeeName }}</div>
             </ng-template>
@@ -400,9 +430,7 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">使用状态
-        <span class="required">*</span>
-      </label>
+      <label class="col-md-3 form-control-label">使用状态</label>
       <div class="col-md-9">
         <select class="form-control" [(ngModel)]="editForm.useStatus" name="select">
           <!-- <option value="">--请选择--</option> -->
@@ -428,15 +456,20 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买时间</label>
+      <label class="col-md-3 form-control-label">购买时间
+        <span class="required">*</span>
+      </label>
       <div class="col-md-9">
-        <input type="text" bsDatepicker [(ngModel)]="editForm.purchaseTime" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"
-          maxlength="20" placeholder="请输入购买时间">
+        <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
+          [(ngModel)]="editForm.purchaseTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" inputStyleClass="add-purchase-date"
+          [maxDate]="today" readonlyInput="true" placeholder="请输入购买时间"></p-calendar>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买金额</label>
+      <label class="col-md-3 form-control-label">购买金额
+        <span class="required">*</span>
+      </label>
       <div class="col-md-9">
         <input type="number" [(ngModel)]="editForm.purchaseAmount" name="hf-email" class="form-control" placeholder="请输入购买金额" maxlength="20">
         <!-- <span class="help-block">Please enter your email</span> -->
@@ -521,7 +554,7 @@
               <td>{{ assetDetail.assetCategory }}</td>
             </tr>
             <tr>
-              <td> 责任人</td>
+              <td> 使用人</td>
               <td>{{ assetDetail.employeeName }}</td>
               <td>使用状态 </td>
               <td>{{ assetDetail.useStatus }}</td>
@@ -597,7 +630,7 @@
           <th>编码</th>
           <th>名称</th>
           <th>部门</th>
-          <th>责任人</th>
+          <th>使用人</th>
           <th>使用状态</th>
           <th>存放位置</th>
         </tr>
@@ -619,5 +652,33 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="assetRelationModalRef.hide()">确认</button>
+  </div>
+</ng-template>
+
+<ng-template #uploadAssetModal>
+  <div class="modal-header">
+    <h4 class="modal-title">资产导入</h4>
+    <button type="button" class="close" (click)="uploadAssetModalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p-steps [model]="uploadSteps" [(activeIndex)]="activeUploadStepIndex" [readonly]="false"></p-steps>
+    <div class="col-md-12 step" *ngIf="activeUploadStepIndex===0">
+      <a class="btn btn-primary" href="">点击下载模板文件</a>
+    </div>
+    <div class="col-md-12 step" *ngIf="activeUploadStepIndex===1">
+      请按照模板文件格式填写数据
+    </div>
+    <div class="col-md-12 step" *ngIf="activeUploadStepIndex===2">
+      <div style="margin-bottom:20px;">请上传要导入的文件</div>
+      <p-fileUpload [url]="uploadAssetUrl" [multiple]="false" invalidFileSizeMessageSummary="{0}: 文件过大," invalidFileSizeMessageDetail="最大文件尺寸是 {0}."
+        invalidFileTypeMessageSummary="{0}: 不合法的文件类型," invalidFileTypeMessageDetail="允许的文件类型是: {0}." chooseLabel="选择文件" uploadLabel="上传"
+        accept=".xls,.xlsx" cancelLabel="取消" maxFileSize="10000000" (onUpload)="uploadAsset($event)">
+      </p-fileUpload>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="uploadAssetModalRef.hide()">确认</button>
   </div>
 </ng-template>
