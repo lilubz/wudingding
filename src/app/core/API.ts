@@ -32,6 +32,10 @@ export const API = {
   'listAssetInfoByMajorAsset': URL + 'assetBasic/listAssetInfoByMajorAsset.do', // 根据主资产id获取套资产信息
   'checkAsset': URL + 'assetBasic/checkAsset.do', // 资产审核
 
+  'uploadAssetUrl': URL + '', // 资产导入
+  'downloadAssetUrl': URL + '', // 资产导出
+
+
   // 资产类别管理
   'addCategory': URL + 'assetBasic/sort/add.do',
   'deleteCategory': URL + 'assetBasic/sort/delete.do',

@@ -1,3 +1,4 @@
+import { zh } from './../../core/date-localization';
 import { Employee } from './../../model/Employee.model';
 import { UserStateService } from './../../core/user-state.service';
 import { AddAsset } from './AddAsset.model';
@@ -15,6 +16,7 @@ import * as moment from 'moment';
 import { ModalDirective, BsModalRef, BsModalService } from '../../../../node_modules/_ngx-bootstrap@1.9.3@ngx-bootstrap';
 import { forEach } from '../../../../node_modules/_@angular_router@4.3.4@@angular/router/src/utils/collection';
 import { TreeNode } from '../../../../node_modules/_primeng@4.3.0@primeng/components/common/treenode';
+import { API } from 'app/core/api';
 
 declare const swal: any;
 @Component({
@@ -23,10 +25,13 @@ declare const swal: any;
   styleUrls: ['./asset-search.component.scss']
 })
 export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
+  uploadAssetUrl = API.uploadAssetUrl;
+  zh;
   addAssetModalRef: BsModalRef;
   editAssetModalRef: BsModalRef;
   assetDetailModalRef: BsModalRef;
   assetRelationModalRef: BsModalRef;
+  uploadAssetModalRef: BsModalRef;
   modalConfig = {
     animated: true,
     keyboard: false,
@@ -56,6 +61,8 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedCategory = '';
   selectedOrganization = '';
   selectedAssetStatus = '';
+  searchBeginDate = '';
+  searchEndDate = '';
   selectedDeleteAsset: Asset;
   selectedEmployee: Employee = new Employee();
   addFormEmployee: Employee = new Employee();
@@ -88,6 +95,13 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   editFormCategory: AssetCategory | '' = '';
   assetRelationList: any[] = [];
 
+  uploadSteps = [
+    { label: '模板下载', command: (event: any) => { console.log(event); this.activeUploadStepIndex = 0; } },
+    { label: '填写数据', command: (event: any) => { console.log(event); this.activeUploadStepIndex = 1; } },
+    { label: '文件上传', command: (event: any) => { console.log(event); this.activeUploadStepIndex = 2; } }
+  ];
+  activeUploadStepIndex = 0;
+
   constructor(
     private commonXHRService: CommonXHRService,
     private assetSearchService: AssetSearchService,
@@ -95,6 +109,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    this.zh = zh;
     document.body.addEventListener('click', this.hideOrgSelect);
 
     this.commonXHRService.listAssetCategory().then(data => {
@@ -155,9 +170,9 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
         organizationId: this.selectedOrganization || '',
         assetCategoryId: this.selectedCategory,
         useStatus: this.selectedAssetStatus,
-        startTimeString: moment(this.dateRange[0]).format('YYYY-MM-DD'),
-        endTimeString: moment(this.dateRange[1]).format('YYYY-MM-DD'),
-        personInCharge: this.selectedEmployee ? this.selectedEmployee.employeeName || '' : '',
+        startTimeString: this.searchBeginDate ? moment(this.searchBeginDate).format('YYYY-MM-DD') : '',
+        endTimeString: this.searchEndDate ? moment(this.searchEndDate).format('YYYY-MM-DD') : '',
+        employeeName: this.selectedEmployee ? this.selectedEmployee.employeeName || '' : '',
         pageNumber: this.pageNumber,
         pageSize: this.pageSize,
       }).then(data => {
@@ -272,10 +287,13 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       swal({ text: '请输入资产类型', icon: 'warning', button: '确认' });
       return false;
     } else if (!this.addFormEmployee || !this.addFormEmployee.employeeNumber) {
-      swal({ text: '请输入责任人', icon: 'warning', button: '确认' });
+      swal({ text: '请输入使用人', icon: 'warning', button: '确认' });
       return false;
-    } else if (!this.addForm.useStatus) {
-      swal({ text: '请输入资产状态', icon: 'warning', button: '确认' });
+    } else if (!this.addForm.purchaseTime) {
+      swal({ text: '请输入购买时间', icon: 'warning', button: '确认' });
+      return false;
+    } else if (!this.addForm.purchaseAmount) {
+      swal({ text: '请输入购买金额', icon: 'warning', button: '确认' });
       return false;
     }
     return true
@@ -291,10 +309,13 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       swal({ text: '请输入资产类型', icon: 'warning', button: '确认' });
       return false;
     } else if (!this.editFormEmployee || !this.editFormEmployee.employeeNumber) {
-      swal({ text: '请输入责任人', icon: 'warning', button: '确认' });
+      swal({ text: '请输入使用人', icon: 'warning', button: '确认' });
       return false;
-    } else if (!this.editForm.useStatus) {
-      swal({ text: '请输入资产状态', icon: 'warning', button: '确认' });
+    } else if (!this.editForm.purchaseTime) {
+      swal({ text: '请输入购买时间', icon: 'warning', button: '确认' });
+      return false;
+    } else if (!this.editForm.purchaseAmount) {
+      swal({ text: '请输入购买金额', icon: 'warning', button: '确认' });
       return false;
     }
     return true
@@ -389,6 +410,28 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  showUploadAssetModal(modal) {
+    this.uploadAssetModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg modal-info' }));
+  }
+
+  uploadAsset(event) {
+    if (JSON.parse(event.xhr.responseText).status === 0) {
+      swal({ text: '上传成功', icon: 'success', button: '确认' });
+    } else {
+      swal({ title: '上传失败', text: JSON.parse(event.xhr.responseText).msg, icon: 'error', button: '确认' });
+    }
+  }
+
+  downloadAsset() {
+    swal({ text: `确认导出下方表格中的${this.total}条数据！`, icon: 'info', buttons: ['取消', '确认'] })
+      .then(data => {
+        console.log(data);
+        if (data) {
+
+        }
+      });
+  }
+
   reviewAsset(assetSerialNumber) {
     if (assetSerialNumber) {
       this.assetSearchService.checkAsset({
@@ -455,14 +498,50 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  onBlurFromEmployeeSearch(event) {
+    if (!this.selectedEmployee.employeeNumber) {
+      this.selectedEmployee = new Employee();
+    }
+  }
+
+  onBlurFromEmployeeAdd(event) {
+    if (!this.addFormEmployee.employeeNumber) {
+      this.addFormEmployee = new Employee();
+    }
+  }
+
+  onBlurFromEmployeeEdit(event) {
+    if (!this.editFormEmployee.employeeNumber) {
+      this.editFormEmployee = new Employee();
+    }
+  }
+
   nodeSelect(event, type) {
     // console.log(event);
     if (type === 'add') {
-      this.addForm.organizationId = event.node.data;
-      this.showAddOrgSelect = false;
+      if (event.node.children) {
+        this.selectedAddOrg = {
+          data: '',
+          label: '',
+          parent: undefined
+        };
+        swal({ text: '请选择子部门', icon: 'warning', button: '确认' });
+      } else {
+        this.addForm.organizationId = event.node.data;
+        this.showAddOrgSelect = false;
+      }
     } else if (type === 'edit') {
-      this.editForm.organizationId = event.node.data;
-      this.showEditOrgSelect = false;
+      if (event.node.children) {
+        this.selectedEditOrg = {
+          data: '',
+          label: '',
+          parent: undefined
+        };
+        swal({ text: '请选择子部门', icon: 'warning', button: '确认' });
+      } else {
+        this.editForm.organizationId = event.node.data;
+        this.showEditOrgSelect = false;
+      }
     } else if (type === 'search') {
       this.selectedOrganization = event.node.data;
       this.showSearchOrgSelect = false;
