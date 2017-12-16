@@ -31,6 +31,8 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
   departmentDescription?: string;
   departmentAddress?: string;
   oldDepartmentName?: string;
+  departmentList: any[] = [];
+  selectedDepartmentList: any[] = [];
   constructor(
     private _service: AssetDepartmentService,
     private commonXHRService: CommonXHRService,
@@ -53,7 +55,7 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.getNode()
+    this.getNode();
   }
   /**
    * 节点变化
@@ -80,17 +82,16 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
         // // console.log(data.data);
         this.departmentTree = [this.transformOrgToTreeNode(data.data)];
         this.maxOrgTreeDepth = this.getTreeDepth(this.departmentTree);
+        this.departmentList = this.getDepartmentListByDepth(this.maxOrgTreeDepth);
+        this.selectedDepartmentList[0] = this.departmentTree[0];
+        this.selectDepartment(null, 0);
+        console.log(this.departmentTree);
         // // console.log(this.departmentTree);
       } else {
 
       }
     }).catch(error => {
-      swal({
-        title: '服务器异常',
-        text: '',
-        icon: 'error',
-        button: '确认',
-      });
+      swal({ text: error, icon: 'error', button: '确认', });
     })
   }
 
@@ -119,6 +120,22 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
     }
   }
 
+  getDepartmentListByDepth(maxOrgTreeDepth) {
+    const list = [];
+    for (let i = 0; i < maxOrgTreeDepth; i++) {
+      list.push(true);
+    }
+    return list;
+  }
+
+  selectDepartment(event, index) {
+    console.log(this.selectedDepartmentList);
+    this.selectedDepartmentList = this.selectedDepartmentList.slice(0, index + 1);
+    if (this.selectedDepartmentList[index].children) {
+      this.selectedDepartmentList[index + 1] = '';
+    }
+    console.log(this.selectedDepartmentList);
+  }
   addDepartment() {
     if (this.checkForm()) {
       swal({

@@ -8,6 +8,28 @@
         </div>
         <div class="card-block">
 
+          <ng-container *ngFor="let department of departmentList;let index=index;">
+            <!-- 不能超出最大深度 -->
+            <ng-container *ngIf="department">
+              <!-- 根节点 -->
+              <ng-container *ngIf="index===0">
+                <select [(ngModel)]="selectedDepartmentList[0]" (change)="selectDepartment($event,index)">
+                  <ng-container *ngFor="let item of [selectedDepartmentList[0]]">
+                    <option [ngValue]="item">{{ item?.label }}</option>
+                  </ng-container>
+                </select>
+              </ng-container>
+              <!--  非根节点；父节点拥有children属性才展示 -->
+              <ng-container *ngIf="index>0&&selectedDepartmentList[index-1]?.children">
+                <select [(ngModel)]="selectedDepartmentList[index]" (change)="selectDepartment($event,index)">
+                  <option value="">--请选择--</option>
+                  <ng-container *ngFor="let item of selectedDepartmentList[index-1].children">
+                    <option [ngValue]="item">{{ item?.label }}</option>
+                  </ng-container>
+                </select>
+              </ng-container>
+            </ng-container>
+          </ng-container>
         </div>
       </div>
 
