@@ -1,3 +1,4 @@
+import { AssetAddComponent } from './asset-add/asset-add.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
@@ -29,6 +30,13 @@ const routes: Routes = [
         component: AssetStatisticComponent,
         data: {
           title: '资产统计'
+        }
+      },
+      {
+        path: 'asset-add',
+        component: AssetAddComponent,
+        data: {
+          title: '新增资产'
         }
       },
       {

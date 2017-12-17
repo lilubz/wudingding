@@ -96,12 +96,12 @@
         </button>
 
         <div class="btn-group pull-right">
-          <button class="btn btn-outline-info" type="button" (click)="showAddModal(addAssetModal)">
+          <!-- <button class="btn btn-outline-info" type="button" (click)="showAddModal(addAssetModal)">
             <i class="fa fa-plus"></i>&nbsp; 添加资产信息
           </button>
           <button class="btn btn-outline-primary" type="button" (click)="showUploadAssetModal(uploadAssetModal)">
             <i class="fa fa-upload"></i>&nbsp; 导入
-          </button>
+          </button> -->
           <button class="btn btn-outline-primary" type="button" (click)="downloadAsset()">
             <i class="fa fa-download"></i>&nbsp; 导出
           </button>
@@ -187,159 +187,7 @@
   </div>
 </div>
 
-
-<ng-template #addAssetModal>
-  <div class="modal-header">
-    <h4 class="modal-title">新增资产</h4>
-    <button type="button" class="close" (click)="addAssetModalRef.hide()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">名称
-        <span class="required">*</span>
-      </label>
-      <div class="col-md-9">
-        <input type="text" [(ngModel)]="addForm.assetName" name="hf-email" class="form-control" placeholder="请输入名称" maxlength="20">
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">规格</label>
-      <div class="col-md-9">
-        <input type="text" [(ngModel)]="addForm.brandSpecification" name="hf-email" class="form-control" placeholder="请输入规格" maxlength="20">
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">主资产编码</label>
-      <div class="col-md-9">
-        <input type="text" [(ngModel)]="addForm.majorAssetSerialNumber" name="hf-email" class="form-control" placeholder="请输入主资产编码"
-          maxlength="20">
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">组织部门
-        <span class="required">*</span>
-      </label>
-      <div class="col-md-9">
-        <input type="text" class="form-control" [(ngModel)]="selectedAddOrg.label" (click)="$event.stopPropagation();showAddOrgSelect=!showAddOrgSelect"
-          maxlength="0">
-        <div style="position: relative" *ngIf="showAddOrgSelect" (click)="$event.stopPropagation()">
-          <div style="position: absolute;z-index: 9999;">
-            <p-tree [value]="addOrganizations" selectionMode="single" [(selection)]="selectedAddOrg" (onNodeSelect)="nodeSelect($event, 'add')"
-              styleClass="col-md-12"></p-tree>
-          </div>
-        </div>
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">资产类型id
-        <span class="required">*</span>
-      </label>
-      <div class="col-md-9">
-        <select class="form-control" [(ngModel)]="addFormCategory" (ngModelChange)="addFormCategoryChange($event)" name="select">
-          <option value="">--请选择--</option>
-          <ng-container *ngFor="let category of categories">
-            <option [ngValue]="category">{{ category.categoryName }}</option>
-          </ng-container>
-        </select>
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">使用人
-        <span class="required">*</span>
-      </label>
-      <div class="col-md-9">
-        <div class="row">
-          <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="addFormEmployee" (completeMethod)="searchEmployee($event)"
-            (onBlur)="onBlurFromEmployeeAdd($event)" styleClass="col-md-12" [forceSelection]="false" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'add')"
-            [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'" placeholder="请输入资产使用人">
-            <ng-template let-employee pTemplate="item">
-              <div>{{ employee.employeeName }}</div>
-            </ng-template>
-          </p-autoComplete>
-        </div>
-        <!-- <input type="text" [(ngModel)]="addForm.employeeNumber" name="hf-email" class="form-control" placeholder="请输入使用人" maxlength="20"> -->
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">使用状态</label>
-      <div class="col-md-9">
-        <select class="form-control" [(ngModel)]="addForm.useStatus" name="select">
-          <!-- <option value="">--请选择--</option> -->
-          <ng-container *ngFor="let status of statusTypes">
-            <option [value]="status.assetStatusTypeName">{{ status.assetStatusTypeName }}</option>
-          </ng-container>
-        </select>
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买批次</label>
-      <div class="col-md-9">
-        <input type="text" [(ngModel)]="addForm.batchSerialNumber" name="hf-email" class="form-control" placeholder="请输入购买批次" maxlength="20">
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">存放位置</label>
-      <div class="col-md-9">
-        <input type="text" [(ngModel)]="addForm.storageLocation" name="hf-email" class="form-control" placeholder="请输入存放位置" maxlength="20">
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买时间
-        <span class="required">*</span>
-      </label>
-      <div class="col-md-9">
-        <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
-          [(ngModel)]="addForm.purchaseTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" inputStyleClass="add-purchase-date"
-          [maxDate]="today" readonlyInput="true" placeholder="请输入购买时间"></p-calendar>
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买金额
-        <span class="required">*</span>
-      </label>
-      <div class="col-md-9">
-        <input type="number" [(ngModel)]="addForm.purchaseAmount" name="hf-email" class="form-control" placeholder="请输入购买金额" maxlength="20">
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">折旧月数</label>
-      <div class="col-md-9">
-        <input type="number" [(ngModel)]="addForm.monthOfDepreciation" name="hf-email" class="form-control" placeholder="请输入折旧月数"
-          maxlength="20">
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-    <div class="form-group row">
-      <label class="col-md-3 form-control-label">残值率</label>
-      <div class="col-md-9">
-        <div class="input-group">
-          <input type="text" [(ngModel)]="addForm.residualRatio" name="hf-email" class="form-control" placeholder="请输入残值率" maxlength="20">
-          <span class="input-group-addon">%</span>
-        </div>
-        <!-- <span class="help-block">Please enter your email</span> -->
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="addAssetModalRef.hide()">取消</button>
-    <button type="button" class="btn btn-primary" (click)="addAsset()">保存</button>
-  </div>
-</ng-template>
-
+<!-- 编辑资产弹窗 -->
 <ng-template #editAssetModal>
   <div class="modal-header">
     <h4 class="modal-title">编辑资产</h4>
@@ -349,27 +197,26 @@
   </div>
   <div class="modal-body">
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">资产编码
-        <span class="required">*</span>
-      </label>
+      <label class="col-md-3 form-control-label">资产编码</label>
       <div class="col-md-9">
-        <input type="text" [(ngModel)]="editForm.assetSerialNumber" name="hf-email" class="form-control" placeholder="请输入资产编码" maxlength="20">
+        <input type="text" [(ngModel)]="editForm.assetSerialNumber" name="hf-email" class="form-control" placeholder="请输入资产编码" maxlength="20"
+          disabled>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">名称
-        <span class="required">*</span>
-      </label>
+      <label class="col-md-3 form-control-label">名称</label>
       <div class="col-md-9">
-        <input type="text" [(ngModel)]="editForm.assetName" name="hf-email" class="form-control" placeholder="请输入名称" maxlength="20">
+        <input type="text" [(ngModel)]="editForm.assetName" name="hf-email" class="form-control" placeholder="请输入名称" maxlength="20"
+          disabled>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
       <label class="col-md-3 form-control-label">规格</label>
       <div class="col-md-9">
-        <input type="text" [(ngModel)]="editForm.brandSpecification" name="hf-email" class="form-control" placeholder="请输入规格" maxlength="20">
+        <input type="text" [(ngModel)]="editForm.brandSpecification" name="hf-email" class="form-control" placeholder="请输入规格" maxlength="20"
+          disabled>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
@@ -377,7 +224,7 @@
       <label class="col-md-3 form-control-label">主资产编码</label>
       <div class="col-md-9">
         <input type="text" [(ngModel)]="editForm.majorAssetSerialNumber" name="hf-email" class="form-control" placeholder="请输入主资产编码"
-          maxlength="20">
+          maxlength="20" disabled>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
@@ -398,11 +245,10 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">资产类型
-        <span class="required">*</span>
-      </label>
+      <label class="col-md-3 form-control-label">资产类型</label>
       <div class="col-md-9">
-        <select class="form-control" [(ngModel)]="editFormCategory" (ngModelChange)="editFormCategoryChange($event)" name="select">
+        <select class="form-control" [(ngModel)]="editFormCategory" (ngModelChange)="editFormCategoryChange($event)" name="select"
+          disabled>
           <option value="">--请选择--</option>
           <ng-container *ngFor="let category of categories">
             <option [ngValue]="category">{{ category.categoryName }}</option>
@@ -430,7 +276,9 @@
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">使用状态</label>
+      <label class="col-md-3 form-control-label">使用状态
+        <span class="required">*</span>
+      </label>
       <div class="col-md-9">
         <select class="form-control" [(ngModel)]="editForm.useStatus" name="select">
           <!-- <option value="">--请选择--</option> -->
@@ -444,34 +292,34 @@
     <div class="form-group row">
       <label class="col-md-3 form-control-label">购买批号</label>
       <div class="col-md-9">
-        <input type="text" [(ngModel)]="editForm.batchSerialNumber" name="hf-email" class="form-control" placeholder="请输入购买批号" maxlength="20">
+        <input type="text" [(ngModel)]="editForm.batchSerialNumber" name="hf-email" class="form-control" placeholder="请输入购买批号" maxlength="20"
+          disabled>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">存放位置</label>
+      <label class="col-md-3 form-control-label">存放位置
+        <span class="required">*</span>
+      </label>
       <div class="col-md-9">
         <input type="text" [(ngModel)]="editForm.storageLocation" name="hf-email" class="form-control" placeholder="请输入存放位置" maxlength="20">
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买时间
-        <span class="required">*</span>
-      </label>
+      <label class="col-md-3 form-control-label">购买时间</label>
       <div class="col-md-9">
         <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
           [(ngModel)]="editForm.purchaseTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" inputStyleClass="add-purchase-date"
-          [maxDate]="today" readonlyInput="true" placeholder="请输入购买时间"></p-calendar>
+          [maxDate]="today" readonlyInput="true" placeholder="请输入购买时间" disabled></p-calendar>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
     <div class="form-group row">
-      <label class="col-md-3 form-control-label">购买金额
-        <span class="required">*</span>
-      </label>
+      <label class="col-md-3 form-control-label">购买金额</label>
       <div class="col-md-9">
-        <input type="number" [(ngModel)]="editForm.purchaseAmount" name="hf-email" class="form-control" placeholder="请输入购买金额" maxlength="20">
+        <input type="number" [(ngModel)]="editForm.purchaseAmount" name="hf-email" class="form-control" placeholder="请输入购买金额" maxlength="20"
+          disabled>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
@@ -479,7 +327,7 @@
       <label class="col-md-3 form-control-label">折旧月数</label>
       <div class="col-md-9">
         <input type="number" [(ngModel)]="editForm.monthOfDepreciation" name="hf-email" class="form-control" placeholder="请输入新密码"
-          maxlength="20">
+          maxlength="20" disabled>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
@@ -487,7 +335,8 @@
       <label class="col-md-3 form-control-label">残值率</label>
       <div class="col-md-9">
         <div class="input-group">
-          <input type="number" [(ngModel)]="editForm.residualRatio" name="hf-email" class="form-control" placeholder="请输入新密码" maxlength="20">
+          <input type="number" [(ngModel)]="editForm.residualRatio" name="hf-email" class="form-control" placeholder="请输入新密码" maxlength="20"
+            disabled>
           <span class="input-group-addon">%</span>
         </div>
         <!-- <span class="help-block">Please enter your email</span> -->
@@ -652,33 +501,5 @@
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-primary" (click)="assetRelationModalRef.hide()">确认</button>
-  </div>
-</ng-template>
-
-<ng-template #uploadAssetModal>
-  <div class="modal-header">
-    <h4 class="modal-title">资产导入</h4>
-    <button type="button" class="close" (click)="uploadAssetModalRef.hide()" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p-steps [model]="uploadSteps" [(activeIndex)]="activeUploadStepIndex" [readonly]="false"></p-steps>
-    <div class="col-md-12 step" *ngIf="activeUploadStepIndex===0">
-      <a class="btn btn-primary" href="">点击下载模板文件</a>
-    </div>
-    <div class="col-md-12 step" *ngIf="activeUploadStepIndex===1">
-      请按照模板文件格式填写数据
-    </div>
-    <div class="col-md-12 step" *ngIf="activeUploadStepIndex===2">
-      <div style="margin-bottom:20px;">请上传要导入的文件</div>
-      <p-fileUpload [url]="uploadAssetUrl" [multiple]="false" invalidFileSizeMessageSummary="{0}: 文件过大," invalidFileSizeMessageDetail="最大文件尺寸是 {0}."
-        invalidFileTypeMessageSummary="{0}: 不合法的文件类型," invalidFileTypeMessageDetail="允许的文件类型是: {0}." chooseLabel="选择文件" uploadLabel="上传"
-        accept=".xls,.xlsx" cancelLabel="取消" maxFileSize="10000000" (onUpload)="uploadAsset($event)">
-      </p-fileUpload>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="uploadAssetModalRef.hide()">确认</button>
   </div>
 </ng-template>

@@ -31,18 +31,6 @@ export class AssetSearchService {
   }
 
   /**
-   * 新增资产信息
-   * 2017-12-06 15:13:23
-   * @author hzb
-   * @param params
-   * @returns
-   */
-  addAssetInfo(params: any) {
-    return this.httpService
-      .withCredentialsPostRequest(API.addAssetInfo, params);
-  }
-
-  /**
    * 编辑资产信息
    * 2017-12-06 15:13:19
    * @author hzb

@@ -1,7 +1,6 @@
 import { zh } from './../../core/date-localization';
 import { Employee } from './../../model/Employee.model';
 import { UserStateService } from './../../core/user-state.service';
-import { AddAsset } from './AddAsset.model';
 import { EditAsset } from './EditAsset.model';
 import { Asset } from './asset.model';
 import { AssetSearchService } from './asset-search.service';
@@ -25,13 +24,10 @@ declare const swal: any;
   styleUrls: ['./asset-search.component.scss']
 })
 export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
-  uploadAssetUrl = API.uploadAssetUrl;
   zh;
-  addAssetModalRef: BsModalRef;
   editAssetModalRef: BsModalRef;
   assetDetailModalRef: BsModalRef;
   assetRelationModalRef: BsModalRef;
-  uploadAssetModalRef: BsModalRef;
   modalConfig = {
     animated: true,
     keyboard: false,
@@ -46,7 +42,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   today = moment().toDate();
   assetList: Asset[] = [];
-  dateRange: Date[] = [moment().subtract(7, 'd').toDate(), new Date()];
   datePickerConfig: Partial<BsDatepickerConfig> = {
     containerClass: 'theme-blue',
     locale: 'zhCn',
@@ -56,28 +51,20 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   categories: AssetCategory[];
   statusTypes: AssetStatusType[];
   searchOrganizations: TreeNode[] = [];
-  addOrganizations: TreeNode[] = [];
   editOrganizations: TreeNode[] = [];
   selectedCategory = '';
   selectedOrganization = '';
   selectedAssetStatus = '';
-  searchBeginDate = '';
-  searchEndDate = '';
+  searchBeginDate = moment().subtract(7, 'd').toDate();
+  searchEndDate = new Date();
   selectedDeleteAsset: Asset;
   selectedEmployee: Employee = new Employee();
-  addFormEmployee: Employee = new Employee();
   editFormEmployee: Employee = new Employee();
   employeeSuggestions: Employee[] = [];
 
   showSearchOrgSelect = false;
-  showAddOrgSelect = false;
   showEditOrgSelect = false;
   selectedSearchOrg: TreeNode = {
-    data: '',
-    label: '',
-    parent: undefined
-  };
-  selectedAddOrg: TreeNode = {
     data: '',
     label: '',
     parent: undefined
@@ -88,19 +75,10 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     parent: undefined
   };
 
-  addForm: AddAsset = new AddAsset();
-  addFormCategory: AssetCategory | '' = '';
   editForm: EditAsset | Asset = new EditAsset();
   assetDetail: any = {};
   editFormCategory: AssetCategory | '' = '';
   assetRelationList: any[] = [];
-
-  uploadSteps = [
-    { label: '模板下载', command: (event: any) => { console.log(event); this.activeUploadStepIndex = 0; } },
-    { label: '填写数据', command: (event: any) => { console.log(event); this.activeUploadStepIndex = 1; } },
-    { label: '文件上传', command: (event: any) => { console.log(event); this.activeUploadStepIndex = 2; } }
-  ];
-  activeUploadStepIndex = 0;
 
   constructor(
     private commonXHRService: CommonXHRService,
@@ -134,7 +112,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }).then(data => {
       if (data.status === 0) {
         this.searchOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
-        this.addOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
         this.editOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
@@ -153,7 +130,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   hideOrgSelect = () => {
     this.showSearchOrgSelect = false;
-    this.showAddOrgSelect = false;
     this.showEditOrgSelect = false;
   }
 
@@ -187,32 +163,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  addAsset() {
-    if (this.checkAddForm()) {
-      this.assetSearchService.addAssetInfo({
-        assetName: this.addForm.assetName,
-        brandSpecification: this.addForm.brandSpecification,
-        majorAssetSerialNumber: this.addForm.majorAssetSerialNumber,
-        organizationId: this.addForm.organizationId,
-        assetCategoryId: this.addForm.assetCategoryId,
-        employeeNumber: this.addFormEmployee.employeeNumber,
-        useStatus: this.addForm.useStatus,
-        batchSerialNumber: this.addForm.batchSerialNumber,
-        storageLocation: this.addForm.storageLocation,
-        purchaseTime: this.addForm.purchaseTime ? moment(this.addForm.purchaseTime).format('YYYY-MM-DD') : '',
-        purchaseAmount: this.addForm.purchaseAmount,
-        monthOfDepreciation: this.addForm.monthOfDepreciation,
-        residualRatio: this.addForm.residualRatio,
-      }).then(data => {
-        if (data.status === 0) {
-          swal({ title: '保存成功', text: data.msg, icon: 'success', button: '确认' });
-          this.addAssetModalRef.hide();
-        } else {
-          swal({ title: '保存失败', text: data.msg, icon: 'warning', button: '确认' });
-        }
-      });
-    }
-  }
   editAsset() {
     if (this.checkEditForm()) {
       this.assetSearchService.updateAssetInfo({
@@ -269,54 +219,39 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   checkParams() {
-    if (!this.dateRange || this.dateRange.length < 2) {
+    if (!this.searchBeginDate || !this.searchEndDate) {
       swal({ text: '请选择录入时间段', icon: 'warning', button: '确认', });
       return false;
     }
     return true;
   }
 
-  checkAddForm() {
-    if (!this.addForm.assetName) {
-      swal({ text: '请输入资产名称', icon: 'warning', button: '确认' });
-      return false;
-    } else if (!this.addForm.organizationId) {
-      swal({ text: '请输入组织部门', icon: 'warning', button: '确认' });
-      return false;
-    } else if (!this.addForm.assetCategoryId) {
-      swal({ text: '请输入资产类型', icon: 'warning', button: '确认' });
-      return false;
-    } else if (!this.addFormEmployee || !this.addFormEmployee.employeeNumber) {
-      swal({ text: '请输入使用人', icon: 'warning', button: '确认' });
-      return false;
-    } else if (!this.addForm.purchaseTime) {
-      swal({ text: '请输入购买时间', icon: 'warning', button: '确认' });
-      return false;
-    } else if (!this.addForm.purchaseAmount) {
-      swal({ text: '请输入购买金额', icon: 'warning', button: '确认' });
-      return false;
-    }
-    return true
-  }
   checkEditForm() {
-    if (!this.editForm.assetName) {
-      swal({ text: '请输入资产名称', icon: 'warning', button: '确认' });
-      return false;
-    } else if (!this.editForm.organizationId) {
+    // if (!this.editForm.assetName) {
+    //   swal({ text: '请输入资产名称', icon: 'warning', button: '确认' });
+    //   return false;
+    // } else
+    if (!this.editForm.organizationId) {
       swal({ text: '请输入组织部门', icon: 'warning', button: '确认' });
       return false;
-    } else if (!this.editForm.assetCategoryId) {
-      swal({ text: '请输入资产类型', icon: 'warning', button: '确认' });
-      return false;
+      // } else if (!this.editForm.assetCategoryId) {
+      //   swal({ text: '请输入资产类型', icon: 'warning', button: '确认' });
+      //   return false;
     } else if (!this.editFormEmployee || !this.editFormEmployee.employeeNumber) {
       swal({ text: '请输入使用人', icon: 'warning', button: '确认' });
       return false;
-    } else if (!this.editForm.purchaseTime) {
-      swal({ text: '请输入购买时间', icon: 'warning', button: '确认' });
+    } else if (!this.editForm.useStatus) {
+      swal({ text: '请选择使用状态', icon: 'warning', button: '确认' });
       return false;
-    } else if (!this.editForm.purchaseAmount) {
-      swal({ text: '请输入购买金额', icon: 'warning', button: '确认' });
+    } else if (!this.editForm.storageLocation) {
+      swal({ text: '请输入存放位置', icon: 'warning', button: '确认' });
       return false;
+      // } else if (!this.editForm.purchaseTime) {
+      //   swal({ text: '请输入购买时间', icon: 'warning', button: '确认' });
+      //   return false;
+      // } else if (!this.editForm.purchaseAmount) {
+      //   swal({ text: '请输入购买金额', icon: 'warning', button: '确认' });
+      //   return false;
     }
     return true
   }
@@ -326,11 +261,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pageSize = event.rows;
     this.pageFirst = event.first;
     this.search();
-  }
-
-  showAddModal(modal) {
-    this.addFormInit();
-    this.addAssetModalRef = this.modalService.show(modal);
   }
 
   showReviewModal(asset: Asset) {
@@ -410,10 +340,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  showUploadAssetModal(modal) {
-    this.uploadAssetModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg modal-info' }));
-  }
-
   uploadAsset(event) {
     if (JSON.parse(event.xhr.responseText).status === 0) {
       swal({ text: '上传成功', icon: 'success', button: '确认' });
@@ -449,18 +375,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  addFormInit() {
-    this.addFormCategory = '';
-    this.selectedAddOrg = {
-      data: '',
-      label: '',
-      parent: undefined
-    };
-    this.expandRecursive(this.addOrganizations[0], false);
-    this.addFormEmployee = new Employee();
-    this.addForm = new AddAsset();
-    this.addForm.useStatus = this.statusTypes[0].assetStatusTypeName;
-  }
   // editFormInit() {
   //   this.editFormCategory = '';
   //   this.selectedEditOrg = {
@@ -473,13 +387,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   //   this.editForm.useStatus = this.statusTypes[0].assetStatusTypeName;
   // }
 
-  addFormCategoryChange(event: AssetCategory) {
-    // console.log(event);
-    this.addForm.assetCategoryId = event.assetCategoryId || '';
-    this.addForm.monthOfDepreciation = event.monthOfDepreciation || this.addForm.monthOfDepreciation || '';
-    this.addForm.residualRatio = event.residualRatio || this.addForm.residualRatio || '';
-  }
-
   editFormCategoryChange(event: AssetCategory) {
     // console.log(event);
     this.editForm.assetCategoryId = event.assetCategoryId || '';
@@ -489,9 +396,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectSuggestedEmployee(event, type) {
     // console.log(event);
-    if (type === 'add') {
-      this.addFormEmployee = event;
-    } else if (type === 'edit') {
+    if (type === 'edit') {
       this.editFormEmployee = event;
     } else if (type === 'search') {
       this.selectedEmployee = event;
@@ -504,12 +409,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  onBlurFromEmployeeAdd(event) {
-    if (!this.addFormEmployee.employeeNumber) {
-      this.addFormEmployee = new Employee();
-    }
-  }
-
   onBlurFromEmployeeEdit(event) {
     if (!this.editFormEmployee.employeeNumber) {
       this.editFormEmployee = new Employee();
@@ -518,19 +417,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   nodeSelect(event, type) {
     // console.log(event);
-    if (type === 'add') {
-      if (event.node.children) {
-        this.selectedAddOrg = {
-          data: '',
-          label: '',
-          parent: undefined
-        };
-        swal({ text: '请选择子部门', icon: 'warning', button: '确认' });
-      } else {
-        this.addForm.organizationId = event.node.data;
-        this.showAddOrgSelect = false;
-      }
-    } else if (type === 'edit') {
+    if (type === 'edit') {
       if (event.node.children) {
         this.selectedEditOrg = {
           data: '',
