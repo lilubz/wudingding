@@ -14,7 +14,7 @@ declare const swal: any;
   templateUrl: './asset-department.component.html',
   styleUrls: ['./asset-department.component.scss']
 })
-export class AssetDepartmentComponent implements OnInit, OnDestroy {
+export class AssetDepartmentComponent implements OnInit {
   maxOrgTreeDepth = 0;
   modalRef: BsModalRef;
   modalRef2: BsModalRef;
@@ -27,12 +27,23 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
 
   departmentTree: TreeNode[];
   selectedDepartment: NewTree;
-  departmentName?: string;
-  departmentDescription?: string;
-  departmentAddress?: string;
-  oldDepartmentName?: string;
+
+  addDepartmentName?: string;
+  addDepartmentDescription?: string;
+  addDepartmentAddress?: string;
+
+  updateDepartmentName?: string;
+  updateDepartmentDescription?: string;
+  updateDepartmentAddress?: string;
+
   departmentList: any[] = [];
   selectedDepartmentList: any[] = [];
+
+  selectedDepartmentList2: any[] = [];
+  selectedData: NewTree;
+  ss: any[] = [];
+
+
   constructor(
     private _service: AssetDepartmentService,
     private commonXHRService: CommonXHRService,
@@ -45,13 +56,24 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
       template,
       Object.assign({}, this.config, { class: 'gray modal-lg' })
     );
-    this.departmentName = this.selectedDepartment.label;
-    this.departmentDescription = this.selectedDepartment.description;
-    this.departmentAddress = this.selectedDepartment.address;
   }
-  closeFirstModal() {
+  openModalWithClass2(template: TemplateRef<any>) {
+    this.modalRef2 = this.modalService.show(
+      template,
+      Object.assign({}, this.config, { class: 'gray modal-lg' })
+    );
+    this.updateDepartmentName = this.selectedData.label;
+    this.updateDepartmentDescription = this.selectedData.description;
+    this.updateDepartmentAddress = this.selectedData.address;
+  }
+  closeModal() {
     this.modalRef.hide();
     this.modalRef = null;
+  }
+  closeModal2() {
+    this.modalRef2.hide();
+    this.modalRef2 = null;
+
   }
 
   ngOnInit() {
@@ -66,12 +88,8 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
   }
   loadNode(event) {
     // console.log(event.node);
+
   }
-  // expandAll() {
-  //   this.departmentTree.forEach(node => {
-  //     this.expandRecursive(node, true);
-  //   });
-  // }
   /**
    * 获取所有树节点
    */
@@ -85,13 +103,14 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
         this.departmentList = this.getDepartmentListByDepth(this.maxOrgTreeDepth);
         this.selectedDepartmentList[0] = this.departmentTree[0];
         this.selectDepartment(null, 0);
-        console.log(this.departmentTree);
+        // console.log(this.departmentTree);
         // // console.log(this.departmentTree);
       } else {
 
       }
     }).catch(error => {
-      swal({ text: error, icon: 'error', button: '确认', });
+      // console.dir(error);
+      swal({ title: '服务器错误', text: '错误码' + error.status, icon: 'error', button: '确认', });
     })
   }
 
@@ -129,103 +148,113 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
   }
 
   selectDepartment(event, index) {
-    console.log(this.selectedDepartmentList);
+    // console.log(this.selectedDepartmentList);
+    /**
+      * 上级部门名称的集合；
+     */
+    this.selectedDepartmentList2 = this.selectedDepartmentList;
+    if (!this.selectedDepartmentList2[index]) {
+      this.selectedDepartmentList2 = this.selectedDepartmentList2.slice(0, index);
+    }
+    /**
+     * 作用默认选中第一个值；
+    */
     this.selectedDepartmentList = this.selectedDepartmentList.slice(0, index + 1);
     if (this.selectedDepartmentList[index].children) {
       this.selectedDepartmentList[index + 1] = '';
     }
-    console.log(this.selectedDepartmentList);
+    /**
+     * 添加、编辑绑定的值；
+    */
+    this.selectedData = this.selectedDepartmentList[index];
+    if (!this.selectedData) {
+      this.selectedData = this.selectedDepartmentList[index - 1];
+    } else {
+      this.selectedData.expanded = true;
+    }
+
   }
+
   addDepartment() {
     if (this.checkForm()) {
       swal({
-        title: '添加部门',
-        text: '确认添加: ' + this.departmentName + ' 到 ' + this.selectedDepartment.label + ' 下吗？',
+        title: '确认添加部门: ' + '“' + this.addDepartmentName + '”' + ' 到 ' + '“' + this.selectedData.label + '”' + ' 下吗？',
+        text: '',
         icon: 'warning',
         buttons: true,
         dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            const params = {
-              pid: this.selectedDepartment.data,
-              departmentName: this.departmentName,
-              departmentDescription: this.departmentDescription || '',
-              departmentAddress: this.departmentAddress || ''
-            }
-            this._service.AddDepartment(params).then(data => {
-              if (data.status === 0) {
-                swal('添加成功', {
-                  icon: 'success',
-                });
-                this.closeFirstModal();
-                this.getNode();
-              } else {
-                swal(data.msg, {
-                  icon: 'error',
-                });
-              }
-            }).catch(error => {
-              swal({
-                title: '服务器异常',
-                text: '',
-                icon: 'error',
-                button: '确认',
-              });
-            })
-          } else {
+      }).then((willDelete) => {
+        if (willDelete) {
+          const params = {
+            pid: this.selectedData.data,
+            departmentName: this.addDepartmentName,
+            departmentDescription: this.addDepartmentDescription || '',
+            departmentAddress: this.addDepartmentAddress || ''
           }
-        });
+          this._service.AddDepartment(params).then(data => {
+            if (data.status === 0) {
+              swal('添加成功', {
+                icon: 'success',
+              });
+              this.closeModal();
+              this.getNode();
+
+            } else {
+              swal(data.msg, {
+                icon: 'error',
+              });
+            }
+          }).catch(error => {
+            swal({
+              title: '服务器异常', text: '错误码:' + error.status, icon: 'error', button: '确认',
+            });
+          })
+        } else {
+        }
+      });
     } else {
       swal({
-        title: '',
-        text: '部门名称不能为空',
-        icon: 'warning',
-        button: '确认',
+        title: '', text: '部门名称不能为空', icon: 'warning', button: '确认',
       });
     }
 
   }
 
   updateDepartment() {
-    if (this.checkForm()) {
+    if (this.checkForm2()) {
       swal({
-        title: '编辑部门',
-        text: '确认修改当前部门名为' + this.departmentName + '吗？',
-        icon: 'warning',
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willDelete) => {
-          if (willDelete) {
-            const params = {
-              departmentId: this.selectedDepartment.data,
-              departmentName: this.departmentName,
-              departmentDescription: this.departmentDescription || '',
-              departmentAddress: this.departmentAddress || ''
-            }
-            this._service.UpdateDepartment(params).then(data => {
-              if (data.status === 0) {
-                swal('修改成功', {
-                  icon: 'success',
-                });
-                this.closeFirstModal();
-                this.getNode();
-              } else {
-                swal(data.msg, {
-                  icon: 'error',
-                });
-              }
-            })
-          } else {
+        title: '编辑部门', text: '确认修改当前部门名称为' + this.updateDepartmentName + '吗？', icon: 'warning', buttons: true, dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          const params = {
+            departmentId: this.selectedData.data,
+            departmentName: this.updateDepartmentName,
+            departmentDescription: this.updateDepartmentDescription || '',
+            departmentAddress: this.updateDepartmentAddress || ''
           }
-        });
+          this._service.UpdateDepartment(params).then(data => {
+            if (data.status === 0) {
+              swal('修改成功', {
+                icon: 'success',
+              });
+              this.closeModal2();
+              this.getNode();
+            } else {
+              swal(data.msg, {
+                icon: 'error',
+              });
+            }
+          }).catch(error => {
+            swal({
+              title: '服务器异常', text: '错误码:' + error.status, icon: 'error', button: '确认',
+            });
+          })
+        } else {
+        }
+      });
     } else {
       swal({
-        title: '',
-        text: '部门名称不能为空',
-        icon: 'warning',
-        button: '确认',
+        title: '', text: '部门名称不能为空', icon: 'warning', button: '确认',
       });
     }
 
@@ -257,7 +286,14 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
     return null;
   }
   checkForm(): boolean {
-    if (!this.departmentName) {
+    if (!this.addDepartmentName) {
+      return false;
+    }
+    return true;
+  }
+
+  checkForm2(): boolean {
+    if (!this.updateDepartmentName) {
       return false;
     }
     return true;
@@ -270,6 +306,4 @@ export class AssetDepartmentComponent implements OnInit, OnDestroy {
   //     });
   //   }
   // }
-  ngOnDestroy() {
-  }
 }

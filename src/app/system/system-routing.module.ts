@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AssetDepartmentComponent } from 'app/system/asset-department/asset-department.component';
 
 import { CategoryComponent } from './category/category.component'
+import { SystemRoleComponent } from 'app/system/system-role/system-role.component';
 const routes: Routes = [
   {
     path: '',
@@ -32,6 +33,13 @@ const routes: Routes = [
           title: '类别管理'
         }
       },
+      {
+        path: 'system-role',
+        component: SystemRoleComponent,
+        data: {
+          title: '角色管理'
+        }
+      }
     ]
   },
   {

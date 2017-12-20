@@ -128,7 +128,7 @@ export class AssetStatisticComponent implements OnInit {
       }).catch(error => {
         swal({
           title: '响应异常',
-          text: error,
+          text: error.status,
           icon: 'error',
           button: '确认',
         });
