@@ -15,7 +15,10 @@ export const API = {
   'listInventoryAsset': URL + 'assetInfo/StockTaking/listInventoryAsset.do',
   'listEndInventoryTask': URL + 'assetInfo/StockTaking/listEndInventoryTask.do',
   'stockTaking': URL + 'assetInfo/StockTaking/updateAssetInfo.do',
-  'boolIsInventoryAssetBegin': URL + 'assetInfo/StockTaking/boolIsInventoryAssetBegin.do',
+  'deleteInventoryTask': URL + 'assetInfo/StockTaking/deleteInventoryTask.do',
+  'updateInventoryTask': URL + 'assetInfo/StockTaking/updateInventoryTask.do',
+  'addInventoryTask': URL + 'assetInfo/StockTaking/addInventoryTask.do',
+  'exportInventoryTask': URL + 'assetInfo/StockTaking/exportInventoryTask.do',
   // 公共接口
   'listAssetStatusType': URL + 'common/listAssetStatusType.do',
   'listAssetCategory': URL + 'common/listAssetCategory.do',

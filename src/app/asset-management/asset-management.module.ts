@@ -17,6 +17,7 @@ import { AssetStatisticComponent } from 'app/asset-management/asset-search/asset
 import { AssetStatisticService } from 'app/asset-management/asset-search/asset-statistic/asset-statistic.service';
 import { AssetDetailComponent } from 'app/asset-management/asset-search/asset-detail/asset-detail.component';
 import { AssetDetailService } from 'app/asset-management/asset-search/asset-detail/asset-detail.service';
+
 defineLocale('zhCn', zhCn);
 
 @NgModule({
@@ -28,7 +29,6 @@ defineLocale('zhCn', zhCn);
   ],
   declarations: [
     AssetSearchComponent,
-    AssetInventoryComponent,
     AssetStatisticComponent,
     AssetManagementComponent,
     AssetAddComponent,
