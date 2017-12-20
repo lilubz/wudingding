@@ -9,6 +9,8 @@ import { CategoryComponent } from './category/category.component';
 import { SystemComponent } from './system.component';
 import { AssetDepartmentComponent } from 'app/system/asset-department/asset-department.component';
 import { AssetDepartmentService } from 'app/system/asset-department/asset-department.service';
+import { SystemRoleComponent } from 'app/system/system-role/system-role.component';
+import { SystemRoleService } from 'app/system/system-role/system-role.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -19,10 +21,12 @@ import { AssetDepartmentService } from 'app/system/asset-department/asset-depart
   declarations: [
     SystemComponent,
     CategoryComponent,
-    AssetDepartmentComponent
+    AssetDepartmentComponent,
+    SystemRoleComponent
   ],
   providers: [
-    AssetDepartmentService
+    AssetDepartmentService,
+    SystemRoleService
   ],
 })
 export class SystemModule { }

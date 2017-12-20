@@ -1,44 +1,57 @@
 <div class="asset-department">
   <div class="row">
     <div class="col-md-12">
-
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>部门管理
         </div>
         <div class="card-block">
+          <div class="row">
 
-          <ng-container *ngFor="let department of departmentList;let index=index;">
-            <!-- 不能超出最大深度 -->
-            <ng-container *ngIf="department">
-              <!-- 根节点 -->
-              <ng-container *ngIf="index===0">
-                <select [(ngModel)]="selectedDepartmentList[0]" (change)="selectDepartment($event,index)">
-                  <ng-container *ngFor="let item of [selectedDepartmentList[0]]">
-                    <option [ngValue]="item">{{ item?.label }}</option>
-                  </ng-container>
-                </select>
-              </ng-container>
-              <!--  非根节点；父节点拥有children属性才展示 -->
-              <ng-container *ngIf="index>0&&selectedDepartmentList[index-1]?.children">
-                <select [(ngModel)]="selectedDepartmentList[index]" (change)="selectDepartment($event,index)">
-                  <option value="">--请选择--</option>
-                  <ng-container *ngFor="let item of selectedDepartmentList[index-1].children">
-                    <option [ngValue]="item">{{ item?.label }}</option>
-                  </ng-container>
-                </select>
+            <ng-container *ngFor="let department of departmentList;let index=index;">
+              <!-- 不能超出最大深度 -->
+              <ng-container *ngIf="department">
+                <!-- 根节点 -->
+                <ng-container *ngIf="index==0">
+                  <div class="form-group col-md-2">
+                    <select class="form-control" [(ngModel)]="selectedDepartmentList[0]" (change)="selectDepartment($event,index)">
+                      <ng-container *ngFor="let item of [selectedDepartmentList[0]]">
+                        <option [ngValue]="item">{{ item?.label }}</option>
+                      </ng-container>
+                    </select>
+                  </div>
+                </ng-container>
+                <!--  非根节点；父节点拥有children属性才展示 -->
+                <ng-container *ngIf="index>0&&selectedDepartmentList[index-1]?.children">
+                  <div class="form-group col-md-2">
+                    <select class="form-control" [(ngModel)]="selectedDepartmentList[index]" (change)="selectDepartment($event,index)">
+                      <option value="">--请选择--</option>
+                      <ng-container *ngFor="let item of selectedDepartmentList[index-1].children">
+                        <option [ngValue]="item">{{ item?.label }}</option>
+                      </ng-container>
+                      
+                    </select>
+                  </div>
+                </ng-container>
               </ng-container>
             </ng-container>
-          </ng-container>
+          </div>
+          <div class="row">
+            <div class="col-md-12 margin-top">
+              <button type="button" class="btn btn-outline-success  pull-left" (click)="openModalWithClass(addDepartmentModal)">
+                <i class="fa fa-plus"></i>&nbsp;添加部门</button>
+              <button type="button" class="btn btn-outline-warning pull-left  margin-lf" (click)="openModalWithClass2(updateDepartmentModal)">
+                <i class="fa fa-pencil"></i>&nbsp; 编辑部门</button>
+            </div>
+          </div>
         </div>
       </div>
-
       <div class="card">
         <div class="card-header">
           <i class="fa fa-align-justify"></i>部门概览
         </div>
         <div class="card-block">
-          <p-tree [value]="departmentTree" layout="horizontal" selectionMode="single" [(selection)]="selectedDepartment" (onNodeSelect)="nodeSelect($event);openModalWithClass(department)"
+          <p-tree [value]="departmentTree" layout="horizontal" selectionMode="single" [(selection)]="selectedDepartment" (onNodeSelect)="nodeSelect($event);"
             (onNodeExpand)="loadNode($event)"></p-tree>
           <!-- {{selectedDepartment ? selectedDepartment.data:'none'}} -->
         </div>
@@ -48,46 +61,73 @@
   </div>
 </div>
 
-<ng-template #department>
+<ng-template #addDepartmentModal>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">部门管理</h4>
+    <h4 class="modal-title pull-left">添加部门</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
     <div class="row">
+      <div class="col-md-12 lastDepartment">
+        <div>上级部门:</div>
+        <span id="name" *ngFor="let item of selectedDepartmentList2">
+          <span>{{item.label}}</span> >>
+        </span>
+      </div>
       <div class="col-md-12">
         <div class="form-group">
           <label for="name">部门名称</label>
-          <input type="text" class="form-control" id="name" [(ngModel)]="departmentName" placeholder="Enter your name">
+          <input type="text" class="form-control" id="name" [(ngModel)]="addDepartmentName" placeholder="部门名称">
           <label for="name">部门描述</label>
-          <textarea id="textarea-input" name="textarea-input" [(ngModel)]="departmentDescription" rows="6" class="form-control" placeholder="Content.."></textarea>
+          <textarea id="textarea-input" name="textarea-input" [(ngModel)]="addDepartmentDescription" rows="6" class="form-control"
+            placeholder="部门描述..."></textarea>
           <label for="name">部门地址</label>
-          <input type="text" class="form-control" [(ngModel)]="departmentAddress" id="name" placeholder="Enter your name">
+          <input type="text" class="form-control" [(ngModel)]="addDepartmentAddress" id="name" placeholder="部门地址">
         </div>
-
       </div>
     </div>
-    <button type="button" class="btn btn-outline-danger pull-right" (click)="modalRef.hide()">
+    <button type="button" class="btn btn-outline-danger pull-right margin-lf" (click)="modalRef.hide()">
       <i class="fa fa-times"></i>&nbsp;退出</button>
-    <!-- <button type="button" class="btn btn-outline-danger pull-right" (click)="deleteDepartment()">
-      <i class="fa fa-trash"></i>&nbsp; 删除部门</button> -->
-    <button type="button" class="btn btn-outline-warning pull-right" (click)="updateDepartment()">
-      <i class="fa fa-pencil"></i>&nbsp; 编辑部门</button>
-    <button type="button" class="btn btn-outline-success  pull-right" (click)="addDepartment()">
-      <i class="fa fa-plus"></i>&nbsp;添加部门</button>
+    <button type="button" class="btn btn-outline-success pull-right" (click)="addDepartment()">
+      <i class="fa fa-trash"></i>&nbsp; 确认添加</button>
+
   </div>
 </ng-template>
-<!-- <ng-template #templateNested>
+
+<ng-template #updateDepartmentModal>
   <div class="modal-header">
-    <h4 class="modal-title pull-left">First modal</h4>
+    <h4 class="modal-title pull-left">编辑部门</h4>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef2.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body">
-    This is modal
-    <button type="button" class="btn btn-primary">Open second modal</button>
+    <div class="row">
+        <div class="col-md-12 lastDepartment">
+            <div>上级部门:</div>
+            <span id="name" *ngFor="let item of selectedDepartmentList2">
+              <span>{{item.label}}</span> >>
+            </span>
+          </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="name">部门名称</label>
+          <input type="text" class="form-control" id="name" [(ngModel)]="updateDepartmentName" placeholder="部门名称">
+          <label for="name">部门描述</label>
+          <textarea id="textarea-input" name="textarea-input" [(ngModel)]="updateDepartmentDescription" rows="6" class="form-control"
+            placeholder="部门描述..."></textarea>
+          <label for="name">部门地址</label>
+          <input type="text" class="form-control" [(ngModel)]="updateDepartmentAddress" id="name" placeholder="部门地址">
+        </div>
+
+      </div>
+    </div>
+    <button type="button" class="btn btn-outline-danger pull-right margin-lf" (click)="modalRef2.hide()">
+      <i class="fa fa-times"></i>&nbsp;退出</button>
+    <button type="button" class="btn btn-outline-success pull-right " (click)="updateDepartment()">
+      <i class="fa fa-trash"></i>&nbsp; 确认修改</button>
+
   </div>
-</ng-template> -->
+</ng-template>

@@ -1,0 +1,98 @@
+<div class="system-role">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card border-rad">
+        <div class="card-header border-rad">
+          <i class="fa fa-align-justify"></i>角色管理
+          <button type="button" class="btn btn-primary pull-right margin-rt" (click)="showAddModal(addModal)">
+            <i class="fa fa-plus"></i>&nbsp; 新增</button>
+        </div>
+        <div class="card-block">
+          <div class="form-group row">
+            <div class="col-md-12">
+              <div class="col-md-2 col-sm-3 col-5">
+                <label for="search" class="form-control-label">角色：</label>
+                <input type="text" class="form-control" name="search" placeholder="请输入角色名...">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <table class="table table-bordered table-striped table-sm">
+                <thead>
+                  <th>角色名</th>
+                  <th>创建时间</th>
+                  <th>备注</th>
+                  <th>操作</th>
+                  <!-- <th *ngFor="let th of theads">{{th}}</th> -->
+                </thead>
+                <tbody>
+                  <td>哈哈</td>
+                  <td>哈哈</td>
+                  <td>尽快尽快</td>
+                  <td>
+                    <button type="button" class="btn btn-primary pull-left" (click)="showEditModal(editModal)">编辑</button>
+                    <button type="button" class="btn btn-danger pull-left margin-lf">删除</button>
+                    <button type="button" class="btn btn-success pull-left margin-lf">分配权限</button>
+                  </td>
+                </tbody>
+              </table>
+              <asset-paginator [rows]="pageSize" [totalRecords]="total" [rowsPerPageOptions]="[5,10,20,40]" (onPageChange)="pageChanged($event)"
+                [first]="pageFirst"></asset-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #editModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">编辑角色</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="editModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="name">角色名</label>
+          <input type="text" class="form-control" id="name" placeholder="角色名">
+          <label for="name">备注</label>
+          <input type="text" class="form-control" id="name" placeholder="备注">
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-outline-danger pull-right margin-lf" (click)="editModalRef.hide()">
+      <i class="fa fa-times"></i>&nbsp;退出</button>
+    <button type="button" class="btn btn-outline-success pull-right">
+      <i class="fa fa-trash"></i>&nbsp; 确认编辑</button>
+
+  </div>
+</ng-template>
+<ng-template #addModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">编辑角色</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="addModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="name">角色名</label>
+          <input type="text" class="form-control" id="name" placeholder="角色名">
+          <label for="name">备注</label>
+          <input type="text" class="form-control" id="name" placeholder="备注">
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn btn-outline-danger pull-right margin-lf" (click)="addModalRef.hide()">
+      <i class="fa fa-times"></i>&nbsp;退出</button>
+    <button type="button" class="btn btn-outline-success pull-right">
+      <i class="fa fa-trash"></i>&nbsp; 确认添加</button>
+
+  </div>
+</ng-template>
