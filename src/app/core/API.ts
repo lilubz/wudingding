@@ -29,11 +29,12 @@ export const API = {
   'deleteAssetInfo': URL + 'assetBasic/deleteAssetInfo.do',
   'updateAssetInfo': URL + 'assetBasic/updateAssetInfo.do',
   'getAssetDetailInfo': URL + 'assetBasic/getAssetDetailInfo.do', // 获取资产详细信息
+  'listAssetChangeHistory': URL + 'assetBasic/listAssetChangeHistory.do', // 获取资产变更历史
   'listAssetInfoByMajorAsset': URL + 'assetBasic/listAssetInfoByMajorAsset.do', // 根据主资产id获取套资产信息
   'checkAsset': URL + 'assetBasic/checkAsset.do', // 资产审核
 
   'uploadAssetUrl': URL + '', // 资产导入
-  'downloadAssetUrl': URL + '', // 资产导出
+  'downloadAssetUrl': URL + 'dataExcel/Export/assetExport.do', // 资产导出
 
 
   // 资产类别管理

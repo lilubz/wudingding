@@ -3,8 +3,8 @@
     <div class="card">
       <div class="card-header">
         <i class="fa fa-align-justify"></i> 资产查询
-        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search']" type="button">资产查询</button>
-        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-statistic']" type="button">资产统计</button>
+        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search-parent/asset-search']" type="button">资产查询</button>
+        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search-parent/asset-statistic']" type="button">资产统计</button>
       </div>
       <div class="card-body">
 
@@ -74,7 +74,6 @@
                 [(ngModel)]="searchBeginDate" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" [maxDate]="endDate.value?endDate.value:today"
                 readonlyInput="true" placeholder="请输入开始时间"></p-calendar>
             </div>
-            <!-- <input type="text" bsDaterangepicker [(ngModel)]="dateRange" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"> -->
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
           <div class="form-group col-md-6">
@@ -86,7 +85,6 @@
                 [(ngModel)]="searchEndDate" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" [minDate]="beginDate.value"
                 [maxDate]="today" readonlyInput="true" placeholder="请输入结束时间"></p-calendar>
             </div>
-            <!-- <input type="text" bsDaterangepicker [(ngModel)]="dateRange" [maxDate]="today" [bsConfig]="datePickerConfig" class="form-control"> -->
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
@@ -172,7 +170,7 @@
               <td>{{ item?.monthOfDepreciation }}</td> -->
               <td>
                 <button type="button" *ngIf="!item?.reviewStatus" class="btn btn-warning" (click)="showReviewModal(item)">审核</button>
-                <button type="button" class="btn btn-primary" (click)="showEditModal(item,editAssetModal)">编辑</button>
+                <button type="button" *ngIf="item?.reviewStatus" class="btn btn-primary" (click)="showEditModal(item,editAssetModal)">编辑</button>
                 <button type="button" class="btn btn-danger" (click)="showDeleteModal(item)">删除</button>
               </td>
             </tr>
@@ -376,86 +374,7 @@
   <div class="modal-body">
     <div class="form-group row detail">
       <div class="col-md-12">
-        <table class="table table-bordered table-sm">
-          <tbody>
-            <tr>
-              <td> 资产编码</td>
-              <td> {{ assetDetail.assetSerialNumber }} </td>
-              <td>主资产编码 </td>
-              <td>{{ assetDetail.majorAssetSerialNumber }}</td>
-            </tr>
-            <tr>
-              <td> 录入人员</td>
-              <td>{{ assetDetail.inputUser }}</td>
-              <td>审核人 </td>
-              <td>{{ assetDetail.reviewUser }}</td>
-            </tr>
-            <tr>
-              <td> 审核状态</td>
-              <td>{{ assetDetail.reviewStatus === true?'已审核':'待审核' }}</td>
-              <td>审核时间 </td>
-              <td>{{ assetDetail.reviewTime|date: 'yyyy-MM-dd' }}</td>
-            </tr>
-            <tr>
-              <td> 组织部门</td>
-              <td>{{ assetDetail.organizationName }}</td>
-              <td>资产类别 </td>
-              <td>{{ assetDetail.assetCategory }}</td>
-            </tr>
-            <tr>
-              <td> 使用人</td>
-              <td>{{ assetDetail.employeeName }}</td>
-              <td>使用状态 </td>
-              <td>{{ assetDetail.useStatus }}</td>
-            </tr>
-            <tr>
-              <td> 购买批号</td>
-              <td>{{ assetDetail.batchSerialNumber }}</td>
-              <td>资产名称 </td>
-              <td>{{ assetDetail.assetName }}</td>
-            </tr>
-            <tr>
-              <td> 规格</td>
-              <td>{{ assetDetail.brandSpecification }}</td>
-              <td>存放位置 </td>
-              <td>{{ assetDetail.storageLocation }}</td>
-            </tr>
-            <tr>
-              <td> 购买时间</td>
-              <td>{{ assetDetail.purchaseTime|date: 'yyyy-MM-dd' }}</td>
-              <td>购买金额 </td>
-              <td>{{ assetDetail.purchaseAmount }}</td>
-            </tr>
-            <tr>
-              <td>折旧月数 </td>
-              <td>{{ assetDetail.monthOfDepreciation }}</td>
-              <td> 残值率</td>
-              <td>{{ assetDetail.residualRatio }}</td>
-            </tr>
-            <tr>
-              <td>残值 </td>
-              <td>{{ assetDetail.residualValue }}</td>
-              <td> 已折旧月数</td>
-              <td>{{ assetDetail.monthNumDepreciation }}</td>
-            </tr>
-            <tr>
-              <td>每月折旧金额 </td>
-              <td>{{ assetDetail.depreciationAmountMonthly }}</td>
-              <td>累计折旧金额 </td>
-              <td>{{ assetDetail.depreciationAmountAccumulate }}</td>
-            </tr>
-            <tr>
-              <td> 净值</td>
-              <td>{{ assetDetail.netValue }}</td>
-              <td>添加时间 </td>
-              <td>{{ assetDetail.createTime|date:'yyyy-MM-dd' }}</td>
-            </tr>
-            <tr>
-              <td> 更新时间</td>
-              <td>{{ assetDetail.updateTime|date:'yyyy-MM-dd' }}</td>
-            </tr>
-          </tbody>
-        </table>
+        <asset-detail [assetDetail]="assetDetail" [detailModalRef]="assetDetailModalRef"></asset-detail>
       </div>
     </div>
   </div>

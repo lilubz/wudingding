@@ -1,3 +1,4 @@
+
 import { AssetAddComponent } from './asset-add/asset-add.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -5,13 +6,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AssetInventoryComponent } from './asset-inventory/asset-inventory.component';
 import { AssetManagementComponent } from './asset-management.component';
-import { AssetStatisticComponent } from './asset-statistic/asset-statistic.component';
 import { AssetSearchComponent } from './asset-search/asset-search.component';
+import { AssetSearchParentComponent } from 'app/asset-management/asset-search/asset-search-parent.component';
+import { AssetStatisticComponent } from 'app/asset-management/asset-search/asset-statistic/asset-statistic.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'asset-search',
+    redirectTo: 'asset-search-parent/asset-search',
     pathMatch: 'full'
   },
   {
@@ -19,18 +21,21 @@ const routes: Routes = [
     component: AssetManagementComponent,
     children: [
       {
-        path: 'asset-search',
-        component: AssetSearchComponent,
+        path: 'asset-search-parent',
+        component: AssetSearchParentComponent,
         data: {
           title: '资产查询'
-        }
-      },
-      {
-        path: 'asset-statistic',
-        component: AssetStatisticComponent,
-        data: {
-          title: '资产统计'
-        }
+        },
+        children: [
+          {
+            path: 'asset-search',
+            component: AssetSearchComponent
+          },
+          {
+            path: 'asset-statistic',
+            component: AssetStatisticComponent
+          }
+        ]
       },
       {
         path: 'asset-add',
@@ -50,7 +55,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'asset-search'
+    redirectTo: 'asset-search-parent/asset-search'
   }
 ];
 

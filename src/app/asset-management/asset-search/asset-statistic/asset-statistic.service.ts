@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
 import { Headers } from '@angular/http';
-import { API } from './../../core/api';
-import { HttpService } from './../../core/http.service';
+import { HttpService } from 'app/core/http.service';
+import { API } from 'app/core/api';
 @Injectable()
 export class AssetStatisticService {
 

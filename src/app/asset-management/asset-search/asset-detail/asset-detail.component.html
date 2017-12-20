@@ -1,0 +1,129 @@
+<table class="table table-bordered table-sm detail">
+  <tbody>
+    <tr>
+      <td> 资产编码</td>
+      <td> {{ assetDetail?.assetSerialNumber }} </td>
+      <td>主资产编码 </td>
+      <td>{{ assetDetail?.majorAssetSerialNumber }}</td>
+    </tr>
+    <tr>
+      <td> 录入人员</td>
+      <td>{{ assetDetail?.inputUser }}</td>
+      <td>审核人 </td>
+      <td>{{ assetDetail?.reviewUser }}</td>
+    </tr>
+    <tr>
+      <td> 审核状态</td>
+      <td>{{ assetDetail?.reviewStatus === true?'已审核':'待审核' }}</td>
+      <td>审核时间 </td>
+      <td>{{ assetDetail?.reviewTime|date: 'yyyy-MM-dd' }}</td>
+    </tr>
+    <tr>
+      <td> 组织部门</td>
+      <td>{{ assetDetail?.organizationName }}</td>
+      <td>资产类别 </td>
+      <td>{{ assetDetail?.assetCategory }}</td>
+    </tr>
+    <tr>
+      <td> 使用人</td>
+      <td>{{ assetDetail?.employeeName }}</td>
+      <td>使用状态 </td>
+      <td>{{ assetDetail?.useStatus }}</td>
+    </tr>
+    <tr>
+      <td> 购买批号</td>
+      <td>{{ assetDetail?.batchSerialNumber }}</td>
+      <td>资产名称 </td>
+      <td>{{ assetDetail?.assetName }}</td>
+    </tr>
+    <tr>
+      <td> 规格</td>
+      <td>{{ assetDetail?.brandSpecification }}</td>
+      <td>存放位置 </td>
+      <td>{{ assetDetail?.storageLocation }}</td>
+    </tr>
+    <tr>
+      <td> 购买时间</td>
+      <td>{{ assetDetail?.purchaseTime|date: 'yyyy-MM-dd' }}</td>
+      <td>购买金额 </td>
+      <td>{{ assetDetail?.purchaseAmount }}</td>
+    </tr>
+    <tr>
+      <td>折旧月数 </td>
+      <td>{{ assetDetail?.monthOfDepreciation }}</td>
+      <td> 残值率</td>
+      <td>{{ assetDetail?.residualRatio }}</td>
+    </tr>
+    <tr>
+      <td>残值 </td>
+      <td>{{ assetDetail?.residualValue }}</td>
+      <td> 已折旧月数</td>
+      <td>{{ assetDetail?.monthNumDepreciation }}</td>
+    </tr>
+    <tr>
+      <td>每月折旧金额 </td>
+      <td>{{ assetDetail?.depreciationAmountMonthly }}</td>
+      <td>累计折旧金额 </td>
+      <td>{{ assetDetail?.depreciationAmountAccumulate }}</td>
+    </tr>
+    <tr>
+      <td> 净值</td>
+      <td>{{ assetDetail?.netValue }}</td>
+      <td>添加时间 </td>
+      <td>{{ assetDetail?.createTime|date:'yyyy-MM-dd' }}</td>
+    </tr>
+    <tr>
+      <td> 更新时间</td>
+      <td>{{ assetDetail?.updateTime|date:'yyyy-MM-dd' }}</td>
+      <td> 变更历史</td>
+      <td>
+        <a href="javascript:void(0);" (click)="showAssetHistoryModal(assetDetail.assetId,assetHistoryModal)">查看详情</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #assetHistoryModal>
+  <div class="modal-header">
+    <h4 class="modal-title">资产变更历史</h4>
+    <button type="button" class="close" (click)="assetHistoryModalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="form-group row detail">
+      <div class="col-md-12">
+        <h3>{{ assetDetail.assetName }}</h3>
+        <table class="table table-bordered table-striped table-sm">
+          <thead>
+            <tr>
+              <th>操作人</th>
+              <th>操作</th>
+              <th>变更时间</th>
+              <th>使用部门</th>
+              <th>使用人</th>
+              <th>使用状态</th>
+              <th>存放位置</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of assetChangeHistoryList">
+              <td>{{ item?.username }}</td>
+              <td>{{ item?.operation }}</td>
+              <td>{{ item?.createTime| date:'yyyy-MM-dd HH:mm:ss' }}</td>
+              <td>{{ item?.detail.organizationName }}</td>
+              <td>{{ item?.detail.employeeName }}</td>
+              <td>{{ item?.detail.useStatus }}</td>
+              <td>{{ item?.detail.storageLocation }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <asset-paginator [rows]="historyPageSize" [totalRecords]="historyTotal" [rowsPerPageOptions]="[5,10,20,40]" (onPageChange)="pageChanged($event)"></asset-paginator>
+
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="assetHistoryModalRef.hide()">确认</button>
+  </div>
+</ng-template>

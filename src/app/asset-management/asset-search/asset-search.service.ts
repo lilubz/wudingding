@@ -89,4 +89,17 @@ export class AssetSearchService {
     return this.httpService
       .getRequest(API.listAssetInfoByMajorAsset, params);
   }
+
+  /**
+   * 导出资产
+   * 2017-12-18 09:09:21
+   * @author hzb
+   * @param params
+   * @returns
+   */
+  exportAsset(params: any) {
+    return this.httpService
+      .getRequest(API.downloadAssetUrl, params);
+  }
+
 }

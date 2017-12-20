@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AssetStatisticService } from 'app/asset-management/asset-statistic/asset-statistic.service';
 import { CommonXHRService } from 'app/core/common-xhr.service';
-import { TreeNode } from '../../../../node_modules/_primeng@4.3.0@primeng/components/common/treenode';
 import { UserStateService } from 'app/core/user-state.service';
+import { TreeNode } from '../../../../../node_modules/_primeng@4.3.0@primeng/primeng';
+import { AssetStatisticService } from 'app/asset-management/asset-search/asset-statistic/asset-statistic.service';
 
 
 declare const swal: any;

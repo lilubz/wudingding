@@ -7,13 +7,10 @@ import { AssetSearchService } from './asset-search.service';
 import { Organization } from './../../model/Organization.model';
 import { AssetStatusType } from './../../model/AssetStatusType.model';
 import { CommonXHRService } from './../../core/common-xhr.service';
-import { zhCn } from 'ngx-bootstrap/locale';
 import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { AssetCategory } from 'app/model/AssetCategory.model';
 import * as moment from 'moment';
 import { ModalDirective, BsModalRef, BsModalService } from '../../../../node_modules/_ngx-bootstrap@1.9.3@ngx-bootstrap';
-import { forEach } from '../../../../node_modules/_@angular_router@4.3.4@@angular/router/src/utils/collection';
 import { TreeNode } from '../../../../node_modules/_primeng@4.3.0@primeng/components/common/treenode';
 import { API } from 'app/core/api';
 
@@ -24,6 +21,7 @@ declare const swal: any;
   styleUrls: ['./asset-search.component.scss']
 })
 export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
+  assetSearchVisiable = true;
   zh;
   editAssetModalRef: BsModalRef;
   assetDetailModalRef: BsModalRef;
@@ -42,11 +40,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   today = moment().toDate();
   assetList: Asset[] = [];
-  datePickerConfig: Partial<BsDatepickerConfig> = {
-    containerClass: 'theme-blue',
-    locale: 'zhCn',
-    showWeekNumbers: false
-  }
 
   categories: AssetCategory[];
   statusTypes: AssetStatusType[];
@@ -268,7 +261,8 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       title: '确认审核该资产?',
       text: `${asset.assetName}`,
       icon: 'warning',
-      buttons: true
+      buttons: ['驳回', '通过'],
+      dangerMode: true
     }).then((review) => {
       if (review) {
         this.reviewAsset(asset.assetSerialNumber);
@@ -340,20 +334,26 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  uploadAsset(event) {
-    if (JSON.parse(event.xhr.responseText).status === 0) {
-      swal({ text: '上传成功', icon: 'success', button: '确认' });
-    } else {
-      swal({ title: '上传失败', text: JSON.parse(event.xhr.responseText).msg, icon: 'error', button: '确认' });
-    }
-  }
-
   downloadAsset() {
     swal({ text: `确认导出下方表格中的${this.total}条数据！`, icon: 'info', buttons: ['取消', '确认'] })
       .then(data => {
-        console.log(data);
         if (data) {
-
+          this.assetSearchService.exportAsset({
+            organizationId: this.selectedOrganization || '',
+            assetCategoryId: this.selectedCategory,
+            useStatus: this.selectedAssetStatus,
+            startTimeString: this.searchBeginDate ? moment(this.searchBeginDate).format('YYYY-MM-DD') : '',
+            endTimeString: this.searchEndDate ? moment(this.searchEndDate).format('YYYY-MM-DD') : '',
+            employeeName: this.selectedEmployee ? this.selectedEmployee.employeeName || '' : '',
+          }).then(res => {
+            if (res.status === 0) {
+              const downloadUrl = API.url + res.data;
+              window.location.href = downloadUrl;
+              swal({ text: `导出成功！`, icon: 'success', buttons: '确认' });
+            } else {
+              swal({ text: `${res.msg}`, icon: 'warning', buttons: '确认' });
+            }
+          })
         }
       });
   }

@@ -23,6 +23,10 @@ export class AssetHeaderComponent implements OnInit {
   newPassword = '';
   oldPassword = '';
 
+  messageVisiable = true;
+  _messageInterval: any;
+  messageCount = 0;
+
   constructor(
     private loginService: LoginService,
     private userStateService: UserStateService,
@@ -32,6 +36,7 @@ export class AssetHeaderComponent implements OnInit {
 
   ngOnInit() {
     this.username = this.userStateService.getUser().username;
+    this.setIntervalMessage();
   }
 
   public toggled(open: boolean): void {
@@ -68,5 +73,19 @@ export class AssetHeaderComponent implements OnInit {
         swal({ title: '修改失败', text: data.msg, icon: 'error', button: '确认', });
       }
     })
+  }
+
+  setIntervalMessage() {
+    if (this.messageCount > 0) {
+      this._messageInterval = setInterval(() => {
+        this.messageVisiable = !this.messageVisiable;
+        console.log(this.messageVisiable);
+      }, 500);
+    }
+  }
+
+  readMessage() {
+    clearInterval(this._messageInterval);
+    this.messageVisiable = true;
   }
 }

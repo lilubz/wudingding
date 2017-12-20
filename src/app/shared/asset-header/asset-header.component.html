@@ -14,9 +14,13 @@
     </li>
   </ul> -->
   <ul class="nav navbar-nav ml-auto">
-    <!-- <li class="nav-item d-md-down-none">
-      <a class="nav-link" ><i class="icon-bell"></i><span class="badge badge-pill badge-danger">5</span></a>
+    <li class="nav-item d-md-down-none">
+      <a class="nav-link" href="javascript:void(0);" (click)="readMessage()">
+        <i class="fa fa-bell-o"></i>
+        <span class="badge badge-pill badge-danger" [hidden]="!messageVisiable">{{ messageCount > 0?messageCount:'' }}</span>
+      </a>
     </li>
+    <!--
     <li class="nav-item d-md-down-none">
       <a class="nav-link" ><i class="icon-list"></i></a>
     </li>

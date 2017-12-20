@@ -214,6 +214,14 @@ export class AssetAddComponent implements OnInit, OnDestroy {
     this.uploadAssetModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg modal-info' }));
   }
 
+  uploadAsset(event) {
+    if (JSON.parse(event.xhr.responseText).status === 0) {
+      swal({ text: '上传成功', icon: 'success', button: '确认' });
+    } else {
+      swal({ title: '上传失败', text: JSON.parse(event.xhr.responseText).msg, icon: 'error', button: '确认' });
+    }
+  }
+
   nodeSelect(event, type) {
     // console.log(event);
     if (type === 'add') {
