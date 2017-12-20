@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AssetInventoryComponent } from './asset-inventory/asset-inventory.component';
 import { AssetManagementComponent } from './asset-management.component';
 import { AssetStatisticComponent } from './asset-statistic/asset-statistic.component';
 import { AssetSearchComponent } from './asset-search/asset-search.component';
@@ -33,7 +32,7 @@ const routes: Routes = [
       },
       {
         path: 'asset-inventory',
-        component: AssetInventoryComponent,
+        loadChildren: './asset-inventory/asset-inventory.module#AssetInventoryModule',
         data: {
           title: '资产盘点'
         }

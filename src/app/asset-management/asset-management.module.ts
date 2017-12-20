@@ -2,7 +2,6 @@ import { CoreModule } from './../core/core.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AssetSearchComponent } from './asset-search/asset-search.component';
-import { AssetInventoryComponent } from './asset-inventory/asset-inventory.component';
 import { AssetStatisticComponent } from './asset-statistic/asset-statistic.component';
 import { AssetManagementComponent } from './asset-management.component';
 import { SharedModule } from '../shared/shared.module';
@@ -12,6 +11,7 @@ import { AssetStatisticService } from 'app/asset-management/asset-statistic/asse
 import { defineLocale } from 'ngx-bootstrap/bs-moment';
 import { zhCn } from 'ngx-bootstrap/locale';
 import { AssetSearchService } from 'app/asset-management/asset-search/asset-search.service';
+
 defineLocale('zhCn', zhCn);
 
 @NgModule({
@@ -23,9 +23,8 @@ defineLocale('zhCn', zhCn);
   ],
   declarations: [
     AssetSearchComponent,
-    AssetInventoryComponent,
     AssetStatisticComponent,
-    AssetManagementComponent
+    AssetManagementComponent,
   ],
   providers: [
     AssetStatisticService,

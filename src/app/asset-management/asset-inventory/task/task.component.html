@@ -1,0 +1,179 @@
+<div class="task">
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> 任务查询
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label>开始时间：</label>
+          <div>
+            <p-calendar #beginDate [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
+              [(ngModel)]="searchParams.startTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false"
+              readonlyInput="true" placeholder="请输入开始时间" [maxDate]="searchParams.endTime"></p-calendar>
+          </div>
+        </div>
+        <div class="form-group col-md-6">
+          <label>结束时间：</label>
+          <div>
+            <p-calendar #endDate [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
+              [(ngModel)]="searchParams.endTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" 
+              readonlyInput="true" placeholder="请输入结束时间" [minDate]="searchParams.startTime"></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6">
+          <label for="department">盘点部门：</label>
+          <select class="form-control" [(ngModel)]="searchParams.organizationId" id="department">
+            <option value="13">综合部</option>
+            <option value="15">财务部</option>
+          </select>
+        </div>
+        <div class="form-group col-md-6">
+          <label for="status">盘点状态：</label>
+          <select class="form-control" id="status" [(ngModel)]="searchParams.status">
+            <option value="1">未开启</option>
+            <option value="2">正在盘点</option>
+            <option value="3">已结束</option>
+            <option value="4">已过期</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="onSearch()">查询</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> 任务信息
+      <button type="button" class="btn btn-primary pull-right" (click)="onAddTask(taskAddModal)">新增</button>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-striped table-sm">
+        <thead>
+          <tr>
+            <th>任务ID</th>
+            <th>开启时间</th>
+            <th>结束时间</th>
+            <th>开启人</th>
+            <th>盘点部门</th>
+            <th>当前状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of table.list">
+            <td>
+               {{item.assetInventoryTaskId}}
+            </td>
+            <td>{{item.startTime | date:"yyyy-MM-dd"}}</td>
+            <td>{{item.endTime | date:"yyyy-MM-dd"}}</td>
+            <td>{{item.userName}}</td>
+            <td>{{item.organizationName}}</td>
+            <td>
+              <span *ngIf="table.status==1">未开启</span>
+              <span *ngIf="table.status==2">正在盘点</span>
+              <span *ngIf="table.status==3">已结束</span>
+              <span *ngIf="table.status==4">已过期</span>
+            </td>
+            <td>
+              <button type="button" class="btn btn-success" [routerLink]="['../mark']" [queryParams]="{id:item.assetInventoryTaskId}"
+                *ngIf="buttonShow.enter">进入</button>
+              <button type="button" class="btn btn-warning" (click)="onEndTask(item.assetInventoryTaskId)" *ngIf="buttonShow.end">结束</button>
+              <button type="button" class="btn btn-primary" (click)="onEditTask(item,taskEditModal)" *ngIf="buttonShow.edit">编辑</button>
+              <button type="button" class="btn btn-danger" (click)="onDeleteTask(item.assetInventoryTaskId)" *ngIf="buttonShow.del">删除</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <asset-paginator [rows]="table.size" [totalRecords]="table.total" [rowsPerPageOptions]="table.options" 
+        (onPageChange)="onPageChange($event)" [(first)]="table.first"></asset-paginator>
+    </div>
+  </div>
+  <div class="modal">
+
+    <ng-template #taskAddModal>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">新增盘点任务</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide(detailModal)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:15px 70px">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="beginTime" class="col-4 control-label">开始时间：</label>
+            <div class="col-7" style="display:inline-block">
+              <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true"
+                [(ngModel)]="addParams.startTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true" 
+                placeholder="请输入开始时间" [ngModelOptions]="{standalone: true}" [maxDate]="addParams.endTime" [minDate]="currentTime"></p-calendar>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endTime" class="col-4 control-label">结束时间：</label>
+            <div class="col-7" style="display:inline-block">
+              <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true"
+                [(ngModel)]="addParams.endTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true" 
+                placeholder="请输入结束时间" [ngModelOptions]="{standalone: true}" [minDate]="addParams.startTime"></p-calendar>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endTime" class="col-4 control-label">盘点部门：</label>
+            <div class="col-7" style="display:inline-block">
+              <select name="organizationId" id="" class="form-control" [(ngModel)]="addParams.organizationId">
+                <option value="15">财务部</option>
+                <option value="13">综合部</option>
+              </select>
+
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancelAdd()">取消</button>
+        <button type="button" class="btn btn-primary" (click)="onSendAdd()">新增</button>
+      </div>
+    </ng-template>
+    <ng-template #taskEditModal>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">修改盘点任务</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide(detailModal)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding:15px 70px">
+        <form class="form-horizontal">
+          <div class="form-group">
+            <label for="beginTime" class="col-4 control-label">开始时间：</label>
+            <div class="col-7" style="display:inline-block">
+              <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true"
+                [(ngModel)]="editParams.startTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true" placeholder="请输入开始时间"
+                [ngModelOptions]="{standalone: true}" [maxDate]="editParams.endTime" [minDate]="currentTime"></p-calendar>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endTime" class="col-4 control-label">结束时间：</label>
+            <div class="col-7" style="display:inline-block">
+              <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true"
+                [(ngModel)]="editParams.endTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true" placeholder="请输入结束时间"
+                [ngModelOptions]="{standalone: true}"  [minDate]="editParams.startTime"></p-calendar>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="endTime" class="col-4 control-label">盘点部门：</label>
+            <div class="col-7" style="display:inline-block">
+              <select name="organizationId" id="" class="form-control" [(ngModel)]="editParams.organizationId" disabled>
+                <option value="13">综合部</option>
+                <option value="15">财务部</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancelEdit()">取消</button>
+        <button type="button" class="btn btn-primary" (click)="onSendEdit()">修改</button>
+      </div>
+    </ng-template>
+  </div>
+</div>
