@@ -68,6 +68,5 @@ export const API = {
   'addSystemRole': URL + 'sysUserPermissions/addRoles.do',
   'deleteSystemRole': URL + 'sysUserPermissions/deleteRoles.do',
   'editSystemRole': URL + 'sysUserPermissions/updateRole.do',
-  'querySystemRole': URL + 'sysUserPermissions/listRoles.do',
 
 };

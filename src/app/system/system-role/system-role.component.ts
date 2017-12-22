@@ -6,6 +6,7 @@ import { UserStateService } from 'app/core/user-state.service';
 import { CommonXHRService } from 'app/core/common-xhr.service';
 import { EditModel } from 'app/system/system-role/edit.model';
 import { AddModel } from 'app/system/system-role/add.model';
+import { TreeNode } from '../../../../node_modules/_primeng@4.3.0@primeng/primeng';
 declare const swal: any;
 
 @Component({
@@ -38,6 +39,13 @@ export class SystemRoleComponent implements OnInit {
   pageNumber = 1;
   total = 0;
   pageFirst = 0;
+
+  selectedEditOrg: TreeNode = {
+    data: '',
+    label: '',
+    parent: undefined
+  };
+  selectedEditOrgId;
 
   constructor(private _service: SystemRoleService,
     private modalService: BsModalService,
@@ -89,6 +97,7 @@ export class SystemRoleComponent implements OnInit {
   // }
 
   getList() {
+    console.log(this.selectedEditOrg.data)
     const params = {
       organizationId: this.searchParams.organizationId || '',
     }
