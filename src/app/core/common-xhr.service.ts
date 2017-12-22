@@ -112,4 +112,47 @@ export class CommonXHRService {
     return this.httpService.getRequest(API.querySystemRole, params);
   }
 
+  /**
+   * 获取当前用户的所有未读消息
+   * 2017-12-21 14:18:40
+   * @author hzb
+   * @param
+   * @returns
+   */
+  getUnreadMessage() {
+    return this.httpService.getRequest(API.listSysMessages, {});
+  }
+
+  /**
+   * 将消息标记为已读
+   * 2017-12-21 14:19:22
+   * @author hzb
+   * @param params
+   * @returns
+   */
+  readMessage(params: any) {
+    return this.httpService.withCredentialsPostRequest(API.updateSysMessagesIsRead, params);
+  }
+
+  /**
+   * 根据组织id获取角色
+   * 2017-12-22 14:58:22
+   * @author hzb
+   * @param params
+   * @returns
+   */
+  listRoles(params: { organizationId: string }) {
+    return this.httpService.getRequest(API.listRoles, params);
+  }
+
+  /**
+   * 新增用户
+   * 2017-12-22 16:01:40
+   * @author hzb
+   * @param params
+   * @returns
+   */
+  addUser(params: { username: string, password: string, roleId: number, employeeNumber: string }) {
+    return this.httpService.withCredentialsPostRequest(API.addUser, params);
+  }
 }

@@ -14,11 +14,25 @@
     </li>
   </ul> -->
   <ul class="nav navbar-nav ml-auto">
-    <li class="nav-item d-md-down-none">
-      <a class="nav-link" href="javascript:void(0);" (click)="readMessage()">
+    <li class="nav-item dropdown" dropdown>
+      <a class="nav-link" href="javascript:void(0);" dropdownToggle>
         <i class="fa fa-bell-o"></i>
-        <span class="badge badge-pill badge-danger" [hidden]="!messageVisiable">{{ messageCount > 0?messageCount:'' }}</span>
+        <span class="badge badge-pill badge-danger" [hidden]="!messageVisiable">{{ messages.length }}</span>
       </a>
+      <div class="dropdown-menu dropdown-menu-right message-dropdown" *dropdownMenu aria-labelledby="simple-dropdown">
+        <div class="message-header">通知
+          <a class="fa fa-check" href="javascript:void(0);" (click)="readMessage()">全部标记为已读</a>
+        </div>
+        <div class="message-container">
+          <ng-container *ngFor="let message of messages">
+            <a class="dropdown-item message" href="javascript:void(0);" (click)="showMessageDetailModal(message,messageDetailModal)">
+              {{ message?.verifyUserName }}{{ message?.boolIsOperationPass?'通过':'驳回' }}了您对资产的{{ message?.operation }}操作
+              <span class="message-date">{{ message?.createTime| date:'MM月dd日'}}</span>
+            </a>
+          </ng-container>
+          <a *ngIf="messages.length===0" class="dropdown-item message" href="javascript:void(0);" style="cursor: default">您没有新消息！</a>
+        </div>
+      </div>
     </li>
     <!--
     <li class="nav-item d-md-down-none">
@@ -27,9 +41,9 @@
     <li class="nav-item d-md-down-none">
       <a class="nav-link" ><i class="icon-location-pin"></i></a>
     </li> -->
-    <li class="nav-item dropdown" dropdown (onToggle)="toggled($event)">
-      <a class="nav-link dropdown-toggle" href="javascript:0;" dropdownToggle (click)="false">
-        <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+    <li class="nav-item dropdown" dropdown>
+      <a class="nav-link dropdown-toggle" href="javascript:void(0);" dropdownToggle (click)="false">
+        <img src="assets/img/avatars/6.jpg" class="img-avatar" alt="">
         <span class="d-md-down-none">{{ username }}</span>
       </a>
       <div class="dropdown-menu dropdown-menu-right" *dropdownMenu aria-labelledby="simple-dropdown">
@@ -65,9 +79,9 @@
         <a class="dropdown-item" ><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
         <div class="divider"></div> -->
         <!-- <a class="dropdown-item" ><i class="fa fa-shield"></i> Lock account</a> -->
-        <a class="dropdown-item" href="javascript:0;" (click)="showModifyPwdModal(modifyPwdModal)">
+        <a class="dropdown-item" href="javascript:void(0);" (click)="showModifyPwdModal(modifyPwdModal)">
           <i class="fa fa-pencil-square-o"></i> 修改密码</a>
-        <a class="dropdown-item" href="javascript:0;" (click)="logout()">
+        <a class="dropdown-item" href="javascript:void(0);" (click)="logout()">
           <i class="fa fa-lock"></i> 退出</a>
       </div>
     </li>
@@ -94,5 +108,46 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modifyPwdModalRef.hide()">取消</button>
     <button type="button" class="btn btn-primary" (click)="modifyPassword()">保存</button>
+  </div>
+</ng-template>
+
+<ng-template #messageDetailModal>
+  <div class="modal-header">
+    <h4 class="modal-title">消息详情</h4>
+    <button type="button" class="close" (click)="messageDetailModalRef.hide()" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table table-bordered table-striped table-sm">
+      <thead>
+        <tr>
+          <th>操作</th>
+          <th>使用部门</th>
+          <th>使用人</th>
+          <th>使用状态</th>
+          <th>存放位置</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>操作前</td>
+          <td>{{ messageDetail?.detail[0]?.organizationName }}</td>
+          <td>{{ messageDetail?.detail[0]?.employeeName }}</td>
+          <td>{{ messageDetail?.detail[0]?.useStatus }}</td>
+          <td>{{ messageDetail?.detail[0].storageLocation }}</td>
+        </tr>
+        <tr>
+          <td>操作后</td>
+          <td>{{ messageDetail?.detail[1]?.organizationName }}</td>
+          <td>{{ messageDetail?.detail[1]?.employeeName }}</td>
+          <td>{{ messageDetail?.detail[1]?.useStatus }}</td>
+          <td>{{ messageDetail?.detail[1]?.storageLocation }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="messageDetailModalRef.hide()">取消</button>
   </div>
 </ng-template>

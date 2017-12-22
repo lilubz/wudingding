@@ -37,6 +37,7 @@ import {
   StepsModule,
   TieredMenuModule,
   TreeModule,
+  TooltipModule,
   SharedModule as _SharedModule,
 } from 'primeng/primeng';
 
@@ -49,6 +50,8 @@ import { AsideToggleDirective } from './aside.directive';
 import { SIDEBAR_TOGGLE_DIRECTIVES } from './sidebar.directive';
 import { AssetTableComponent } from './asset-table/asset-table.component';
 import { PaginatorComponent } from './paginator/paginator.component';
+import { EmployeeAutocompleteComponent } from './employee-autocomplete/employee-autocomplete.component';
+import { OrganizationDropdownComponent } from './organization-dropdown/organization-dropdown.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -77,6 +80,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
     StepsModule,
     TieredMenuModule,
     TreeModule,
+    TooltipModule,
     _SharedModule,
     TreeModule,
     GrowlModule, ButtonModule, ContextMenuModule, TabViewModule
@@ -91,6 +95,8 @@ import { PaginatorComponent } from './paginator/paginator.component';
     AssetSidebarComponent,
     AssetTableComponent,
     PaginatorComponent,
+    EmployeeAutocompleteComponent,
+    OrganizationDropdownComponent,
   ],
 
   exports: [
@@ -120,6 +126,7 @@ import { PaginatorComponent } from './paginator/paginator.component';
     StepsModule,
     TieredMenuModule,
     TreeModule,
+    TooltipModule,
     _SharedModule,
     TreeModule,
     GrowlModule, ButtonModule, ContextMenuModule, TabViewModule,
@@ -133,6 +140,8 @@ import { PaginatorComponent } from './paginator/paginator.component';
     AssetHeaderComponent,
     AssetSidebarComponent,
     PaginatorComponent,
+    EmployeeAutocompleteComponent,
+    OrganizationDropdownComponent,
   ],
   providers: [
     LoginService,

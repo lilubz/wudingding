@@ -72,16 +72,7 @@
                 <span class="required">*</span>
               </label>
               <div class="col-md-9">
-                <div class="row">
-                  <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="addFormEmployee" (completeMethod)="searchEmployee($event)"
-                    (onBlur)="onBlurFromEmployeeAdd($event)" styleClass="col-md-12" [forceSelection]="false" field="employeeName"
-                    (onSelect)="selectSuggestedEmployee($event,'add')" [delay]="500" [size]="20" [minLength]="1" [maxlength]="20"
-                    [inputStyleClass]="'form-control'" placeholder="请输入资产使用人">
-                    <ng-template let-employee pTemplate="item">
-                      <div>{{ employee.employeeName }}</div>
-                    </ng-template>
-                  </p-autoComplete>
-                </div>
+                <asset-employee-autocomplete [(selectedEmployee)]="addFormEmployee"></asset-employee-autocomplete>
                 <!-- <input type="text" [(ngModel)]="addForm.employeeNumber" name="hf-email" class="form-control" placeholder="请输入使用人" maxlength="20"> -->
                 <!-- <span class="help-block">Please enter your email</span> -->
               </div>
@@ -154,7 +145,7 @@
               </label>
               <div class="col-md-9">
                 <div class="input-group">
-                  <input type="text" [(ngModel)]="addForm.residualRatio" name="hf-email" class="form-control" placeholder="请输入残值率" maxlength="20">
+                  <input type="number" [(ngModel)]="addForm.residualRatio" name="hf-email" class="form-control" placeholder="请输入残值率" maxlength="20">
                   <span class="input-group-addon">%</span>
                 </div>
                 <!-- <span class="help-block">Please enter your email</span> -->

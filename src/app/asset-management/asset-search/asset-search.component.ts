@@ -20,7 +20,7 @@ declare const swal: any;
   templateUrl: './asset-search.component.html',
   styleUrls: ['./asset-search.component.scss']
 })
-export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AssetSearchComponent implements OnInit {
   assetSearchVisiable = true;
   zh;
   editAssetModalRef: BsModalRef;
@@ -53,7 +53,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedDeleteAsset: Asset;
   selectedEmployee: Employee = new Employee();
   editFormEmployee: Employee = new Employee();
-  employeeSuggestions: Employee[] = [];
 
   showSearchOrgSelect = false;
   showEditOrgSelect = false;
@@ -67,6 +66,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     label: '',
     parent: undefined
   };
+  selectedEditOrgId;
 
   editForm: EditAsset | Asset = new EditAsset();
   assetDetail: any = {};
@@ -81,7 +81,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.zh = zh;
-    document.body.addEventListener('click', this.hideOrgSelect);
 
     this.commonXHRService.listAssetCategory().then(data => {
       if (data.status === 0) {
@@ -100,30 +99,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     });
 
-    this.commonXHRService.listOrganizationChildren({
-      organizationId: ''
-    }).then(data => {
-      if (data.status === 0) {
-        this.searchOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
-        this.editOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
-      } else {
-        swal({ text: data.msg, icon: 'warning', button: '确认' });
-      }
-    });
     this.search();
-  }
-
-  ngAfterViewInit(): void {
-
-  }
-
-  ngOnDestroy(): void {
-    document.body.removeEventListener('click', this.hideOrgSelect);
-  }
-
-  hideOrgSelect = () => {
-    this.showSearchOrgSelect = false;
-    this.showEditOrgSelect = false;
   }
 
   beforeSearch() {
@@ -136,7 +112,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
   search() {
     if (this.checkParams()) {
       this.assetSearchService.listAssetBasic({
-        organizationId: this.selectedOrganization || '',
+        organizationId: this.selectedSearchOrg.data || '',
         assetCategoryId: this.selectedCategory,
         useStatus: this.selectedAssetStatus,
         startTimeString: this.searchBeginDate ? moment(this.searchBeginDate).format('YYYY-MM-DD') : '',
@@ -198,19 +174,6 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  searchEmployee(event) {
-    // console.log(event);
-    this.commonXHRService.listEmployeeSimpleCurrentUser({
-      employeeName: event.query
-    }).then(data => {
-      if (data.status === 0) {
-        this.employeeSuggestions = data.data;
-      } else {
-
-      }
-    });
-  }
-
   checkParams() {
     if (!this.searchBeginDate || !this.searchEndDate) {
       swal({ text: '请选择录入时间段', icon: 'warning', button: '确认', });
@@ -261,11 +224,36 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       title: '确认审核该资产?',
       text: `${asset.assetName}`,
       icon: 'warning',
-      buttons: ['驳回', '通过'],
+      buttons: {
+        reject: {
+          text: '驳回',
+          value: false
+        },
+        confirm: '通过',
+      },
       dangerMode: true
-    }).then((review) => {
-      if (review) {
-        this.reviewAsset(asset.assetSerialNumber);
+    }).then((reviewStatus) => {
+      console.log(reviewStatus);
+      if (reviewStatus === true || reviewStatus === false) {
+        swal({
+          content: {
+            element: 'input',
+            attributes: {
+              placeholder: '请输入审核详情',
+              type: 'text',
+            }
+          },
+          button: '确认',
+        }).then((detail) => {
+          console.log(detail);
+          if (detail) {
+            if (reviewStatus === true) {
+              this.reviewAsset(asset.assetSerialNumber, 1, detail);
+            } else if (reviewStatus === false) {
+              this.reviewAsset(asset.assetSerialNumber, 0, detail);
+            }
+          }
+        });
       }
     });
   }
@@ -274,9 +262,7 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editForm = Object.assign({}, asset);
     this.editFormCategory = '';
     if (asset.organizationId) {
-      this.selectedEditOrg = this.getOrgNodeById(asset.organizationId, this.editOrganizations[0]) || this.selectedEditOrg;
-      this.expandParentRecursive(this.selectedEditOrg, true);
-      console.log(this.editOrganizations);
+      this.selectedEditOrgId = asset.organizationId;
     }
     for (const category of this.categories) {
       if (category.assetCategoryId === this.editForm.assetCategoryId) {
@@ -358,13 +344,15 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  reviewAsset(assetSerialNumber) {
+  reviewAsset(assetSerialNumber, operation, detail?) {
     if (assetSerialNumber) {
       this.assetSearchService.checkAsset({
-        assetSerialNumber: assetSerialNumber
+        assetSerialNumber: assetSerialNumber,
+        boolIsPass: operation,
+        reviewDetail: detail || ''
       }).then(data => {
         if (data.status === 0) {
-          swal({ text: '审核成功', icon: 'success', button: '确认', timer: 2000 });
+          swal({ text: '审核成功', icon: 'success', button: '确认' });
           this.search();
         } else {
           swal({ title: '审核失败', text: data.msg, icon: 'warning', button: '确认' });
@@ -392,105 +380,5 @@ export class AssetSearchComponent implements OnInit, AfterViewInit, OnDestroy {
     this.editForm.assetCategoryId = event.assetCategoryId || '';
     this.editForm.monthOfDepreciation = event.monthOfDepreciation || this.editForm.monthOfDepreciation || '';
     this.editForm.residualRatio = event.residualRatio || this.editForm.residualRatio || '';
-  }
-
-  selectSuggestedEmployee(event, type) {
-    // console.log(event);
-    if (type === 'edit') {
-      this.editFormEmployee = event;
-    } else if (type === 'search') {
-      this.selectedEmployee = event;
-    }
-  }
-
-  onBlurFromEmployeeSearch(event) {
-    if (!this.selectedEmployee.employeeNumber) {
-      this.selectedEmployee = new Employee();
-    }
-  }
-
-  onBlurFromEmployeeEdit(event) {
-    if (!this.editFormEmployee.employeeNumber) {
-      this.editFormEmployee = new Employee();
-    }
-  }
-
-  nodeSelect(event, type) {
-    // console.log(event);
-    if (type === 'edit') {
-      if (event.node.children) {
-        this.selectedEditOrg = {
-          data: '',
-          label: '',
-          parent: undefined
-        };
-        swal({ text: '请选择子部门', icon: 'warning', button: '确认' });
-      } else {
-        this.editForm.organizationId = event.node.data;
-        this.showEditOrgSelect = false;
-      }
-    } else if (type === 'search') {
-      this.selectedOrganization = event.node.data;
-      this.showSearchOrgSelect = false;
-    }
-  }
-
-  expandRecursive(node: TreeNode, isExpand: boolean) {
-    node.expanded = isExpand;
-    if (node.children) {
-      node.children.forEach(childNode => {
-        this.expandRecursive(childNode, isExpand);
-      });
-    }
-  }
-
-  expandParentRecursive(node: TreeNode, isExpand: boolean) {
-    if (node.parent) {
-      node.parent.expanded = isExpand;
-      if (node.parent.parent) {
-        this.expandParentRecursive(node.parent, isExpand);
-      }
-    }
-  }
-
-  transformOrgToTreeNode(data, parent) {
-    if (data) {
-      const temp = {
-        collapsedIcon: 'fa-folder',
-        data: data.t.organizationId,
-        expandedIcon: 'fa-folder-open',
-        label: data.t.name,
-        children: null,
-        parent: parent
-      }
-      if (data.children) {
-        const arr = []
-        for (const item of data.children) {
-          arr.push(this.transformOrgToTreeNode(item, temp));
-        }
-        temp.children = arr;
-      }
-      return temp;
-    }
-    return null;
-  }
-
-  getOrgNodeById(organizationId, data) {
-    if (organizationId) {
-      if (organizationId === data.data) {
-        return data;
-      } else {
-        if (data.children) {
-          let fromChildren;
-          for (const item of data.children) {
-            fromChildren = this.getOrgNodeById(organizationId, item);
-            if (fromChildren) {
-              break;
-            }
-          }
-          return fromChildren;
-        }
-      }
-    }
   }
 }

@@ -1,3 +1,4 @@
+import { AddUserComponent } from './add-user/add-user.component';
 import { SystemComponent } from './system.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -38,6 +39,13 @@ const routes: Routes = [
         component: SystemRoleComponent,
         data: {
           title: '角色管理'
+        }
+      },
+      {
+        path: 'add-user',
+        component: AddUserComponent,
+        data: {
+          title: '新增用户'
         }
       }
     ]

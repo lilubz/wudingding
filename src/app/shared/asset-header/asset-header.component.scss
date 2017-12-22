@@ -1,3 +1,54 @@
 .navbar-nav {
   margin-right: 10px;
 }
+
+a.message {
+  white-space: normal;
+  padding: 10px 80px 10px 20px;
+  .message-date {
+    position: absolute;
+    right: 0;
+    width: 60px;
+    top: 0;
+    text-align: center;
+    margin: 10px;
+    border-radius: 4px;
+    background: burlywood;
+  }
+}
+
+.message-dropdown {
+  padding-top: 40px;
+}
+
+.message-container {
+  overflow-x: auto;
+  width: 280px;
+  max-height: 300px;
+}
+
+.message-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  line-height: 24px;
+  padding: 8px;
+  border-bottom: 1px solid #cccccc;
+  background: lightgray;
+  a {
+    float: right;
+    height: 24px;
+    line-height: 16px;
+    text-decoration: none;
+    color: gray;
+    font-size: 12px;
+    background: beige;
+    border-radius: 4px;
+    padding: 4px;
+    &:hover {
+      color: #20a8d8;
+    }
+  }
+}
