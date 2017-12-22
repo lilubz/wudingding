@@ -58,5 +58,12 @@ export const API = {
   'addDepartment': URL + 'common/departmentController/addDepartment.do',
   'deleteDepartment': URL + 'common/departmentController/deleteDepartment.do',
   'updateDepartment': URL + 'common/departmentController/updateDepartment.do',
+  /**
+   * 角色管理
+   */
+  'addSystemRole': URL + 'sysUserPermissions/addRoles.do',
+  'deleteSystemRole': URL + 'sysUserPermissions/deleteRoles.do',
+  'editSystemRole': URL + 'sysUserPermissions/updateRole.do',
+  'querySystemRole': URL + 'sysUserPermissions/listRoles.do',
 
 };
