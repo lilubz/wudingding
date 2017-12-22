@@ -69,7 +69,15 @@ export class OrganizationDropdownComponent implements OnInit, OnDestroy {
     this.selectVisiable = false;
   }
   nodeSelect(event) {
-    this.selectedOrg = event.node;
+    if (this.selectedOrg === event.node) {
+      this.selectedOrg = {
+        data: '',
+        label: '',
+        parent: undefined
+      };
+    } else {
+      this.selectedOrg = event.node;
+    }
     this.selectVisiable = false;
     this.selectedOrgChange.emit(this.selectedOrg);
   }
