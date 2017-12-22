@@ -363,6 +363,20 @@ export class AssetSearchComponent implements OnInit {
     }
   }
 
+  selectedOrgChange(event: TreeNode) {
+    console.log(event);
+    if (event.children) {
+      this.selectedEditOrg = {
+        data: '',
+        label: '',
+        parent: undefined
+      };
+      swal({ text: '该部门还有子部门，您无法选择', icon: 'warning', button: '确认' });
+    } else {
+      this.selectedEditOrg = event;
+    }
+  }
+
   // editFormInit() {
   //   this.editFormCategory = '';
   //   this.selectedEditOrg = {

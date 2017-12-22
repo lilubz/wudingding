@@ -83,7 +83,7 @@ export class AssetHeaderComponent implements OnInit, OnDestroy {
     this.messageDetail = message;
     console.log(this.messageDetail);
     this.messageDetailModalRef = this.modalService.show(modal, Object.assign({}, this.modalConfig, { class: 'modal-lg modal-primary' }));
-    // this.readMessage(message);
+    this.readMessage(message);
   }
 
   showMessageTask() {

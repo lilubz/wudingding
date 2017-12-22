@@ -42,14 +42,7 @@
                 <span class="required">*</span>
               </label>
               <div class="col-md-9">
-                <input type="text" class="form-control" [(ngModel)]="selectedAddOrg.label" (click)="$event.stopPropagation();showAddOrgSelect=!showAddOrgSelect"
-                  maxlength="0">
-                <div style="position: relative" *ngIf="showAddOrgSelect" (click)="$event.stopPropagation()">
-                  <div style="position: absolute;z-index: 9999;">
-                    <p-tree [value]="addOrganizations" selectionMode="single" [(selection)]="selectedAddOrg" (onNodeSelect)="nodeSelect($event, 'add')"
-                      styleClass="col-md-12"></p-tree>
-                  </div>
-                </div>
+                <asset-organization-dropdown [selectedOrg]="selectedAddOrg" (selectedOrgChange)="selectedOrgChange($event)"></asset-organization-dropdown>
                 <!-- <span class="help-block">Please enter your email</span> -->
               </div>
             </div>

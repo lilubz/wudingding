@@ -1,8 +1,8 @@
-<input type="text" class="form-control" [(ngModel)]="_selectedOrg.label" (click)="$event.stopPropagation();selectVisiable=!selectVisiable"
+<input type="text" class="form-control" [ngModel]="_selectedOrg.label" (keydown)="$event.preventDefault();" (click)="$event.stopPropagation();selectVisiable=!selectVisiable"
   maxlength="0">
 <div style="position: relative" *ngIf="selectVisiable" (click)="$event.stopPropagation()">
   <div style="position: absolute;z-index: 1;">
-    <p-tree [value]="organizations" selectionMode="single" [(selection)]="selectedOrg" (onNodeSelect)="nodeSelect($event)"
+    <p-tree [value]="organizations" selectionMode="single" [selection]="selectedOrg" (onNodeSelect)="nodeSelect($event)"
       styleClass="col-md-12"></p-tree>
   </div>
 </div>

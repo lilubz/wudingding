@@ -17,7 +17,7 @@ declare const swal: any;
   templateUrl: './asset-add.component.html',
   styleUrls: ['./asset-add.component.scss']
 })
-export class AssetAddComponent implements OnInit, OnDestroy {
+export class AssetAddComponent implements OnInit {
   uploadAssetUrl = API.uploadAssetUrl;
   uploadAssetModalRef: BsModalRef;
   modalConfig = {
@@ -30,7 +30,6 @@ export class AssetAddComponent implements OnInit, OnDestroy {
   zh;
   addForm: AddAsset = new AddAsset();
   addFormCategory: AssetCategory | '' = '';
-  addOrganizations: TreeNode[] = [];
   addFormEmployee: Employee = new Employee();
   showAddOrgSelect = false;
   selectedAddOrg: TreeNode = {
@@ -57,7 +56,6 @@ export class AssetAddComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.zh = zh;
-    document.body.addEventListener('click', this.hideOrgSelect);
 
     this.commonXHRService.listAssetCategory().then(data => {
       if (data.status === 0) {
@@ -75,25 +73,6 @@ export class AssetAddComponent implements OnInit, OnDestroy {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
     });
-
-    this.commonXHRService.listOrganizationChildren({
-      organizationId: ''
-    }).then(data => {
-      if (data.status === 0) {
-        this.addOrganizations = [this.transformOrgToTreeNode(data.data, undefined)];
-        this.addFormInit();
-      } else {
-        swal({ text: data.msg, icon: 'warning', button: '确认' });
-      }
-    });
-  }
-
-  ngOnDestroy(): void {
-    document.body.removeEventListener('click', this.hideOrgSelect);
-  }
-
-  hideOrgSelect = () => {
-    this.showAddOrgSelect = false;
   }
 
   addAsset() {
@@ -171,10 +150,23 @@ export class AssetAddComponent implements OnInit, OnDestroy {
       label: '',
       parent: undefined
     };
-    this.expandRecursive(this.addOrganizations[0], false);
     this.addFormEmployee = new Employee();
     this.addForm = new AddAsset();
     this.addForm.useStatus = this.statusTypes[0].assetStatusTypeName;
+  }
+
+  selectedOrgChange(event: TreeNode) {
+    console.log(event);
+    if (event.children) {
+      this.selectedAddOrg = {
+        data: '',
+        label: '',
+        parent: undefined
+      };
+      swal({ text: '该部门还有子部门，您无法选择', icon: 'warning', button: '确认' });
+    } else {
+      this.selectedAddOrg = event;
+    }
   }
 
   addFormCategoryChange(event: AssetCategory) {
@@ -194,62 +186,5 @@ export class AssetAddComponent implements OnInit, OnDestroy {
     } else {
       swal({ title: '上传失败', text: JSON.parse(event.xhr.responseText).msg, icon: 'error', button: '确认' });
     }
-  }
-
-  nodeSelect(event, type) {
-    // console.log(event);
-    if (type === 'add') {
-      if (event.node.children) {
-        this.selectedAddOrg = {
-          data: '',
-          label: '',
-          parent: undefined
-        };
-        swal({ text: '请选择子部门', icon: 'warning', button: '确认' });
-      } else {
-        this.addForm.organizationId = event.node.data;
-        this.showAddOrgSelect = false;
-      }
-    }
-  }
-
-  expandRecursive(node: TreeNode, isExpand: boolean) {
-    node.expanded = isExpand;
-    if (node.children) {
-      node.children.forEach(childNode => {
-        this.expandRecursive(childNode, isExpand);
-      });
-    }
-  }
-
-  expandParentRecursive(node: TreeNode, isExpand: boolean) {
-    if (node.parent) {
-      node.parent.expanded = isExpand;
-      if (node.parent.parent) {
-        this.expandParentRecursive(node.parent, isExpand);
-      }
-    }
-  }
-
-  transformOrgToTreeNode(data, parent) {
-    if (data) {
-      const temp = {
-        collapsedIcon: 'fa-folder',
-        data: data.t.organizationId,
-        expandedIcon: 'fa-folder-open',
-        label: data.t.name,
-        children: null,
-        parent: parent
-      }
-      if (data.children) {
-        const arr = []
-        for (const item of data.children) {
-          arr.push(this.transformOrgToTreeNode(item, temp));
-        }
-        temp.children = arr;
-      }
-      return temp;
-    }
-    return null;
   }
 }
