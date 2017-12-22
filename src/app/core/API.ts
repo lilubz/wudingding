@@ -25,6 +25,10 @@ export const API = {
   'listOrganizationCurrentUser': URL + 'common/listOrganizationCurrentUser.do',
   'listEmployeeSimpleCurrentUser': URL + 'common/listEmployeeSimpleCurrentUser.do',
   'listOrganizationChildren': URL + 'common/listOrganizationChildren.do',
+  'listSysMessages': URL + 'assetBasic/listSysMessages.do',
+  'updateSysMessagesIsRead': URL + 'assetBasic/updateSysMessagesIsRead.do',
+  'listRoles': URL + 'sysUserPermissions/listRoles.do',
+  'addUser': URL + 'sysUserPermissions/addUser.do',
 
   // 资产查询
   'listAssetBasic': URL + 'assetBasic/listAssetBasic.do',

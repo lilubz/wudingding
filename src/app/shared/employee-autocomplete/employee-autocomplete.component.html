@@ -1,0 +1,8 @@
+<p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="selectedEmployee" (completeMethod)="searchEmployee($event)"
+  [forceSelection]="false" styleClass="col-md-12 autoComplete" [style]="{'padding':0}" field="employeeName" (onSelect)="selectSuggestedEmployee($event)" emptyMessage="未查询到信息"
+  (onBlur)="onBlurFromEmployeeSearch($event)" [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'"
+  placeholder="请输入资产使用人">
+  <ng-template let-employee pTemplate="item">
+    <div>{{ employee.employeeName }}</div>
+  </ng-template>
+</p-autoComplete>

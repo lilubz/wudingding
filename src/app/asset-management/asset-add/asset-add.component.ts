@@ -32,7 +32,6 @@ export class AssetAddComponent implements OnInit, OnDestroy {
   addFormCategory: AssetCategory | '' = '';
   addOrganizations: TreeNode[] = [];
   addFormEmployee: Employee = new Employee();
-  employeeSuggestions: Employee[] = [];
   showAddOrgSelect = false;
   selectedAddOrg: TreeNode = {
     data: '',
@@ -183,31 +182,6 @@ export class AssetAddComponent implements OnInit, OnDestroy {
     this.addForm.assetCategoryId = event.assetCategoryId || '';
     this.addForm.monthOfDepreciation = event.monthOfDepreciation || this.addForm.monthOfDepreciation || '';
     this.addForm.residualRatio = event.residualRatio || this.addForm.residualRatio || '';
-  }
-  selectSuggestedEmployee(event, type) {
-    // console.log(event);
-    if (type === 'add') {
-      this.addFormEmployee = event;
-    }
-  }
-
-  searchEmployee(event) {
-    // console.log(event);
-    this.commonXHRService.listEmployeeSimpleCurrentUser({
-      employeeName: event.query
-    }).then(data => {
-      if (data.status === 0) {
-        this.employeeSuggestions = data.data;
-      } else {
-
-      }
-    });
-  }
-
-  onBlurFromEmployeeAdd(event) {
-    if (!this.addFormEmployee.employeeNumber) {
-      this.addFormEmployee = new Employee();
-    }
   }
 
   showUploadAssetModal(modal) {

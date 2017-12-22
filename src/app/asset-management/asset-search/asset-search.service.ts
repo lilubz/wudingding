@@ -73,7 +73,7 @@ export class AssetSearchService {
    * @param params
    * @returns
    */
-  checkAsset(params: { assetSerialNumber: string }) {
+  checkAsset(params: { assetSerialNumber: string, boolIsPass: string, reviewDetail: string }) {
     return this.httpService
       .withCredentialsPostRequest(API.checkAsset, params);
   }

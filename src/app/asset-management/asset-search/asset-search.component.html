@@ -3,8 +3,10 @@
     <div class="card">
       <div class="card-header">
         <i class="fa fa-align-justify"></i> 资产查询
-        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search-parent/asset-search']" type="button">资产查询</button>
-        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search-parent/asset-statistic']" type="button">资产统计</button>
+        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search-parent/asset-search']"
+          type="button">资产查询</button>
+        <button class="btn btn-primary btn-sm mb-0 pull-right" [routerLink]="['/asset-management/asset-search-parent/asset-statistic']"
+          type="button">资产统计</button>
       </div>
       <div class="card-body">
 
@@ -21,15 +23,16 @@
           </div>
           <div class="form-group col-md-6">
             <label for="select">责任部门</label>
-            <input type="text" class="form-control" [(ngModel)]="selectedSearchOrg.label" (click)="$event.stopPropagation();showSearchOrgSelect=!showSearchOrgSelect"
+            <!-- <input type="text" class="form-control" [(ngModel)]="selectedSearchOrg.label" (click)="$event.stopPropagation();showSearchOrgSelect=!showSearchOrgSelect"
               maxlength="0">
             <div style="position: relative" *ngIf="showSearchOrgSelect" (click)="$event.stopPropagation()">
               <div style="position: absolute;z-index: 1;">
                 <p-tree [value]="searchOrganizations" selectionMode="single" [(selection)]="selectedSearchOrg" (onNodeSelect)="nodeSelect($event, 'search')"
                   styleClass="col-md-12"></p-tree>
               </div>
-            </div>
+            </div> -->
 
+            <asset-organization-dropdown [(selectedOrg)]="selectedSearchOrg"></asset-organization-dropdown>
             <!-- <span class="help-block">Please enter your email</span> -->
           </div>
         </div>
@@ -49,18 +52,7 @@
           </div>
           <div class="form-group col-md-6">
             <label for="select">资产使用人</label>
-            <div class="row">
-              <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="selectedEmployee" (completeMethod)="searchEmployee($event)"
-                [forceSelection]="false" styleClass="col-md-12 autoComplete" field="employeeName" (onSelect)="selectSuggestedEmployee($event,'search')"
-                (onBlur)="onBlurFromEmployeeSearch($event)" [delay]="500" [size]="20" [minLength]="1" [maxlength]="20" [inputStyleClass]="'form-control'"
-                placeholder="请输入资产使用人">
-                <ng-template let-employee pTemplate="item">
-                  <div>{{ employee.employeeName }}</div>
-                </ng-template>
-              </p-autoComplete>
-            </div>
-            <!-- <input type="text" [(ngModel)]="selectedEmployee" class="form-control" placeholder="请输入使用人"> -->
-            <!-- <span class="help-block">Please enter your email</span> -->
+            <asset-employee-autocomplete [(selectedEmployee)]="selectedEmployee"></asset-employee-autocomplete>
           </div>
         </div>
 
@@ -149,12 +141,12 @@
           <tbody>
             <tr *ngFor="let item of assetList">
               <td>
-                <a href="javascript:0;" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
+                <a href="javascript:void(0);" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
               </td>
               <td>{{ item?.assetName }}</td>
               <td>{{ item?.assetCategoryName }}</td>
               <td>
-                <a href="javascript:0;" (click)="showAssetRelationModal(item,assetRelationModal)" title="查看资产套关系">{{ item?.majorAssetSerialNumber }}</a>
+                <a href="javascript:void(0);" (click)="showAssetRelationModal(item,assetRelationModal)" title="查看资产套关系">{{ item?.majorAssetSerialNumber }}</a>
               </td>
               <td>{{ item?.brandSpecification }}</td>
               <td>{{ item?.organizationName }}</td>
@@ -231,14 +223,7 @@
         <span class="required">*</span>
       </label>
       <div class="col-md-9">
-        <input type="text" class="form-control" [(ngModel)]="selectedEditOrg.label" (click)="$event.stopPropagation();showEditOrgSelect=!showEditOrgSelect"
-          maxlength="0">
-        <div style="position: relative" *ngIf="showEditOrgSelect" (click)="$event.stopPropagation()">
-          <div style="position: absolute;z-index: 9999;">
-            <p-tree [value]="editOrganizations" selectionMode="single" [(selection)]="selectedEditOrg" (onNodeSelect)="nodeSelect($event, 'edit')"
-              styleClass="col-md-12"></p-tree>
-          </div>
-        </div>
+          <asset-organization-dropdown [(selectedOrg)]="selectedEditOrg" [orgainzationId]="selectedEditOrgId"></asset-organization-dropdown>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>
@@ -260,17 +245,7 @@
         <span class="required">*</span>
       </label>
       <div class="col-md-9">
-        <div class="row">
-          <p-autoComplete [suggestions]="employeeSuggestions" [(ngModel)]="editFormEmployee" (completeMethod)="searchEmployee($event)"
-            (onBlur)="onBlurFromEmployeeEdit($event)" styleClass="col-md-12" [forceSelection]="false" field="employeeName"
-            (onSelect)="selectSuggestedEmployee($event,'edit')" [delay]="500" [size]="20" [minLength]="1" [maxlength]="20"
-            [inputStyleClass]="'form-control'" placeholder="请输入资产使用人">
-            <ng-template let-employee pTemplate="item">
-              <div>{{ employee.employeeName }}</div>
-            </ng-template>
-          </p-autoComplete>
-        </div>
-        <!-- <span class="help-block">Please enter your email</span> -->
+        <asset-employee-autocomplete [(selectedEmployee)]="editFormEmployee"></asset-employee-autocomplete>
       </div>
     </div>
     <div class="form-group row">
@@ -407,7 +382,7 @@
         <tr *ngFor="let item of assetRelationList">
           <td>{{ item.assetSerialNumber === item.majorAssetSerialNumber?'主资产':'子资产' }}</td>
           <td>
-            <a href="javascript:0;" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
+            <a href="javascript:void(0);" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
           </td>
           <td>{{ item?.assetName }}</td>
           <td>{{ item?.organizationName }}</td>
