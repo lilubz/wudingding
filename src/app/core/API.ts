@@ -26,6 +26,12 @@ export const API = {
   'listEmployeeSimpleCurrentUser': URL + 'common/listEmployeeSimpleCurrentUser.do',
   'listOrganizationChildren': URL + 'common/listOrganizationChildren.do',
 
+   // 权限管理
+  'listRoles': URL + 'sysUserPermissions/listRoles.do',
+  'listSysPermission': URL + 'sysUserPermissions/listSysPermission.do',
+  'savePermissons': URL + 'sysUserPermissions/savePermissons.do',
+  'listAllPermissions': URL + 'sysUserPermissions/listAllPermissions.do',
+
   // 资产查询
   'listAssetBasic': URL + 'assetBasic/listAssetBasic.do',
   'addAssetInfo': URL + 'assetBasic/addAssetInfo.do',
