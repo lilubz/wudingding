@@ -40,29 +40,37 @@ export class SystemRoleComponent implements OnInit {
   total = 0;
   pageFirst = 0;
 
+  selectedSearchOrg: TreeNode = {
+    data: '',
+    label: '',
+    parent: undefined
+  };
   selectedEditOrg: TreeNode = {
     data: '',
     label: '',
     parent: undefined
   };
   selectedEditOrgId;
+  selectedAddOrg: TreeNode = {
+    data: '',
+    label: '',
+    parent: undefined
+  };
+
 
   constructor(private _service: SystemRoleService,
     private modalService: BsModalService,
     private commonXHRService: CommonXHRService) { }
 
   ngOnInit() {
-    console.log(this.editForm)
-    // this.copyData();
     this.getList();
   }
   showEditModal(role, modal) {
-    console.log(role);
-    this.editForm.organizationName = role.organizationName;
+
+    this.editForm.organizationId = role.organizationId;
     this.editForm.roleName = role.roleName;
     this.editForm.description = role.description;
     this.editForm.roleId = role.roleId;
-
     this.editModalRef = this.modalService.show(
       modal,
       Object.assign({}, this.config, { class: 'gray modal-lg' })
@@ -75,7 +83,7 @@ export class SystemRoleComponent implements OnInit {
     );
   }
   pageChanged(event) {
-    console.log(event);
+    // console.log(event);
     this.pageNumber = event.page + 1;
     this.pageSize = event.rows;
     this.pageFirst = event.first;
@@ -97,9 +105,8 @@ export class SystemRoleComponent implements OnInit {
   // }
 
   getList() {
-    console.log(this.selectedEditOrg.data)
     const params = {
-      organizationId: this.searchParams.organizationId || '',
+      organizationId: this.selectedSearchOrg.data || '',
     }
     this.commonXHRService.listRoles(params).then(data => {
       if (data.status === 0) {
@@ -118,6 +125,8 @@ export class SystemRoleComponent implements OnInit {
     })
   }
   editSystemRole() {
+    console.log(this.selectedEditOrg);
+    
     swal({
       title: '确认修改"' + this.editForm.roleName + '"该角色名吗？',
       text: '',
@@ -128,7 +137,7 @@ export class SystemRoleComponent implements OnInit {
       if (willDelete) {
         const params = {
           roleId: this.editForm.roleId,
-          organizationId: 1,
+          organizationId: this.selectedEditOrg.data,
           name: this.editForm.roleName,
           description: this.editForm.description,
         }
@@ -160,7 +169,7 @@ export class SystemRoleComponent implements OnInit {
     }).then((willDelete) => {
       if (willDelete) {
         const params = {
-          organizationId: this.addForm.organizationId,
+          organizationId: this.selectedAddOrg.data,
           name: this.addForm.roleName,
           description: this.addForm.description
         };

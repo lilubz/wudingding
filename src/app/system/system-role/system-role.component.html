@@ -11,8 +11,8 @@
           <div class="row">
             <div class="form-group col-md-4">
               <label for="search" class="form-control-label">组织部门：</label>
-              <input type="text" class="form-control" [(ngModel)]="searchParams.organizationId" name="search" placeholder="请输入角色名...">
-              <asset-organization-dropdown [(selectedOrg)]="selectedEditOrg"></asset-organization-dropdown>
+              <!-- <input type="text" class="form-control" [(ngModel)]="searchParams.organizationId" name="search" placeholder="请输入角色名..."> -->
+              <asset-organization-dropdown [(selectedOrg)]="selectedSearchOrg"></asset-organization-dropdown>
             </div>
           </div>
           <div class="row">
@@ -70,13 +70,13 @@
       <div class="col-md-12">
         <div class="form-group">
             <label for="name">角色ID</label>
-            <input type="text" class="form-control" [(ngModel)]="editForm.roleId" id="name" placeholder="角色名" disabled>
-          <label for="name">组织名称</label>
-          <input type="text" class="form-control" [(ngModel)]="editForm.organizationName" id="name" placeholder="角色名">
+            <input type="text" class="form-control" [(ngModel)]="editForm.roleId" id="name" placeholder="角色ID" disabled>
+          <label for="name">组织部门</label>
+          <asset-organization-dropdown [(selectedOrg)]="selectedEditOrg"  [orgainzationId]="editForm.organizationId"></asset-organization-dropdown>
           <label for="name">角色名</label>
           <input type="text" class="form-control" [(ngModel)]="editForm.roleName" id="name" placeholder="角色名">
           <label for="name">描述</label>
-          <input type="text" class="form-control" [(ngModel)]="editForm.description" id="name" placeholder="备注">
+          <input type="text" class="form-control" [(ngModel)]="editForm.description" id="name" placeholder="描述">
         </div>
       </div>
     </div>
@@ -100,8 +100,8 @@
         <div class="form-group">
           <label for="name">角色名</label>
           <input type="text" class="form-control" [(ngModel)]="addForm.roleName" id="name" placeholder="角色名">
-          <label for="name">组织id</label>
-          <input type="text" class="form-control" [(ngModel)]="addForm.organizationId" id="name" placeholder="角色名">
+          <label for="name">组织部门</label>
+          <asset-organization-dropdown [(selectedOrg)]="selectedAddOrg"></asset-organization-dropdown>
           <label for="name">备注</label>
           <input type="text" class="form-control" [(ngModel)]="addForm.description" id="name" placeholder="备注">
         </div>
