@@ -111,10 +111,10 @@
               <td>{{ item?.username }}</td>
               <td>{{ item?.operation }}</td>
               <td>{{ item?.createTime| date:'yyyy-MM-dd HH:mm:ss' }}</td>
-              <td>{{ item?.detail.organizationName }}</td>
-              <td>{{ item?.detail.employeeName }}</td>
-              <td>{{ item?.detail.useStatus }}</td>
-              <td>{{ item?.detail.storageLocation }}</td>
+              <td>{{ item?.detail[1]?.organizationName || item?.detail.organizationName }}</td>
+              <td>{{ item?.detail[1]?.employeeName || item?.detail.employeeName}}</td>
+              <td>{{ item?.detail[1]?.useStatus || item?.detail.useStatus }}</td>
+              <td>{{ item?.detail[1]?.storageLocation || item?.detail.storageLocation }}</td>
             </tr>
           </tbody>
         </table>

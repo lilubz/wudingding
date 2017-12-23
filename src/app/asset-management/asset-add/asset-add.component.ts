@@ -166,6 +166,7 @@ export class AssetAddComponent implements OnInit {
       swal({ text: '该部门还有子部门，您无法选择', icon: 'warning', button: '确认' });
     } else {
       this.selectedAddOrg = event;
+      this.addForm.organizationId = this.selectedAddOrg.data;
     }
   }
 

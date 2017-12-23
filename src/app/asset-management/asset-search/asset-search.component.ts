@@ -261,9 +261,6 @@ export class AssetSearchComponent implements OnInit {
   showEditModal(asset: any, modal) {
     this.editForm = Object.assign({}, asset);
     this.editFormCategory = '';
-    if (asset.organizationId) {
-      this.selectedEditOrgId = asset.organizationId;
-    }
     for (const category of this.categories) {
       if (category.assetCategoryId === this.editForm.assetCategoryId) {
         this.editFormCategory = category;
@@ -374,6 +371,7 @@ export class AssetSearchComponent implements OnInit {
       swal({ text: '该部门还有子部门，您无法选择', icon: 'warning', button: '确认' });
     } else {
       this.selectedEditOrg = event;
+      this.editForm.organizationId = this.selectedEditOrg.data;
     }
   }
 
