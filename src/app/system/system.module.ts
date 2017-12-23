@@ -12,6 +12,7 @@ import { AssetDepartmentService } from 'app/system/asset-department/asset-depart
 import { SystemRoleComponent } from 'app/system/system-role/system-role.component';
 import { SystemRoleService } from 'app/system/system-role/system-role.service';
 import { AddUserComponent } from './add-user/add-user.component';
+import { PermissionComponent } from './permission/permission.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -24,7 +25,8 @@ import { AddUserComponent } from './add-user/add-user.component';
     CategoryComponent,
     AssetDepartmentComponent,
     SystemRoleComponent,
-    AddUserComponent
+    AddUserComponent,
+    PermissionComponent
   ],
   providers: [
     AssetDepartmentService,
