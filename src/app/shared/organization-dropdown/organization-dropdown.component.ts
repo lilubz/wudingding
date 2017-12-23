@@ -9,7 +9,7 @@ declare const swal: any;
  * 组织部门下拉框公共组件
  *
  * @Input() selectedOrg:TreeNode
- * @Input() orgainzationId:number
+ * @Input() organizationId:number
  *
  * 2017-12-22 11:54:50
  * @author hzb
@@ -36,7 +36,7 @@ export class OrganizationDropdownComponent implements OnInit, OnDestroy {
   get selectedOrg(): TreeNode {
     return this._selectedOrg;
   }
-  @Input() orgainzationId: number;
+  @Input() organizationId: number;
   @Output() selectedOrgChange: EventEmitter<any> = new EventEmitter();
   organizations: TreeNode[] = [];
   selectVisiable = false;
@@ -53,7 +53,8 @@ export class OrganizationDropdownComponent implements OnInit, OnDestroy {
     }).then(data => {
       if (data.status === 0) {
         this.organizations = [this.transformOrgToTreeNode(data.data, undefined)];
-        this.selectedOrg = this.getOrgNodeById(this.orgainzationId, this.organizations[0]) || this.selectedOrg;
+        this.selectedOrg = this.getOrgNodeById(this.organizationId, this.organizations[0]) || this.selectedOrg;
+        this.selectedOrgChange.emit(this.selectedOrg);
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
