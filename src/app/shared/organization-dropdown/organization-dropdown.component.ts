@@ -54,6 +54,7 @@ export class OrganizationDropdownComponent implements OnInit, OnDestroy {
       if (data.status === 0) {
         this.organizations = [this.transformOrgToTreeNode(data.data, undefined)];
         this.selectedOrg = this.getOrgNodeById(this.orgainzationId, this.organizations[0]) || this.selectedOrg;
+        this.selectedOrgChange.emit(this.selectedOrg);
       } else {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }

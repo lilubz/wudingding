@@ -50,7 +50,6 @@ export class SystemRoleComponent implements OnInit {
     label: '',
     parent: undefined
   };
-  selectedEditOrgId;
   selectedAddOrg: TreeNode = {
     data: '',
     label: '',
@@ -125,8 +124,6 @@ export class SystemRoleComponent implements OnInit {
     })
   }
   editSystemRole() {
-    console.log(this.selectedEditOrg);
-    
     swal({
       title: '确认修改"' + this.editForm.roleName + '"该角色名吗？',
       text: '',
