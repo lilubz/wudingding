@@ -86,7 +86,7 @@ export class AssetStatisticComponent implements OnInit {
   }
   getTreeNode() {
     const user = this.userStateService.getUser();
-    this.commonXHRService.getTreeNodde({ organizationId: user.organizationId }).then(data => {
+    this.commonXHRService.listOrganizationChildren({ organizationId: user.organizationId }).then(data => {
       if (data.status === 0) {
         // console.log(data.data);
         this.filesTree = [this.transformOrgToTreeNode(data.data)];

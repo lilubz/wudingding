@@ -95,7 +95,7 @@ export class AssetDepartmentComponent implements OnInit {
    */
   getNode() {
     const user = this.userStateService.getUser();
-    this.commonXHRService.getTreeNodde({ organizationId: user.organizationId }).then(data => {
+    this.commonXHRService.listOrganizationChildren({ organizationId: user.organizationId }).then(data => {
       if (data.status === 0) {
         // // console.log(data.data);
         this.departmentTree = [this.transformOrgToTreeNode(data.data)];
@@ -181,7 +181,7 @@ export class AssetDepartmentComponent implements OnInit {
         title: '确认添加部门: ' + '“' + this.addDepartmentName + '”' + ' 到 ' + '“' + this.selectedData.label + '”' + ' 下吗？',
         text: '',
         icon: 'warning',
-        buttons: true,
+        buttons: ['取消', '确定'],
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
@@ -223,7 +223,11 @@ export class AssetDepartmentComponent implements OnInit {
   updateDepartment() {
     if (this.checkForm2()) {
       swal({
-        title: '编辑部门', text: '确认修改当前部门名称为' + this.updateDepartmentName + '吗？', icon: 'warning', buttons: true, dangerMode: true,
+        title: '编辑部门',
+        text: '确认修改当前部门信息吗？',
+        icon: 'warning',
+        buttons: ['取消', '确定'],
+        dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
           const params = {

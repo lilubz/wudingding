@@ -59,7 +59,6 @@ export class OrganizationDropdownComponent implements OnInit, OnDestroy {
         swal({ text: data.msg, icon: 'warning', button: '确认' });
       }
     });
-
   }
 
   ngOnDestroy() {
