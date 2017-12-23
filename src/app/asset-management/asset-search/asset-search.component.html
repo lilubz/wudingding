@@ -223,7 +223,7 @@
         <span class="required">*</span>
       </label>
       <div class="col-md-9">
-        <asset-organization-dropdown [selectedOrg]="selectedEditOrg" (selectedOrgChange)="selectedOrgChange($event)" [orgainzationId]="selectedEditOrgId"></asset-organization-dropdown>
+        <asset-organization-dropdown [selectedOrg]="selectedEditOrg" (selectedOrgChange)="selectedOrgChange($event)" [orgainzationId]="editForm.organizationId"></asset-organization-dropdown>
         <!-- <span class="help-block">Please enter your email</span> -->
       </div>
     </div>

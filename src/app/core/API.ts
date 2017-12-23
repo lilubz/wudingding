@@ -30,6 +30,11 @@ export const API = {
   'listRoles': URL + 'sysUserPermissions/listRoles.do',
   'addUser': URL + 'sysUserPermissions/addUser.do',
 
+   // 权限管理
+  'listSysPermission': URL + 'sysUserPermissions/listSysPermission.do',
+  'savePermissons': URL + 'sysUserPermissions/savePermissons.do',
+  'listAllPermissions': URL + 'sysUserPermissions/listAllPermissions.do',
+
   // 资产查询
   'listAssetBasic': URL + 'assetBasic/listAssetBasic.do',
   'addAssetInfo': URL + 'assetBasic/addAssetInfo.do',

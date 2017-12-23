@@ -44,7 +44,7 @@ export class AssetDetailComponent implements OnInit {
     return this.assetDetailService.listAssetChangeHistory({
       pageNumber: this.historyPageNumber,
       pageSize: this.historyPageSize,
-      assetId: '6' || this.assetDetail.assetId
+      assetId: this.assetDetail.assetId
     }).then(data => {
       if (data.status === 0) {
         this.assetChangeHistoryList = data.data.list.map((value, index, arr) => {
