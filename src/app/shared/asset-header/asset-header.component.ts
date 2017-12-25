@@ -99,7 +99,7 @@ export class AssetHeaderComponent implements OnInit, OnDestroy {
     this.getMessages();
     this._getMessageTask = setInterval(() => {
       this.getMessages();
-    }, 1000 * 60);
+    }, 1000 * 60 * 10);
   }
 
   getMessages() {

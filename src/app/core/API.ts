@@ -30,7 +30,7 @@ export const API = {
   'listRoles': URL + 'sysUserPermissions/listRoles.do',
   'addUser': URL + 'sysUserPermissions/addUser.do',
 
-   // 权限管理
+  // 权限管理
   'listSysPermission': URL + 'sysUserPermissions/listSysPermission.do',
   'savePermissons': URL + 'sysUserPermissions/savePermissons.do',
   'listAllPermissions': URL + 'sysUserPermissions/listAllPermissions.do',
@@ -45,7 +45,7 @@ export const API = {
   'listAssetInfoByMajorAsset': URL + 'assetBasic/listAssetInfoByMajorAsset.do', // 根据主资产id获取套资产信息
   'checkAsset': URL + 'assetBasic/checkAsset.do', // 资产审核
 
-  'uploadAssetUrl': 'dataImport/importAssetInfo.do', // 资产导入
+  'uploadAssetUrl': URL + 'dataImport/importAssetInfo.do', // 资产导入
   'downloadAssetUrl': URL + 'dataExcel/Export/assetExport.do', // 资产导出
 
 
