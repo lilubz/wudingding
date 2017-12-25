@@ -164,6 +164,7 @@
                 <button type="button" *ngIf="!item?.reviewStatus" class="btn btn-warning" (click)="showReviewModal(item)">审核</button>
                 <button type="button" *ngIf="item?.reviewStatus" class="btn btn-primary" (click)="showEditModal(item,editAssetModal);$event.target.blur();">编辑</button>
                 <button type="button" class="btn btn-danger" (click)="showDeleteModal(item)">删除</button>
+                <button type="button" class="btn btn-info" (click)="printQRCode(item)">打印</button>
               </td>
             </tr>
           </tbody>

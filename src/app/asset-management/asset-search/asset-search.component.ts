@@ -258,6 +258,19 @@ export class AssetSearchComponent implements OnInit {
     });
   }
 
+  printQRCode(item: Asset) {
+    this.commonXHRService.printQRcode({
+      assetSerialNumber: item.assetSerialNumber,
+      assetName: item.assetName,
+    }).then(data => {
+      if (data.status === 0) {
+        swal({ text: '打印成功', icon: 'success', button: '确认' });
+      } else {
+        swal({ text: data.msg, icon: 'warning', button: '确认' });
+      }
+    });
+  }
+
   showEditModal(asset: any, modal) {
     this.editForm = Object.assign({}, asset);
     this.editFormCategory = '';

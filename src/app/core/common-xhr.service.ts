@@ -151,4 +151,15 @@ export class CommonXHRService {
   addUser(params: { username: string, password: string, roleId: number, employeeNumber: string }) {
     return this.httpService.withCredentialsPostRequest(API.addUser, params);
   }
+
+  /**
+   * 打印资产二维码
+   * 2017-12-25 19:09:45
+   * @author hzb
+   * @param params
+   * @returns
+   */
+  printQRcode(params: { assetSerialNumber: string, assetName: string }) {
+    return this.httpService.withCredentialsPostRequest(API.printQRcode, params);
+  }
 }

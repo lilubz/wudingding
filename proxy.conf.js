@@ -20,17 +20,17 @@ const PROXY_CONFIG = [
   //     "^/assetmanagement": ""
   //   }
   // },
-  // {
-  //   context: [
-  //     "/assetmanagement",
-  //     "/dataImport",
-  //   ],
-  //   target: "http://192.168.1.8:8089", // 妮娜
-  //   secure: false,
-  //   "pathRewrite": {
-  //     "^/assetmanagement": ""
-  //   }
-  // },
+  {
+    context: [
+      "/assetmanagement",
+      "/dataImport",
+    ],
+    target: "http://192.168.1.8:8089", // 妮娜
+    secure: false,
+    "pathRewrite": {
+      "^/assetmanagement": ""
+    }
+  },
   // {
   //   context: [
   //     "/assetmanagement",
@@ -52,17 +52,17 @@ const PROXY_CONFIG = [
   //     "^/assetmanagement": ""
   //   }
   // },
-  {
-    context: [
-      "/assetmanagement",
-      "/dataImport",
-    ],
-    target: "http://59.110.233.230", // 线上
-    secure: false,
-    // "pathRewrite": {
-    //   "^/assetmanagement": ""
-    // }
-  },
+  // {
+  //   context: [
+  //     "/assetmanagement",
+  //     "/dataImport",
+  //   ],
+  //   target: "http://59.110.233.230", // 线上
+  //   secure: false,
+  //   // "pathRewrite": {
+  //   //   "^/assetmanagement": ""
+  //   // }
+  // },
 
 ];
 

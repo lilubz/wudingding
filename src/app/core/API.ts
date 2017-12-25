@@ -29,6 +29,7 @@ export const API = {
   'updateSysMessagesIsRead': URL + 'assetBasic/updateSysMessagesIsRead.do',
   'listRoles': URL + 'sysUserPermissions/listRoles.do',
   'addUser': URL + 'sysUserPermissions/addUser.do',
+  'printQRcode': URL + 'common/printQRcode.do',
 
   // 权限管理
   'listSysPermission': URL + 'sysUserPermissions/listSysPermission.do',
