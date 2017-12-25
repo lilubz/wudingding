@@ -2,7 +2,7 @@
   maxlength="0">
 <ng-container *ngIf="organizations.length > 0">
   <div style="position: relative" *ngIf="selectVisiable" (click)="$event.stopPropagation()">
-    <div style="position: absolute;z-index: 1;">
+    <div style="position: absolute;z-index: 3;">
       <p-tree [value]="organizations" selectionMode="single" [selection]="selectedOrg" (onNodeSelect)="nodeSelect($event)" styleClass="col-md-12"></p-tree>
     </div>
   </div>

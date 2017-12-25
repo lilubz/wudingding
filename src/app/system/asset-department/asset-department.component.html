@@ -29,7 +29,7 @@
                       <ng-container *ngFor="let item of selectedDepartmentList[index-1].children">
                         <option [ngValue]="item">{{ item?.label }}</option>
                       </ng-container>
-                      
+
                     </select>
                   </div>
                 </ng-container>
@@ -38,9 +38,9 @@
           </div>
           <div class="row">
             <div class="col-md-12 margin-top">
-              <button type="button" class="btn btn-outline-success  pull-left" (click)="openModalWithClass(addDepartmentModal)">
+              <button type="button" class="btn btn-outline-success  pull-left" (click)="openModalWithClass(addDepartmentModal);$event.target.blur();">
                 <i class="fa fa-plus"></i>&nbsp;添加部门</button>
-              <button type="button" class="btn btn-outline-warning pull-left  margin-lf" (click)="openModalWithClass2(updateDepartmentModal)">
+              <button type="button" class="btn btn-outline-warning pull-left  margin-lf" (click)="openModalWithClass2(updateDepartmentModal);$event.target.blur();">
                 <i class="fa fa-pencil"></i>&nbsp; 编辑部门</button>
             </div>
           </div>

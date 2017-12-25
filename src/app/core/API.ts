@@ -1,4 +1,4 @@
-const release = '/wenZhouGas/';
+const release = '/assetmanagement/';
 
 const URL = release;
 export const API = {
@@ -45,7 +45,7 @@ export const API = {
   'listAssetInfoByMajorAsset': URL + 'assetBasic/listAssetInfoByMajorAsset.do', // 根据主资产id获取套资产信息
   'checkAsset': URL + 'assetBasic/checkAsset.do', // 资产审核
 
-  'uploadAssetUrl': URL + '', // 资产导入
+  'uploadAssetUrl': 'dataImport/importAssetInfo.do', // 资产导入
   'downloadAssetUrl': URL + 'dataExcel/Export/assetExport.do', // 资产导出
 
 

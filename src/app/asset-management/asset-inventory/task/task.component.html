@@ -17,7 +17,7 @@
           <label>结束时间：</label>
           <div>
             <p-calendar #endDate [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true" [showButtonBar]="true"
-              [(ngModel)]="searchParams.endTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" 
+              [(ngModel)]="searchParams.endTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false"
               readonlyInput="true" placeholder="请输入结束时间" [minDate]="searchParams.startTime"></p-calendar>
           </div>
         </div>
@@ -46,7 +46,7 @@
   <div class="card">
     <div class="card-header">
       <i class="fa fa-align-justify"></i> 任务信息
-      <button type="button" class="btn btn-primary pull-right" (click)="onAddTask(taskAddModal)">新增</button>
+      <button type="button" class="btn btn-primary pull-right" (click)="onAddTask(taskAddModal);$event.target.blur();">新增</button>
     </div>
     <div class="card-body">
       <table class="table table-bordered table-striped table-sm">
@@ -86,7 +86,7 @@
           </tr>
         </tbody>
       </table>
-      <asset-paginator [rows]="table.size" [totalRecords]="table.total" [rowsPerPageOptions]="table.options" 
+      <asset-paginator [rows]="table.size" [totalRecords]="table.total" [rowsPerPageOptions]="table.options"
         (onPageChange)="onPageChange($event)" [(first)]="table.first"></asset-paginator>
     </div>
   </div>
@@ -105,7 +105,7 @@
             <label for="beginTime" class="col-4 control-label">开始时间：</label>
             <div class="col-7" style="display:inline-block">
               <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true"
-                [(ngModel)]="addParams.startTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true" 
+                [(ngModel)]="addParams.startTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true"
                 placeholder="请输入开始时间" [ngModelOptions]="{standalone: true}" [maxDate]="addParams.endTime" [minDate]="currentTime"></p-calendar>
             </div>
           </div>
@@ -113,7 +113,7 @@
             <label for="endTime" class="col-4 control-label">结束时间：</label>
             <div class="col-7" style="display:inline-block">
               <p-calendar [monthNavigator]="true" [yearNavigator]="true" yearRange="1970:2050" [selectOtherMonths]="true"
-                [(ngModel)]="addParams.endTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true" 
+                [(ngModel)]="addParams.endTime" dateFormat="yy-mm-dd" [locale]="zh" [showIcon]="false" readonlyInput="true"
                 placeholder="请输入结束时间" [ngModelOptions]="{standalone: true}" [minDate]="addParams.startTime"></p-calendar>
             </div>
           </div>

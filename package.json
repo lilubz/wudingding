@@ -9,7 +9,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --prod --extract-licenses=false",
-    "build": "ng build",
+    "build": "ng build --prod --extract-licenses=false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

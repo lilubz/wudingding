@@ -4,7 +4,7 @@
       <div class="card border-rad">
         <div class="card-header border-rad">
           <i class="fa fa-align-justify"></i>角色管理
-          <button type="button" class="btn btn-primary pull-right margin-rt" (click)="showAddModal(addModal)">
+          <button type="button" class="btn btn-primary pull-right margin-rt" (click)="showAddModal(addModal);$event.target.blur();">
             <i class="fa fa-plus"></i>&nbsp; 新增</button>
         </div>
         <div class="card-block">
@@ -41,7 +41,7 @@
                   <td>{{item.description}}</td>
                   <td>{{item.createTime | date:'yyyy-MM-dd'}}</td>
                   <td>
-                    <button type="button" class="btn btn-primary pull-left" (click)="showEditModal(item,editModal)">编辑</button>
+                    <button type="button" class="btn btn-primary pull-left" (click)="showEditModal(item,editModal);$event.target.blur();">编辑</button>
                     <button type="button" class="btn btn-danger pull-left margin-lf" (click)="deleteSystemRole(item)">删除</button>
                     <button type="button" class="btn btn-success pull-left margin-lf" [routerLink]="['../permission']" [queryParams]="{roleId:item.roleId}">分配权限</button>
                   </td>

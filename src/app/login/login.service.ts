@@ -19,11 +19,11 @@ export class LoginService {
   ) { }
 
   /**
-   *
-   *
+   * 登录
+   * 2017-12-25 11:53:08
    * @author hzb
-   * @param {{ username: string, password: string }} params
-   * @returns {Promise<any>}
+   * @param params
+   * @returns
    */
   signIn(params: { username: string, password: string }): Promise<boolean> {
     return this.httpService
@@ -44,12 +44,7 @@ export class LoginService {
           this.router.navigate(['/asset-management']);
           return true;
         } else {
-          swal({
-            title: '登录失败',
-            text: data.msg,
-            icon: 'error',
-            button: '确认',
-          });
+          swal({ title: '登录失败', text: data.msg, icon: 'error', button: '确认', });
           return false;
         }
       }).catch(error => {
@@ -71,23 +66,13 @@ export class LoginService {
         this.userStateService.setUser(undefined);
         this.router.navigate(['/login']);
         if (data.status !== 0) {
-          swal({
-            title: '注销异常',
-            text: data.msg,
-            icon: 'error',
-            button: '确认',
-          });
+          swal({ title: '注销异常', text: data.msg, icon: 'error', button: '确认', });
           return false;
         } else {
           return true;
         }
       }).catch(error => {
-        swal({
-          title: '注销异常',
-          text: error.statusText,
-          icon: 'error',
-          button: '确认',
-        });
+        swal({ title: '注销异常', text: error.statusText, icon: 'error', button: '确认', });
         this.userStateService.setUser(undefined);
         this.router.navigate(['/login']);
       });

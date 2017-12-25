@@ -169,6 +169,8 @@ export class AssetDepartmentComponent implements OnInit {
     this.selectedData = this.selectedDepartmentList[index];
     if (!this.selectedData) {
       this.selectedData = this.selectedDepartmentList[index - 1];
+    } else if (!this.selectedData.children) {
+      this.selectedData.expanded = false;
     } else {
       this.selectedData.expanded = true;
     }

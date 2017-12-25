@@ -18,16 +18,10 @@ export class SignInComponent implements OnInit {
 
   login() {
     if (!this.username) {
-      swal({
-        text: '请输入用户名',
-        button: '确认',
-      });
+      swal({ text: '请输入用户名', button: '确认', });
       return false;
     } else if (!this.password) {
-      swal({
-        text: '请输入密码',
-        button: '确认',
-      });
+      swal({ text: '请输入密码', button: '确认', });
       return false;
     }
 

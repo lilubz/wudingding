@@ -141,12 +141,12 @@
           <tbody>
             <tr *ngFor="let item of assetList">
               <td>
-                <a href="javascript:void(0);" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
+                <a href="javascript:void(0);" (click)="showDetailModal(item,assetDetailModal);$event.target.blur();" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
               </td>
               <td>{{ item?.assetName }}</td>
               <td>{{ item?.assetCategoryName }}</td>
               <td>
-                <a href="javascript:void(0);" (click)="showAssetRelationModal(item,assetRelationModal)" title="查看资产套关系">{{ item?.majorAssetSerialNumber }}</a>
+                <a href="javascript:void(0);" (click)="showAssetRelationModal(item,assetRelationModal);$event.target.blur();" title="查看资产套关系">{{ item?.majorAssetSerialNumber }}</a>
               </td>
               <td>{{ item?.brandSpecification }}</td>
               <td>{{ item?.organizationName }}</td>
@@ -162,7 +162,7 @@
               <td>{{ item?.monthOfDepreciation }}</td> -->
               <td>
                 <button type="button" *ngIf="!item?.reviewStatus" class="btn btn-warning" (click)="showReviewModal(item)">审核</button>
-                <button type="button" *ngIf="item?.reviewStatus" class="btn btn-primary" (click)="showEditModal(item,editAssetModal)">编辑</button>
+                <button type="button" *ngIf="item?.reviewStatus" class="btn btn-primary" (click)="showEditModal(item,editAssetModal);$event.target.blur();">编辑</button>
                 <button type="button" class="btn btn-danger" (click)="showDeleteModal(item)">删除</button>
               </td>
             </tr>
@@ -382,7 +382,7 @@
         <tr *ngFor="let item of assetRelationList">
           <td>{{ item.assetSerialNumber === item.majorAssetSerialNumber?'主资产':'子资产' }}</td>
           <td>
-            <a href="javascript:void(0);" (click)="showDetailModal(item,assetDetailModal)" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
+            <a href="javascript:void(0);" (click)="showDetailModal(item,assetDetailModal);$event.target.blur();" title="查看资产详情">{{ item?.assetSerialNumber }}</a>
           </td>
           <td>{{ item?.assetName }}</td>
           <td>{{ item?.organizationName }}</td>

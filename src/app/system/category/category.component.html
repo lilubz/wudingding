@@ -20,14 +20,14 @@
           <span class="fa fa-plus"></span>添加</button>
       </form>
       <div class="categorys clearfix">
-        <div class="item" *ngFor="let item of categoryList" (click)="onSelectCategory(item,template)">
+        <div class="item" *ngFor="let item of categoryList" (click)="onSelectCategory(item,template);$event.target.blur();">
           {{item.categoryName}}
           <span class=" fa fa-pencil icon"></span>
         </div>
       </div>
     </div>
   </div>
-  
+
   <ng-template #template>
     <div class="modal-header">
       <h4 class="modal-title pull-left">详细信息</h4>

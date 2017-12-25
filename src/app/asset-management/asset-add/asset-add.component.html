@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-header">
         <i class="fa fa-align-justify"></i> 新增资产
-        <button class="btn btn-primary btn-sm mb-0 pull-right" type="button" (click)="showUploadAssetModal(uploadAssetModal)">导入</button>
+        <button class="btn btn-primary btn-sm mb-0 pull-right" type="button" (click)="showUploadAssetModal(uploadAssetModal);$event.target.blur();">导入</button>
       </div>
       <div class="card-body">
         <div class="row">
@@ -162,20 +162,20 @@
   <div class="modal-body">
     <p-steps [model]="uploadSteps" [(activeIndex)]="activeUploadStepIndex" [readonly]="false"></p-steps>
     <div class="col-md-12 upload-step" *ngIf="activeUploadStepIndex===0">
-      <a class="btn btn-primary" href="">点击下载模板文件</a>
+      <a class="btn btn-primary" href="./assets/excel/资产导入模板.xlsx">点击下载模板文件</a>
     </div>
     <div class="col-md-12 upload-step" *ngIf="activeUploadStepIndex===1">
       请按照模板文件格式填写数据
     </div>
     <div class="col-md-12 upload-step" *ngIf="activeUploadStepIndex===2">
-      <div style="margin-bottom:20px;">请上传要导入的文件</div>
-      <p-fileUpload [url]="uploadAssetUrl" [multiple]="false" invalidFileSizeMessageSummary="{0}: 文件过大," invalidFileSizeMessageDetail="最大文件尺寸是 {0}."
+      <div style="margin-bottom:20px;">请将excel文件另存为csv文件，然后上传该csv文件</div>
+      <p-fileUpload name="file" [url]="uploadAssetUrl" [multiple]="false" invalidFileSizeMessageSummary="{0}: 文件过大," invalidFileSizeMessageDetail="最大文件尺寸是 {0}."
         invalidFileTypeMessageSummary="{0}: 不合法的文件类型," invalidFileTypeMessageDetail="允许的文件类型是: {0}." chooseLabel="选择文件" uploadLabel="上传"
-        accept=".xls,.xlsx" cancelLabel="取消" maxFileSize="10000000" (onUpload)="uploadAsset($event)">
+        accept=".csv" cancelLabel="取消" maxFileSize="10000000" (onUpload)="uploadAsset($event)">
       </p-fileUpload>
     </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="uploadAssetModalRef.hide()">确认</button>
+    <button type="button" class="btn btn-primary" (click)="uploadAssetModalRef.hide()">取消</button>
   </div>
 </ng-template>
