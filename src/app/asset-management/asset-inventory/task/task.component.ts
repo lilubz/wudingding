@@ -6,6 +6,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/modal-options.class';
 import { zh } from './../../../core/date-localization';
 import * as moment from 'moment';
 import { TaskService } from './task.service'
+import { TreeNode } from '../../../../../node_modules/_primeng@4.3.0@primeng/primeng';
 declare const swal: any;
 @Component({
   selector: 'asset-task',
@@ -21,6 +22,16 @@ export class TaskComponent implements OnInit {
     del: false,
     end: false
   }
+  selectedOrg: TreeNode = {
+    label: '',
+    data: '',
+    parent: undefined,
+  };
+  selectedAddOrg: TreeNode = {
+    label: '',
+    data: '',
+    parent: undefined,
+  };
   searchBeginDate: any;
   zh = zh;
   modalRef: BsModalRef;
@@ -59,16 +70,20 @@ export class TaskComponent implements OnInit {
       }
     ]
   }
-  searchParams: any = {
-    startTime: moment().subtract(30, 'days')['_d'],
-    endTime: moment().add(1, 'days')['_d'],
-    organizationId: '13', // 13表示【综合部】ID
-    status: '2' // 2表示【正在盘点】ID
-  }
+  searchParams: {
+    startTime,
+    endTime,
+    status
+  } = {
+      startTime: moment().subtract(30, 'days')['_d'],
+      endTime: moment().add(1, 'days')['_d'],
+      // organizationId: '13', // 13表示【综合部】ID
+      status: '2' // 2表示【正在盘点】ID
+    }
   pageParams = {
     startTime: moment().subtract(30, 'days')['_d'],
     endTime: moment()['_d'],
-    organizationId: '13',
+    organizationId: '',
     status: '2'
   }
   taskParams = {
@@ -93,12 +108,12 @@ export class TaskComponent implements OnInit {
   addParams: any = {
     startTime: moment()['_d'],
     endTime: moment().add(7, 'days')['_d'],
-    organizationId: '13', // 13表示综合部ID
+    // organizationId: '13', // 13表示综合部ID
   }
   constructor(private modalService: BsModalService, private _service: TaskService) { }
 
   ngOnInit() {
-    this.onSearch();
+    // this.onSearch();
   }
 
   // 数据展示
@@ -107,7 +122,7 @@ export class TaskComponent implements OnInit {
     this.pageParams = Object.assign({}, {
       startTime: this.searchParams.startTime === '' ? '' : moment(this.searchParams.startTime).format('YYYY-MM-DD HH:mm:ss'),
       endTime: this.searchParams.endTime === '' ? '' : moment(this.searchParams.endTime).format('YYYY-MM-DD HH:mm:ss'),
-      organizationId: this.searchParams.organizationId,
+      organizationId: this.selectedOrg.data || '',
       status: this.searchParams.status
     });
     this.getTableList(Object.assign({
@@ -146,6 +161,16 @@ export class TaskComponent implements OnInit {
 
   // 添加盘点任务
   onAddTask(template) {
+    this.selectedAddOrg = {
+      label: '',
+      data: '',
+      parent: undefined
+    }
+    this.addParams = {
+      startTime: moment()['_d'],
+      endTime: moment().add(7, 'days')['_d'],
+      // organizationId: '13', // 13表示综合部ID
+    }
     this.modalRef = this.modalService.show(template);
   }
   onCancelAdd() {
@@ -154,7 +179,7 @@ export class TaskComponent implements OnInit {
   onSendAdd() {
     if (this.addParams.startTime === ''
       || this.addParams.endTime === ''
-      || this.addParams.organizationId === '') {
+      || this.selectedAddOrg.data === '') {
       swal('不能输入空值！', {
         icon: 'warning',
       });
@@ -163,7 +188,7 @@ export class TaskComponent implements OnInit {
     this.sendAdd({
       startTime: moment(this.addParams.startTime).format('YYYY-MM-DD HH:mm:ss'),
       endTime: moment(this.addParams.endTime).format('YYYY-MM-DD HH:mm:ss'),
-      organizationId: this.addParams.organizationId,
+      organizationId: this.selectedAddOrg.data,
     })
   }
 

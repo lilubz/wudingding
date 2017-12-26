@@ -46,7 +46,6 @@ export class AssetSearchComponent implements OnInit {
   searchOrganizations: TreeNode[] = [];
   editOrganizations: TreeNode[] = [];
   selectedCategory = '';
-  selectedOrganization = '';
   selectedAssetStatus = '';
   searchBeginDate = moment().subtract(7, 'd').toDate();
   searchEndDate = new Date();
@@ -335,7 +334,7 @@ export class AssetSearchComponent implements OnInit {
       .then(data => {
         if (data) {
           this.assetSearchService.exportAsset({
-            organizationId: this.selectedOrganization || '',
+            organizationId: this.selectedSearchOrg.data || '',
             assetCategoryId: this.selectedCategory,
             useStatus: this.selectedAssetStatus,
             startTimeString: this.searchBeginDate ? moment(this.searchBeginDate).format('YYYY-MM-DD') : '',
